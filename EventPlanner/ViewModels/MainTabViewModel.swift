@@ -18,4 +18,12 @@ class MainTabViewModel: ObservableObject {
     @Published var dob = ""
     @Published var address = ""
     @Published var phoneNumber = ""
+    @Published var isLoggedOut = false
+    
+    func signOutCall() {
+        self.isLoggedOut = true
+        NetworkManager.shared.signOutCall(viewModel: self)
+        UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
+        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+    }
 }

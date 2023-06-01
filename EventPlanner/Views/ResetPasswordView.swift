@@ -46,7 +46,7 @@ struct ResetPasswordView: View {
             }
             
             Button {
-                print("set new password")
+                viewModel.resetPassword()
             } label: {
                 ZStack {
                     Rectangle()
@@ -58,6 +58,9 @@ struct ResetPasswordView: View {
                         .fontWeight(.semibold)
                 }
             }
+            .fullScreenCover(isPresented: $viewModel.showLoginView, content: {
+                LoginSignupView()
+            })
             .disabled(viewModel.resetPasswordButtonDisabled())
             .padding(.top, 50)
             Spacer()

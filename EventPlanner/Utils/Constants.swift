@@ -16,16 +16,20 @@ struct Constants {
     struct API {
         static let requestValueType = "application/json"
         static let contentTypeHeaderField = "Content-type"
+        static let authorizationHeaderField = "Authorization"
         struct URLs {
-            static let baseUrl = "https://940e-112-196-113-2.ngrok-free.app/users/"
-            static let signUp = baseUrl + ""
-            static let signIn = baseUrl + "sign_in"
-            static let singOut = baseUrl + "sign_out"
+            static private let baseUrl = "https://9bce-112-196-113-2.ngrok-free.app/users/"
+            static let signUp = baseUrl + "signup/"
+            static let logIn = baseUrl + "login/"
+            static let logOut = baseUrl + "logout/"
+            static let forgotPassword = baseUrl + "forgotpassword/"
+            static let verifyOtp = baseUrl + "verifyotp/"
+            static let resetPassword = baseUrl + "resetpassword/" //put
         }
         
         struct HttpMethods {
             static let post = "POST"
-            static let delete = "DELETE"
+            static let put = "PUT"
         }
     }
     
@@ -61,9 +65,12 @@ struct Constants {
         static let list = "list.bullet"
         static let profile = "person"
         static let explore = "safari"
+        static let edit = "pencil"
     }
     
     struct Labels {
+        
+        static let editProfile = "Edit Profile"
         static let resendOtp = "Resend OTP"
         static let verify = "Verify"
         static let enterNewPassword = "Set new password"
@@ -112,7 +119,6 @@ struct Constants {
         static let aboutYou = "About you"
         static let confirmPhone = "Confirm phone number"
         static let confirmEmail = "Confirm email"
-        static let editProfile = "Edit profile picture"
         static let editPersonalDetails = "Edit personal details"
         static let verifyProfile = "Verify your profile"
         static let verifyId = "Verify my ID"
@@ -125,7 +131,7 @@ struct Constants {
             static let emailPassword = "What's your email and password?"
             static let dob = "What's your date of birth?"
             static let phone = "What's your phone number?"
-            static let title = "How would you like to be addressed?"
+            static let address = "What's your address?"
         }
         
         struct Warnings {

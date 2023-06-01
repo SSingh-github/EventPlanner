@@ -26,12 +26,12 @@ struct EditUserProfileView: View {
             }
             .padding(.vertical)
             
-            Text("Edit Profile")
+            Text(Constants.Labels.editProfile)
                 .font(.title)
                 .fontWeight(.semibold)
             
             ZStack(alignment: .bottomTrailing) {
-                Image(systemName: "person.circle.fill")
+                Image(systemName: Constants.Images.personFill)
                     .font(.system(size: 100))
                     .frame(width: 100, height: 100)
                     .scaledToFit()
@@ -40,7 +40,7 @@ struct EditUserProfileView: View {
                 Button {
                     print("change profile pic")
                 } label: {
-                    Image(systemName: "pencil")
+                    Image(systemName: Constants.Images.edit)
                         .padding(4)
                         .foregroundColor(.white)
                         .background(Constants.Colors.blueThemeColor)
@@ -52,23 +52,23 @@ struct EditUserProfileView: View {
             
             VStack(alignment: .leading) {
                 
-                Text("What's your name?")
+                Text(Constants.Labels.Questions.name)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.lastName)
-                Text("What's your phone number?")
+                Text(Constants.Labels.Questions.phone)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.phoneNumber)
-                Text("What's your date of birth?")
+                Text(Constants.Labels.Questions.dob)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.dob, text: $viewModel.dob)
-                Text("What's your address?")
+                Text(Constants.Labels.Questions.address)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)

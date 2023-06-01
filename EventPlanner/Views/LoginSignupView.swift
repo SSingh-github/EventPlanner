@@ -41,7 +41,7 @@ struct LoginSignupView: View {
                                 .fontWeight(.semibold)
                                 .foregroundColor(.red)
                         }
-                        SecureTextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.password)
+                        TextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.password)
                             .padding(.top)
                         if viewModel.showPasswordWarning() {
                             Text(Constants.Labels.Warnings.password)

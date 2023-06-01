@@ -17,19 +17,21 @@ struct ProfileView: View {
             LoginSignupView()
         }
         else if viewModel.userLogin {
-            VStack {
-                Text("profile view in user login")
-                Button("sign out") {
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                    
-                    viewModel.showWelcomeViewModel.toggle()
+            ZStack {
+                VStack {
+                    Text("profile view in user login")
+                    Button("sign out") {
+                        viewModel.signOutCall()
+                    }
+                    Button("edit profile") {
+                        viewModel.showEditProfileView.toggle()
+                    }
+                    .fullScreenCover(isPresented: $viewModel.showEditProfileView) {
+                        EditUserProfileView(viewModel: viewModel)
+                    }
                 }
-                Button("edit profile") {
-                    viewModel.showEditProfileView.toggle()
-                }
-                .fullScreenCover(isPresented: $viewModel.showEditProfileView) {
-                    EditUserProfileView(viewModel: viewModel)
+                if viewModel.isLoggedOut {
+                    LoadingView()
                 }
             }
         }

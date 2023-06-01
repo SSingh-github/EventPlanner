@@ -16,6 +16,10 @@ class ForgotPasswordViewModel: ObservableObject {
     @Published var confirmPassword = ""
     @Published var secondsRemaining = 180
     @Published var timer: Timer?
+    @Published var forgotPasswordLoading = false
+    @Published var verifyOtpLoading = false
+    @Published var resetPasswordLoading = false
+    @Published var showLoginView = false
     
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
@@ -60,5 +64,23 @@ class ForgotPasswordViewModel: ObservableObject {
         
         self.secondsRemaining = 180
         startTimer()
+    }
+    
+    func forgotPassword() {
+        // call the forgotpassword method in network manager
+        self.forgotPasswordLoading = true
+        NetworkManager.shared.forgotPassword(viewModel: self)
+    }
+    
+    func verifyOtp() {
+        // call the verifyotp method in network manager
+        self.verifyOtpLoading = true
+        NetworkManager.shared.verifyOtp(viewModel: self)
+    }
+    
+    func resetPassword() {
+        self.resetPasswordLoading = true
+        NetworkManager.shared.resetPassword(viewModel: self)
+
     }
 }

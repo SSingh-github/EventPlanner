@@ -14,62 +14,68 @@ struct ForgotPasswordView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading) {
-                
-                HStack {
-                    Button {
-                        presentationMode.wrappedValue.dismiss()
-                    } label: {
-                        Image(systemName: Constants.Images.xmark)
-                            .font(.title)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
-                        Spacer()
+            ZStack {
+                VStack(alignment: .leading) {
+                    
+                    HStack {
+                        Button {
+                            presentationMode.wrappedValue.dismiss()
+                        } label: {
+                            Image(systemName: Constants.Images.xmark)
+                                .font(.title)
+                                .foregroundColor(Constants.Colors.blueThemeColor)
+                            Spacer()
+                        }
                     }
-                }
-                .padding(.vertical)
-                
-                Text(Constants.Labels.forgotPassword)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .padding(.bottom, 40)
-                
-                Text(Constants.Labels.enterEmail)
-                TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
-                
-                if viewModel.showEmailWarning() {
-                    Text(Constants.Labels.Warnings.email)
+                    .padding(.vertical)
+                    
+                    Text(Constants.Labels.forgotPassword)
+                        .font(.title)
                         .fontWeight(.semibold)
-                        .foregroundColor(.red)
-                        .padding(.bottom)
-                }
-                
-                Text(Constants.Labels.otpMessage)
-                    .fontWeight(.semibold)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .padding(.bottom)
-                
-                Button {
-                    viewModel.presentOtpView.toggle()
-                } label: {
-                    ZStack {
-                        Rectangle()
-                            .frame(height: 60)
-                            .foregroundColor(viewModel.buttonDisabled() ? .gray : Constants.Colors.blueThemeColor)
-                            .cornerRadius(10)
-                        Text(Constants.Labels.sendOtp)
-                            .foregroundColor(.white)
+                        .padding(.bottom, 40)
+                    
+                    Text(Constants.Labels.enterEmail)
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
+                    
+                    if viewModel.showEmailWarning() {
+                        Text(Constants.Labels.Warnings.email)
                             .fontWeight(.semibold)
+                            .foregroundColor(.red)
+                            .padding(.bottom)
                     }
+                    
+                    Text(Constants.Labels.otpMessage)
+                        .fontWeight(.semibold)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.bottom)
+                    
+                    Button {
+                        viewModel.forgotPassword()
+                    } label: {
+                        ZStack {
+                            Rectangle()
+                                .frame(height: 60)
+                                .foregroundColor(viewModel.buttonDisabled() ? .gray : Constants.Colors.blueThemeColor)
+                                .cornerRadius(10)
+                            Text(Constants.Labels.sendOtp)
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                    .disabled(viewModel.buttonDisabled())
+                    NavigationLink(destination: OtpView(viewModel: viewModel), isActive: $viewModel.presentOtpView) {
+                        EmptyView()
+                    }
+                    .hidden()
+                    Spacer()
                 }
-                .disabled(viewModel.buttonDisabled())
-                NavigationLink(destination: OtpView(viewModel: viewModel), isActive: $viewModel.presentOtpView) {
-                                EmptyView()
-                            }
-                            .hidden()
-                Spacer()
+                .padding()
+                
+                if viewModel.forgotPasswordLoading {
+                    LoadingView()
+                }
             }
-            .padding()
         }
     }
 }
