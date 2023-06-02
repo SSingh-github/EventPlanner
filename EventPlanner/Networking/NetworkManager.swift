@@ -198,7 +198,7 @@ class NetworkManager {
             
             DispatchQueue.main.async {
                 viewModel.isLoggedOut = false
-               // Present the full-screen cover sheet view here
+               
                 if httpResponse.statusCode == 200 {
                     viewModel.showWelcomeViewModel.toggle()
                     UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
@@ -225,26 +225,33 @@ class NetworkManager {
 
         let body =  """
         {
-                "email": "\(viewModel.email)"
+        "email": "\(viewModel.email)"
         }
         """
-        //sukhpreetsingh@gmail.com, 1111111
+    
         request.httpBody = body.data(using: .utf8)
 
-        //make the request
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
-               // print("Invalid response")
                 return
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
 
             DispatchQueue.main.async {
                 viewModel.forgotPasswordLoading = false
-               // Present the full-screen cover sheet view here
                 if httpResponse.statusCode == 200 {
                     viewModel.presentOtpView.toggle()
                 }
@@ -253,11 +260,10 @@ class NetworkManager {
                     print("some error occured while forgot password request")
                 }
            }
-            //print("successs? \(viewModel.signInIsSuccessful)")
         }
         task.resume()
     }
-//
+
     func verifyOtp(viewModel: ForgotPasswordViewModel) {
         guard let url = URL(string: Constants.API.URLs.verifyOtp) else {
             return
@@ -271,32 +277,40 @@ class NetworkManager {
 
         let body =  """
         {
-                "email": "\(viewModel.email)",
-                "otp":"\(viewModel.otp)"
+        "email": "\(viewModel.email)",
+        "otp":"\(viewModel.otp)"
         }
         """
-        //sukhpreetsingh@gmail.com, 1111111
         request.httpBody = body.data(using: .utf8)
 
-        //make the request
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
-               // print("Invalid response")
                 return
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
 
             DispatchQueue.main.async {
                 viewModel.verifyOtpLoading = false
-               // Present the full-screen cover sheet view here
                 if httpResponse.statusCode == 200 {
                     viewModel.presentResetPasswordView.toggle()
                 }
+                else {
+                    print("some error occured when verifying the otp")
+                }
            }
-            //print("successs? \(viewModel.signInIsSuccessful)")
         }
         task.resume()
     }
@@ -314,37 +328,41 @@ class NetworkManager {
 
         let body =  """
         {
-                "email": "\(viewModel.email)",
-                "password": "\(viewModel.newPassword)"
+        "email": "\(viewModel.email)",
+        "password": "\(viewModel.newPassword)"
         }
         """
-        //sukhpreetsingh@gmail.com, 1111111
+        
         request.httpBody = body.data(using: .utf8)
-
-        //make the request
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
-               // print("Invalid response")
                 return
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
 
             DispatchQueue.main.async {
                 viewModel.resetPasswordLoading = false
-               // Present the full-screen cover sheet view here
+                
                 if httpResponse.statusCode == 200 {
-                    //present new view after new password is set
-                    //change the user default of loggedin to true
                     viewModel.showLoginView.toggle()
                 }
                 else {
                     print("some error occured while resetting the password")
                 }
            }
-            //print("successs? \(viewModel.signInIsSuccessful)")
         }
         task.resume()
     }
