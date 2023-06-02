@@ -18,7 +18,7 @@ struct Constants {
         static let contentTypeHeaderField = "Content-type"
         static let authorizationHeaderField = "Authorization"
         struct URLs {
-            static private let baseUrl = "https://9bce-112-196-113-2.ngrok-free.app/users/"
+            static private let baseUrl = "https://027d-112-196-113-2.ngrok-free.app/users/"
             static let signUp = baseUrl + "signup/"
             static let logIn = baseUrl + "login/"
             static let logOut = baseUrl + "logout/"
