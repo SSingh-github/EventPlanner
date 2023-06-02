@@ -3,28 +3,38 @@
 //  EventPlanner
 //
 //  Created by Chicmic on 29/05/23.
+// handle all the error cases in network calls
 
 import Foundation
+
+struct Response: Decodable {
+    let code: Int
+    let message: String
+}
+
+struct SignoutResponse: Decodable {
+    let status: Int
+    let message: String
+}
 
 class NetworkManager {
     
     private init () {}
     static let shared = NetworkManager()
-    //var viewModel: LoginViewModel?
     
     var authorizationKey: String = ""
     
     func signUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
+        
+        
         guard let url = URL(string: Constants.API.URLs.signUp) else {
             return
         }
 
         var request = URLRequest(url: url)
 
-        //method, body, headers
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-//        request.setValue("\(viewModel.authorizationKey)", forHTTPHeaderField: Constants.authorizationHeaderField)
 
         
         let body =  """
@@ -34,8 +44,6 @@ class NetworkManager {
         }
         """
         request.httpBody = body.data(using: .utf8)
-
-        //make the request
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
@@ -52,7 +60,18 @@ class NetworkManager {
                     print(self.authorizationKey)
                 }
             } else {
+                print("unable to sign up")
                 print("Error: Unexpected status code \(httpResponse.statusCode)")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(Response.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.code)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
             
             DispatchQueue.main.async {
@@ -60,6 +79,8 @@ class NetworkManager {
                // Present the full-screen cover sheet view here
                 if httpResponse.statusCode == 200 {
                     viewModel.presentMainTabView.toggle()
+                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
                 }
                 else {
                     print("some error occured while signing up")
@@ -72,24 +93,22 @@ class NetworkManager {
     
     func logInCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
+        print("login button clicked")
+        
          guard let url = URL(string: Constants.API.URLs.logIn) else {
              return
          }
 
          var request = URLRequest(url: url)
 
-         //method, body, headers
          request.httpMethod = Constants.API.HttpMethods.post
          request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-//        request.setValue("\(viewModel.authorizationKey)", forHTTPHeaderField: Constants.authorizationHeaderField)
 
 
          let body =  """
          {
-             
-                 "email": "\(userCredentials.email)",
-                 "password":"\(userCredentials.password)"
-            
+         "email": "\(userCredentials.email)",
+         "password":"\(userCredentials.password)"
          }
          """
          //sukhpreetsingh@gmail.com, 1111111
@@ -99,10 +118,11 @@ class NetworkManager {
 
          let task = URLSession.shared.dataTask(with: request) {data, response, error in
              guard let data = data, error == nil else {
+                 print("error occured while logging in")
                  return
              }
              guard let httpResponse = response as? HTTPURLResponse else {
-                // print("Invalid response")
+                 print("Invalid response")
                  return
              }
              
@@ -112,24 +132,41 @@ class NetworkManager {
                      print(self.authorizationKey)
                  }
              } else {
+                 print("unable to login")
                  print("Error: Unexpected status code \(httpResponse.statusCode)")
              }
              
+             do {
+                 let response = try JSONDecoder().decode(Response.self, from: data)
+                 print("decode successful " + response.message)
+                 print("code is \(response.code)")
+             }
+             catch {
+                 print("unable to decode the response")
+                 print(error.localizedDescription)
+             }
+
+             
              DispatchQueue.main.async {
                  viewModel.isLoggedIn = false
-                // Present the full-screen cover sheet view here
+                
                  if httpResponse.statusCode == 200 {
                      print(httpResponse.statusCode)
                      viewModel.presentMainTabView.toggle()
+                     UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                     UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                 }
+                 else {
+                     print("some error occured while logging in")
                  }
             }
-             //print("successs? \(viewModel.signInIsSuccessful)")
          }
          task.resume()
      }
 
     
     func signOutCall(viewModel: MainTabViewModel) {
+
         guard let url = URL(string: Constants.API.URLs.logOut) else {
             return
         }
@@ -149,11 +186,23 @@ class NetworkManager {
                 return
             }
             
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+            
             DispatchQueue.main.async {
                 viewModel.isLoggedOut = false
                // Present the full-screen cover sheet view here
                 if httpResponse.statusCode == 200 {
                     viewModel.showWelcomeViewModel.toggle()
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
                 }
                 else {
                     print("some error occured while logout")

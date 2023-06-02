@@ -42,8 +42,7 @@ class LoginViewModel: ObservableObject {
             NetworkManager.shared.signUpCall(for: user, viewModel: self)
         }
         
-        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+        
         // show progress view until the function completes
         // if call is successful, go to the main tab view (toggle the 'presentMainView' boolean), else show the appropriate message to the user
         // handle the case if the user is already logged in as a guest
