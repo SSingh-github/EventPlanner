@@ -19,6 +19,9 @@ class MainTabViewModel: ObservableObject {
     @Published var address = ""
     @Published var phoneNumber = ""
     @Published var isLoggedOut = false
+    @Published var showAlert = false
+    @Published var alertMessage = ""
+    @Published var showSignoutAlert = false
     
     func signOutCall() {
         self.isLoggedOut = true

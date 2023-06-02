@@ -16,6 +16,8 @@ class LoginViewModel: ObservableObject {
     @Published var presentMainTabView: Bool = false
     @Published var isLoggedIn = false
     @Published var showForgotPasswordSheet = false
+    @Published var showAlert = false
+    @Published var alertMessage = ""
    
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty

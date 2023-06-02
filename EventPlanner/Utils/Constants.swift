@@ -125,6 +125,7 @@ struct Constants {
         static let passwordRule = "It must have at least 8 characters, 1 uppercase letter, 1 lowecase letter, 1 number, and 1 special character."
         static let phoneRule = "Enter 10-digit phone number"
         static let createAccount = "Let's create your account"
+        static let ok = "OK"
         
         struct Questions {
             static let name = "What's your name?"
@@ -132,6 +133,7 @@ struct Constants {
             static let dob = "What's your date of birth?"
             static let phone = "What's your phone number?"
             static let address = "What's your address?"
+            static let logout = "Do you really want to logout?"
         }
         
         struct Warnings {
@@ -141,6 +143,11 @@ struct Constants {
             static let email = "Please enter valid email"
             static let phoneNumber = "Please enter valid phone number"
             static let confirmPassword = "Passwords do not match"
+        }
+        
+        struct Alerts {
+            static let alertMessage = "Something went wrong"
+            static let cancel = "Cancel"
         }
         
         struct Placeholders {

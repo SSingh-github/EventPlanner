@@ -7,15 +7,6 @@
 
 import Foundation
 
-struct Response: Decodable {
-    let code: Int
-    let message: String
-}
-
-struct SignoutResponse: Decodable {
-    let status: Int
-    let message: String
-}
 
 class NetworkManager {
     
@@ -84,6 +75,9 @@ class NetworkManager {
                 }
                 else {
                     print("some error occured while signing up")
+                    //show alert here
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
                 }
            }
             //print("successs? \(viewModel.signInIsSuccessful)")
@@ -158,6 +152,8 @@ class NetworkManager {
                  }
                  else {
                      print("some error occured while logging in")
+                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                     viewModel.showAlert = true
                  }
             }
          }
@@ -206,6 +202,8 @@ class NetworkManager {
                 }
                 else {
                     print("some error occured while logout")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
                 }
            }
         }
@@ -258,6 +256,8 @@ class NetworkManager {
                 else {
                     print(httpResponse.statusCode)
                     print("some error occured while forgot password request")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
                 }
            }
         }
@@ -309,6 +309,8 @@ class NetworkManager {
                 }
                 else {
                     print("some error occured when verifying the otp")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
                 }
            }
         }
@@ -316,6 +318,8 @@ class NetworkManager {
     }
 
     func resetPassword(viewModel: ForgotPasswordViewModel) {
+        
+        viewModel.resetPasswordSuccessful = false
         guard let url = URL(string: Constants.API.URLs.resetPassword) else {
             return
         }
@@ -357,10 +361,12 @@ class NetworkManager {
                 viewModel.resetPasswordLoading = false
                 
                 if httpResponse.statusCode == 200 {
-                    viewModel.showLoginView.toggle()
+                    viewModel.resetPasswordSuccessful = true
                 }
                 else {
                     print("some error occured while resetting the password")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
                 }
            }
         }

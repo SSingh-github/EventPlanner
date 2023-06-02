@@ -37,6 +37,8 @@
 		93EC5B632A24AE2A0065A286 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */; };
 		93EC5B652A24B91E0065A286 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B642A24B91E0065A286 /* NetworkManager.swift */; };
 		93EC5B682A24B9E90065A286 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B672A24B9E90065A286 /* UserCredentials.swift */; };
+		93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61D2A29CC1600B10B71 /* Response.swift */; };
+		93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +73,8 @@
 		93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		93EC5B642A24B91E0065A286 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		93EC5B672A24B9E90065A286 /* UserCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredentials.swift; sourceTree = "<group>"; };
+		93F0A61D2A29CC1600B10B71 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignoutResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				93EC5B672A24B9E90065A286 /* UserCredentials.swift */,
+				93F0A61D2A29CC1600B10B71 /* Response.swift */,
+				93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -275,6 +281,7 @@
 				93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */,
 				93EC5B532A24A09F0065A286 /* Validations.swift in Sources */,
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
+				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
 				93AC9BA82A27784E00E3A61A /* ForgotPasswordView.swift in Sources */,
@@ -282,6 +289,7 @@
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,
 				93AC9B9B2A271E4800E3A61A /* SearchView.swift in Sources */,
 				93EC5B612A24A6750065A286 /* ThirdWelcomeView.swift in Sources */,
+				93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */,
 				93EC5B5D2A24A6550065A286 /* FirstWelcomeView.swift in Sources */,
 				93AC9B992A271E3900E3A61A /* ExploreView.swift in Sources */,
 				93EC5B512A24A0500065A286 /* LoginViewModel.swift in Sources */,

@@ -64,6 +64,12 @@ struct ForgotPasswordView: View {
                         }
                     }
                     .disabled(viewModel.buttonDisabled())
+                    .alert(isPresented: $viewModel.showAlert) {
+                        Alert(
+                            title: Text(""), message: Text(viewModel.alertMessage),
+                            dismissButton: .default(Text(Constants.Labels.ok)
+                                .foregroundColor(Constants.Colors.blueThemeColor)))
+                    }
                     NavigationLink(destination: OtpView(viewModel: viewModel), isActive: $viewModel.presentOtpView) {
                         EmptyView()
                     }

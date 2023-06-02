@@ -20,6 +20,10 @@ class ForgotPasswordViewModel: ObservableObject {
     @Published var verifyOtpLoading = false
     @Published var resetPasswordLoading = false
     @Published var showLoginView = false
+    @Published var resetPasswordSuccessful = false
+    @Published var showAlert = false
+    @Published var alertMessage = ""
+   
     
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty

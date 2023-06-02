@@ -83,6 +83,12 @@ struct LoginSignupView: View {
                         .fullScreenCover(isPresented: $viewModel.presentMainTabView) {
                             MainTabView()
                         }
+                        .alert(isPresented: $viewModel.showAlert) {
+                            Alert(
+                                title: Text(""), message: Text(viewModel.alertMessage),
+                                dismissButton: .default(Text(Constants.Labels.ok)
+                                    .foregroundColor(Constants.Colors.blueThemeColor)))
+                        }
 
                         
                         if !UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) {
