@@ -39,6 +39,8 @@
 		93EC5B682A24B9E90065A286 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B672A24B9E90065A286 /* UserCredentials.swift */; };
 		93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61D2A29CC1600B10B71 /* Response.swift */; };
 		93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */; };
+		93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A6212A2A12B600B10B71 /* UserProfile.swift */; };
+		93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,8 @@
 		93EC5B672A24B9E90065A286 /* UserCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredentials.swift; sourceTree = "<group>"; };
 		93F0A61D2A29CC1600B10B71 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignoutResponse.swift; sourceTree = "<group>"; };
+		93F0A6212A2A12B600B10B71 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +165,7 @@
 			children = (
 				93EC5B4D2A249EB80065A286 /* Constants.swift */,
 				93EC5B522A24A09F0065A286 /* Validations.swift */,
+				93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				93EC5B672A24B9E90065A286 /* UserCredentials.swift */,
+				93F0A6212A2A12B600B10B71 /* UserProfile.swift */,
 				93F0A61D2A29CC1600B10B71 /* Response.swift */,
 				93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */,
 			);
@@ -282,8 +288,10 @@
 				93EC5B532A24A09F0065A286 /* Validations.swift in Sources */,
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
 				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
+				93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */,
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
+				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
 				93AC9BA82A27784E00E3A61A /* ForgotPasswordView.swift in Sources */,
 				93EC5B4E2A249EB80065A286 /* Constants.swift in Sources */,
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,

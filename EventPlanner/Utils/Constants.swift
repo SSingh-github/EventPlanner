@@ -38,7 +38,7 @@ struct Constants {
         static let lastNameRegex = "^[a-zA-Z]+(-[a-zA-Z]+)*$"
         static let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         static let passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}$"
-        static let dobRegex = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/19[2-9][0-9]|200[0-5]$"
+        static let dobRegex = "^(19[2-9][0-9]|200[0-5])-(0[1-9]|1[0-2])-([0-2][1-9]|3[0-1])$"
         static let phoneNumberRegex = "^[1-9]\\d{9}$"
         static let predicateFormat = "SELF MATCHES %@"
     }
@@ -153,7 +153,7 @@ struct Constants {
         struct Placeholders {
             static let title = "Title"
             static let phoneNumber = "Phone number"
-            static let dob = "dd/mm/yyyy"
+            static let dob = "yyyy-mm-dd"
             static let password = "Password"
             static let email = "Email"
             static let firstName = "First name"

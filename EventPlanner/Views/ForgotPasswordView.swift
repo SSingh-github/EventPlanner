@@ -13,7 +13,7 @@ struct ForgotPasswordView: View {
     @StateObject var viewModel = ForgotPasswordViewModel()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 VStack(alignment: .leading) {
                     
@@ -62,7 +62,9 @@ struct ForgotPasswordView: View {
                                 .foregroundColor(.white)
                                 .fontWeight(.semibold)
                         }
-                    }
+                    }.navigationDestination(isPresented: $viewModel.presentOtpView, destination: {
+                        OtpView(viewModel: viewModel)
+                    })
                     .disabled(viewModel.buttonDisabled())
                     .alert(isPresented: $viewModel.showAlert) {
                         Alert(
@@ -70,10 +72,6 @@ struct ForgotPasswordView: View {
                             dismissButton: .default(Text(Constants.Labels.ok)
                                 .foregroundColor(Constants.Colors.blueThemeColor)))
                     }
-                    NavigationLink(destination: OtpView(viewModel: viewModel), isActive: $viewModel.presentOtpView) {
-                        EmptyView()
-                    }
-                    .hidden()
                     Spacer()
                 }
                 .padding()
@@ -88,6 +86,8 @@ struct ForgotPasswordView: View {
 
 struct ForgotPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotPasswordView()
+        NavigationStack {
+            ForgotPasswordView()
+        }
     }
 }

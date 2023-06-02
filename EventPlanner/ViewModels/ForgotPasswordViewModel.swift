@@ -68,6 +68,7 @@ class ForgotPasswordViewModel: ObservableObject {
         
         self.secondsRemaining = 180
         startTimer()
+        NetworkManager.shared.resendOtp(viewModel: self)
     }
     
     func forgotPassword() {
@@ -85,6 +86,8 @@ class ForgotPasswordViewModel: ObservableObject {
     func resetPassword() {
         self.resetPasswordLoading = true
         NetworkManager.shared.resetPassword(viewModel: self)
-
+        if resetPasswordSuccessful {
+            // clear the navigationstack array
+        }
     }
 }

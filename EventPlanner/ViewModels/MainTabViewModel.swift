@@ -22,10 +22,27 @@ class MainTabViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var showSignoutAlert = false
+    @Published var imagePicker = ImagePicker()
     
     func signOutCall() {
         self.isLoggedOut = true
         NetworkManager.shared.signOutCall(viewModel: self)
         
+    }
+    
+    func showFirstNameWarning() -> Bool {
+        return !Validations.shared.isValidFirstName(self.firstName) && !self.firstName.isEmpty
+    }
+    
+    func showLastNameWarning() -> Bool {
+        return !Validations.shared.isValidLastName(self.lastName) && !self.lastName.isEmpty
+    }
+    
+    func showPhoneNumberWarning() -> Bool {
+        return !Validations.shared.isValidPhoneNumber(self.phoneNumber) && !self.phoneNumber.isEmpty
+    }
+    
+    func showDobWarning() -> Bool {
+        return !Validations.shared.isValidDob(self.dob) && !self.dob.isEmpty
     }
 }

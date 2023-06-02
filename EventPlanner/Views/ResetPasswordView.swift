@@ -10,7 +10,8 @@ import SwiftUI
 struct ResetPasswordView: View {
     
     @ObservedObject var viewModel: ForgotPasswordViewModel
-    @Environment(\.presentationMode) var presentationMode
+    //@Environment(\.presentationMode) var presentationMode
+
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -48,9 +49,9 @@ struct ResetPasswordView: View {
             
             Button {
                 viewModel.resetPassword()
-                if viewModel.resetPasswordSuccessful {
-                    presentationMode.wrappedValue.dismiss()
-                }
+//                if viewModel.resetPasswordSuccessful{
+//                    presentationMode.wrappedValue.dismiss()
+//                }
             } label: {
                 ZStack {
                     Rectangle()
@@ -62,6 +63,7 @@ struct ResetPasswordView: View {
                         .fontWeight(.semibold)
                 }
             }
+            
             .fullScreenCover(isPresented: $viewModel.showLoginView, content: {
                 LoginSignupView()
             })
@@ -73,6 +75,7 @@ struct ResetPasswordView: View {
                     dismissButton: .default(Text(Constants.Labels.ok)
                         .foregroundColor(Constants.Colors.blueThemeColor)))
             }
+
             Spacer()
         }
         .padding()

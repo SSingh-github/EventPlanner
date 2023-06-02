@@ -6,6 +6,7 @@
 
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct EditUserProfileView: View {
     
@@ -31,43 +32,73 @@ struct EditUserProfileView: View {
                 .fontWeight(.semibold)
             
             ZStack(alignment: .bottomTrailing) {
-                Image(systemName: Constants.Images.personFill)
-                    .font(.system(size: 100))
-                    .frame(width: 100, height: 100)
-                    .scaledToFit()
-                    .clipShape(Circle())
+                
+                if let image = viewModel.imagePicker.image {
+                    Image(uiImage:image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                }
+                else {
+                    Image(systemName: Constants.Images.personFill)
+                        .font(.system(size: 100))
+                        .frame(width: 100, height: 100)
+                        .scaledToFit()
+                        .clipShape(Circle())
                     .foregroundColor(.gray)
-                Button {
-                    print("change profile pic")
-                } label: {
+                }
+                PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
                     Image(systemName: Constants.Images.edit)
                         .padding(4)
                         .foregroundColor(.white)
                         .background(Constants.Colors.blueThemeColor)
                         .clipShape(Circle())
                 }
-
             }
             .frame(width: 100, height: 100)
             
             VStack(alignment: .leading) {
                 
-                Text(Constants.Labels.Questions.name)
-                    .font(.title2)
-                    .fontWeight(.semibold)
+                VStack(alignment: .leading) {
+                    Text(Constants.Labels.Questions.name)
+                        .font(.title2)
+                        .fontWeight(.semibold)
                     .padding(.top)
-                TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
-                TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.lastName)
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
+                    if viewModel.showFirstNameWarning() {
+                        Text(Constants.Labels.Warnings.name)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.red)
+                    }
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.lastName)
+                    if viewModel.showLastNameWarning() {
+                        Text(Constants.Labels.Warnings.name)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.red)
+                    }
+                }
+                
                 Text(Constants.Labels.Questions.phone)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.phoneNumber)
+                if viewModel.showPhoneNumberWarning() {
+                    Text(Constants.Labels.Warnings.phoneNumber)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.red)
+                }
                 Text(Constants.Labels.Questions.dob)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
                 TextFieldView(placeholder: Constants.Labels.Placeholders.dob, text: $viewModel.dob)
+                if viewModel.showDobWarning() {
+                    Text(Constants.Labels.Warnings.dob)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.red)
+                }
                 Text(Constants.Labels.Questions.address)
                     .font(.title2)
                     .fontWeight(.semibold)
@@ -78,7 +109,7 @@ struct EditUserProfileView: View {
             
             Button {
                 print("")
-                
+                // this button will trigger the update profile method using put method
             } label: {
                 ZStack {
                     Rectangle()

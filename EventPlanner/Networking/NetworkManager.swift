@@ -210,6 +210,53 @@ class NetworkManager {
         task.resume()
     }
     
+    func resendOtp(viewModel: ForgotPasswordViewModel) {
+        guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
+            return
+        }
+
+        var request = URLRequest(url: url)
+
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+
+
+        let body =  """
+        {
+        "email": "\(viewModel.email)"
+        }
+        """
+    
+        request.httpBody = body.data(using: .utf8)
+
+
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode != 200 {
+                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                viewModel.showAlert = true
+                return
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
     func forgotPassword(viewModel: ForgotPasswordViewModel) {
         guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
             return
@@ -316,6 +363,8 @@ class NetworkManager {
         }
         task.resume()
     }
+    
+    
 
     func resetPassword(viewModel: ForgotPasswordViewModel) {
         
@@ -345,6 +394,10 @@ class NetworkManager {
             }
             guard let httpResponse = response as? HTTPURLResponse else {
                 return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                viewModel.resetPasswordSuccessful = true
             }
             
             do{

@@ -33,7 +33,7 @@ struct OtpView: View {
                     }
                     else {
                         Button(Constants.Labels.resendOtp) {
-                            //viewModel.resendOtp()
+                            viewModel.resendOtp()
                         }
                     }
                 }
@@ -52,6 +52,9 @@ struct OtpView: View {
                             .fontWeight(.semibold)
                     }
                 }
+                .navigationDestination(isPresented: $viewModel.presentResetPasswordView, destination: {
+                    ResetPasswordView(viewModel: viewModel)
+                })
                 .disabled(viewModel.otpButtonDisabled())
                 .alert(isPresented: $viewModel.showAlert) {
                     Alert(
@@ -59,11 +62,6 @@ struct OtpView: View {
                         dismissButton: .default(Text(Constants.Labels.ok)
                             .foregroundColor(Constants.Colors.blueThemeColor)))
                 }
-                
-                NavigationLink(destination: ResetPasswordView(viewModel: viewModel), isActive: $viewModel.presentResetPasswordView) {
-                    EmptyView()
-                }
-                .hidden()
                 
                 Spacer()
             }
