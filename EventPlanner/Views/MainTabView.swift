@@ -16,31 +16,31 @@ struct MainTabView: View {
             ExploreView()
                 .tabItem {
                     Label(Constants.Labels.explore, systemImage: Constants.Images.explore)
-                        .environment(\.symbolVariants, .none)
+                       
                 }
             
             SearchView()
                 .tabItem {
                     Label(Constants.Labels.tabSearch, systemImage: Constants.Images.search)
-                        .environment(\.symbolVariants, .none)
+                        
                 }
             
             NewEventView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.new, systemImage: Constants.Images.addEvent)
-                        .environment(\.symbolVariants, .none)
+                        
                 }
             
             MyEventsView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.list, systemImage: Constants.Images.list)
-                        .environment(\.symbolVariants, .none)
+                        
                 }
             
             ProfileView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.profile, systemImage: Constants.Images.profile)
-                        .environment(\.symbolVariants, .none)
+                       
                 }
         }
         .accentColor(Constants.Colors.blueThemeColor)

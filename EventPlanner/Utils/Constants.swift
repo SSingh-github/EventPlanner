@@ -18,18 +18,22 @@ struct Constants {
         static let contentTypeHeaderField = "Content-type"
         static let authorizationHeaderField = "Authorization"
         struct URLs {
-            static private let baseUrl = "https://027d-112-196-113-2.ngrok-free.app/users/"
+            static private let baseUrl = "https://b9ad-112-196-113-2.ngrok-free.app/users/"
             static let signUp = baseUrl + "signup/"
             static let logIn = baseUrl + "login/"
             static let logOut = baseUrl + "logout/"
             static let forgotPassword = baseUrl + "forgotpassword/"
             static let verifyOtp = baseUrl + "verifyotp/"
             static let resetPassword = baseUrl + "resetpassword/" //put
+            static let setProfile = baseUrl + "profile/"
+            static let getProfile = baseUrl + "profile/"
+            static let updateProfile = baseUrl + "updateprofile/"
         }
         
         struct HttpMethods {
             static let post = "POST"
             static let put = "PUT"
+            static let get = "GET"
         }
     }
     
@@ -69,7 +73,7 @@ struct Constants {
     }
     
     struct Labels {
-        
+        static let authToken = "token"
         static let editProfile = "Edit Profile"
         static let resendOtp = "Resend OTP"
         static let verify = "Verify"

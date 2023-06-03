@@ -48,6 +48,7 @@ class NetworkManager {
             if httpResponse.statusCode == 200 {
                 if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
                     self.authorizationKey = authorizationKey
+                    UserDefaults.standard.set(authorizationKey, forKey: Constants.Labels.authToken)
                     print(self.authorizationKey)
                 }
             } else {
@@ -123,6 +124,7 @@ class NetworkManager {
              if httpResponse.statusCode == 200 {
                  if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
                      self.authorizationKey = authorizationKey
+                     UserDefaults.standard.set(authorizationKey, forKey: Constants.Labels.authToken)
                      print(self.authorizationKey)
                  }
              } else {
@@ -162,6 +164,9 @@ class NetworkManager {
 
     
     func signOutCall(viewModel: MainTabViewModel) {
+        
+        UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
+
 
         guard let url = URL(string: Constants.API.URLs.logOut) else {
             return
@@ -425,5 +430,261 @@ class NetworkManager {
         }
         task.resume()
     }
+    
+    /*
+     whenever the user signs in or signs up, save the token in the user defaults
+     use the same token to upload, update and get the user details
+     */
+    
+//    func uploadUserProfileDetails() {
+//        //set the user profile
+//
+//        guard let url = URL(string: Constants.API.URLs.setProfile) else {
+//            return
+//        }
+//
+//        var request = URLRequest(url: url)
+//
+//        //method, body, headers
+//        request.httpMethod = Constants.API.HttpMethods.post
+//        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
+//
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//
+//        let httpBody = createHttpBody(viewModel: viewModel)
+//        request.httpBody = httpBody
+//
+//
+//        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+//            guard let data = data, error == nil else {
+//                return
+//            }
+//
+//            do {
+//                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+//                print(response)
+//            }
+//            catch {
+//                //print("error hai \(error.localizedDescription)")
+//            }
+//        }
+//        task.resume()
+//    }
+    
+    func getUserProfileDetails() {
+        
+    }
+    
+    
+    
+    func updateUserProfileDetails(viewModel: MainTabViewModel) {
+        guard let url = URL(string: Constants.API.URLs.updateProfile) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        //method, body, headers
+        request.httpMethod = Constants.API.HttpMethods.put
+        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
+        
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        //request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        request.addValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        print("first name is \(viewModel.firstName)")
+        print("last name is \(viewModel.lastName)")
+        
+        let httpBody = createHttpBody(viewModel: viewModel)
+        
+        let body =  """
+        {
+        "dob":"\(viewModel.dob)",
+        "phone_number":"\(viewModel.phoneNumber)",
+        "address":"\(viewModel.address)",
+        "first_name":"\(viewModel.firstName)",
+        "last_name":"\(viewModel.lastName)",
+        "profile_image":"\(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.9) ?? Data())"
+        }
+        """
+        
+        //{
+        //        "dob":"2000-03-24",
+        //        "phone_number":12344555666,
+        //        "address":"mohali sector 58",
+        //        "first_name":"Sukhpreet",
+        //        "last_name":"Singh",
+        //        "profile_image":null
+        //    }
+        request.httpBody = httpBody
+
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("user profile is updated successfully")
+            }
+            else {
+                print("error in updating the profile")
+            }
+        
+
+            do {
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print(response.message)
+            }
+            catch {
+                print("error decoding the response")
+            }
+            
+            DispatchQueue.main.async {
+                viewModel.editProfileLoading = false
+                
+                if httpResponse.statusCode == 200 {
+                    print("profile was updated successfully")
+                    viewModel.showEditProfileView.toggle()
+                }
+                else {
+                    print("some error occured")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+           }
+        }
+        task.resume()
+    }
+    
+    
+//    func createHttpBody() -> Data? {
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//        var body = Data()
+//
+//        // Add first name field
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"first_name\"\r\n\r\n".data(using: .utf8)!)
+//        body.append("\(viewm)\r\n".data(using: .utf8)!)
+//
+//        // Add last name field
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"last_name\"\r\n\r\n".data(using: .utf8)!)
+//        body.append("\(lastName)\r\n".data(using: .utf8)!)
+//
+//        // Add age field
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"age\"\r\n\r\n".data(using: .utf8)!)
+//        body.append("\(age)\r\n".data(using: .utf8)!)
+//
+//        // Add gender field
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"gender\"\r\n\r\n".data(using: .utf8)!)
+//        body.append("\(selectedGender.rawValue)\r\n".data(using: .utf8)!)
+//
+//        // Add image field
+//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+//        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+//        body.append(selectedImage?.jpegData(compressionQuality: 0.9) ?? Data())
+//        body.append("\r\n".data(using: .utf8)!)
+//
+//        // Add closing boundary
+//        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+//
+//        return body
+//    }
+//
+    
+//    func editCall(viewModel: FormViewModel) {
+//
+//       // viewModel.editIsSuccessful = false
+//
+//
+//        guard let url = URL(string: Constants.editUrl) else {
+//            return
+//        }
+//
+//        var request = URLRequest(url: url)
+//
+//        //method, body, headers
+//        request.httpMethod = Constants.httpPut
+//        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
+//
+//        let boundary = "Boundary-\(UUID().uuidString)"
+//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//
+//        let httpBody = createHttpBody(viewModel: viewModel)
+//        request.httpBody = httpBody
+//
+//
+//        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+//            guard let data = data, error == nil else {
+//                return
+//            }
+//            viewModel.editIsSuccessful = true
+//
+//            do {
+//                let response = try JSONDecoder().decode(UserDetails.self, from: data)
+//                print(response)
+//            }
+//            catch {
+//                //print("error hai \(error.localizedDescription)")
+//            }
+//        }
+//        task.resume()
+//    }
+    
+    
+    func createHttpBody(viewModel: MainTabViewModel) -> Data? {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var body = Data()
+
+
+        // Add first name field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"first_name\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.firstName)\r\n".data(using: .utf8)!)
+
+        // Add last name field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"last_name\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.lastName)\r\n".data(using: .utf8)!)
+
+        // Add dob field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"dob\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.dob)\r\n".data(using: .utf8)!)
+
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"phone_number\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.phoneNumber)\r\n".data(using: .utf8)!)
+
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"address\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.address)\r\n".data(using: .utf8)!)
+
+        // Add image field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"profile_image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.9) ?? Data())
+        body.append("\r\n".data(using: .utf8)!)
+
+        // Add closing boundary
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        return body
+    }
+    
+
 }
 

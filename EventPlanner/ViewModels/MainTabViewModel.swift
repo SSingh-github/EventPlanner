@@ -23,6 +23,7 @@ class MainTabViewModel: ObservableObject {
     @Published var alertMessage = ""
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
+    @Published var editProfileLoading = false
     
     func signOutCall() {
         self.isLoggedOut = true
@@ -44,5 +45,10 @@ class MainTabViewModel: ObservableObject {
     
     func showDobWarning() -> Bool {
         return !Validations.shared.isValidDob(self.dob) && !self.dob.isEmpty
+    }
+    
+    func updateUserProfile() {
+        self.editProfileLoading = true
+        NetworkManager.shared.updateUserProfileDetails(viewModel: self)
     }
 }
