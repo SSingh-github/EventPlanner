@@ -15,8 +15,7 @@ struct ContentView: View {
 //        else {
 //            WelcomeTabView()
 //        }
-        
-        SearchLocationView()
+        DateTimePickerView()
     }
 }
 

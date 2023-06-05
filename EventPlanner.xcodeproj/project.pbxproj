@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		93080F712A2DA5C00074978C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93080F702A2DA5C00074978C /* LocationManager.swift */; };
+		93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */; };
 		93AC81AF2A2AFEEC00A43131 /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */; };
 		93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */; };
 		93AC81B32A2B487C00A43131 /* DateAndTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */; };
-		93AC81B52A2B488B00A43131 /* SelectLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B42A2B488B00A43131 /* SelectLocationView.swift */; };
 		93AC81B72A2B64E300A43131 /* SearchLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B62A2B64E300A43131 /* SearchLocationView.swift */; };
 		93AC9B972A27184700E3A61A /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B962A27184700E3A61A /* MainTabView.swift */; };
 		93AC9B992A271E3900E3A61A /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B982A271E3900E3A61A /* ExploreView.swift */; };
@@ -49,10 +50,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		93080F702A2DA5C00074978C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimePickerView.swift; sourceTree = "<group>"; };
 		93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
 		93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewEventView.swift; sourceTree = "<group>"; };
 		93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimeView.swift; sourceTree = "<group>"; };
-		93AC81B42A2B488B00A43131 /* SelectLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationView.swift; sourceTree = "<group>"; };
 		93AC81B62A2B64E300A43131 /* SearchLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationView.swift; sourceTree = "<group>"; };
 		93AC9B962A27184700E3A61A /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		93AC9B982A271E3900E3A61A /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
@@ -169,7 +171,6 @@
 				93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */,
 				93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */,
 				93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */,
-				93AC81B42A2B488B00A43131 /* SelectLocationView.swift */,
 				93AC81B62A2B64E300A43131 /* SearchLocationView.swift */,
 			);
 			path = Views;
@@ -205,6 +206,7 @@
 				93EC5B5E2A24A6620065A286 /* SecondWelcomeView.swift */,
 				93EC5B602A24A6750065A286 /* ThirdWelcomeView.swift */,
 				93AC9BA42A27648500E3A61A /* LoadingView.swift */,
+				93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -216,6 +218,7 @@
 				93F0A6212A2A12B600B10B71 /* UserProfile.swift */,
 				93F0A61D2A29CC1600B10B71 /* Response.swift */,
 				93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */,
+				93080F702A2DA5C00074978C /* LocationManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -305,7 +308,6 @@
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
 				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
 				93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */,
-				93AC81B52A2B488B00A43131 /* SelectLocationView.swift in Sources */,
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
@@ -326,6 +328,8 @@
 				93AC9BA12A271E7D00E3A61A /* ProfileView.swift in Sources */,
 				93EC5B682A24B9E90065A286 /* UserCredentials.swift in Sources */,
 				93AC9BA32A273F7600E3A61A /* MainTabViewModel.swift in Sources */,
+				93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */,
+				93080F712A2DA5C00074978C /* LocationManager.swift in Sources */,
 				93AC9BA52A27648500E3A61A /* LoadingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

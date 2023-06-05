@@ -485,41 +485,16 @@ class NetworkManager {
         
         var request = URLRequest(url: url)
         
-        //method, body, headers
         request.httpMethod = Constants.API.HttpMethods.put
-        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
         
-        let boundary = "Boundary-\(UUID().uuidString)"
+        let boundary = "Boundary-testpqr"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        //request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
         request.addValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         print("first name is \(viewModel.firstName)")
         print("last name is \(viewModel.lastName)")
         
         let httpBody = createHttpBody(viewModel: viewModel)
-        
-        let body =  """
-        {
-        "dob":"\(viewModel.dob)",
-        "phone_number":"\(viewModel.phoneNumber)",
-        "address":"\(viewModel.address)",
-        "first_name":"\(viewModel.firstName)",
-        "last_name":"\(viewModel.lastName)",
-        "profile_image":"\(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.9) ?? Data())"
-        }
-        """
-        
-        //{
-        //        "dob":"2000-03-24",
-        //        "phone_number":12344555666,
-        //        "address":"mohali sector 58",
-        //        "first_name":"Sukhpreet",
-        //        "last_name":"Singh",
-        //        "profile_image":null
-        //    }
         request.httpBody = httpBody
 
         
@@ -565,87 +540,8 @@ class NetworkManager {
         task.resume()
     }
     
-    
-//    func createHttpBody() -> Data? {
-//        let boundary = "Boundary-\(UUID().uuidString)"
-//        var body = Data()
-//
-//        // Add first name field
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"first_name\"\r\n\r\n".data(using: .utf8)!)
-//        body.append("\(viewm)\r\n".data(using: .utf8)!)
-//
-//        // Add last name field
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"last_name\"\r\n\r\n".data(using: .utf8)!)
-//        body.append("\(lastName)\r\n".data(using: .utf8)!)
-//
-//        // Add age field
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"age\"\r\n\r\n".data(using: .utf8)!)
-//        body.append("\(age)\r\n".data(using: .utf8)!)
-//
-//        // Add gender field
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"gender\"\r\n\r\n".data(using: .utf8)!)
-//        body.append("\(selectedGender.rawValue)\r\n".data(using: .utf8)!)
-//
-//        // Add image field
-//        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-//        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-//        body.append(selectedImage?.jpegData(compressionQuality: 0.9) ?? Data())
-//        body.append("\r\n".data(using: .utf8)!)
-//
-//        // Add closing boundary
-//        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-//
-//        return body
-//    }
-//
-    
-//    func editCall(viewModel: FormViewModel) {
-//
-//       // viewModel.editIsSuccessful = false
-//
-//
-//        guard let url = URL(string: Constants.editUrl) else {
-//            return
-//        }
-//
-//        var request = URLRequest(url: url)
-//
-//        //method, body, headers
-//        request.httpMethod = Constants.httpPut
-//        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
-//
-//        let boundary = "Boundary-\(UUID().uuidString)"
-//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-//
-//        let httpBody = createHttpBody(viewModel: viewModel)
-//        request.httpBody = httpBody
-//
-//
-//        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-//            guard let data = data, error == nil else {
-//                return
-//            }
-//            viewModel.editIsSuccessful = true
-//
-//            do {
-//                let response = try JSONDecoder().decode(UserDetails.self, from: data)
-//                print(response)
-//            }
-//            catch {
-//                //print("error hai \(error.localizedDescription)")
-//            }
-//        }
-//        task.resume()
-//    }
-    
-    
     func createHttpBody(viewModel: MainTabViewModel) -> Data? {
-        let boundary = "Boundary-\(UUID().uuidString)"
+        let boundary = "Boundary-testpqr"
         var body = Data()
 
 
@@ -664,19 +560,21 @@ class NetworkManager {
         body.append("Content-Disposition: form-data; name=\"dob\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.dob)\r\n".data(using: .utf8)!)
 
+        // Add phone number field
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"phone_number\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.phoneNumber)\r\n".data(using: .utf8)!)
 
+        // Add address field
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"address\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.address)\r\n".data(using: .utf8)!)
 
         // Add image field
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"profile_image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.9) ?? Data())
+        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.3) ?? Data())
         body.append("\r\n".data(using: .utf8)!)
 
         // Add closing boundary
@@ -684,7 +582,5 @@ class NetworkManager {
 
         return body
     }
-    
-
 }
 
