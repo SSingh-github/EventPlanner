@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct DateAndTimeView: View {
+    
+    @ObservedObject var viewModel: AddEventViewModel
     var body: some View {
         ScrollView {
             VStack {
-                DateTimePickerView()
-                NavigationLink(destination: SearchLocationView()) {
+                DateTimePickerView(viewModel: viewModel)
+                NavigationLink(destination: SearchLocationView(viewModel: viewModel)) {
                     Text("continue")
                 }
             }
@@ -23,6 +25,6 @@ struct DateAndTimeView: View {
 
 struct DateAndTimeView_Previews: PreviewProvider {
     static var previews: some View {
-        DateAndTimeView()
+        DateAndTimeView(viewModel: AddEventViewModel())
     }
 }

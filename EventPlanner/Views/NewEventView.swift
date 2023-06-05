@@ -17,7 +17,7 @@ struct NewEventView: View {
             LoginSignupView()
         }
         else if viewModel.userLogin {
-            Text("new event view in user login")
+            AddNewEventView()
         }
     }
 }

@@ -2,27 +2,25 @@
 import SwiftUI
 
 struct DateTimePickerView: View {
-    @State private var startDate = Date()
-    @State private var endDate = Date()
-    @State private var formattedStartDate = ""
-    @State private var formattedEndDate = ""
+    
+    @ObservedObject var viewModel: AddEventViewModel
     
     var body: some View {
         ScrollView {
             VStack {
-                DatePicker("Start Date", selection: $startDate, displayedComponents: .date)
+                DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("Start Time", selection: $startDate, displayedComponents: .hourAndMinute)
+                DatePicker("Start Time", selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("End Date", selection: $endDate, displayedComponents: .date)
+                DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("End Time", selection: $endDate, displayedComponents: .hourAndMinute)
+                DatePicker("End Time", selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
@@ -30,18 +28,18 @@ struct DateTimePickerView: View {
                     // Format and store the start date and end date in separate strings
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
-                    formattedStartDate = dateFormatter.string(from: startDate)
-                    formattedEndDate = dateFormatter.string(from: endDate)
+                    viewModel.formattedStartDate = dateFormatter.string(from: viewModel.startDate)
+                    viewModel.formattedEndDate = dateFormatter.string(from: viewModel.endDate)
                     
                     let timeFormatter = DateFormatter()
                     timeFormatter.dateFormat = "HH:mm"
-                    let formattedStartTime = timeFormatter.string(from: startDate)
-                    let formattedEndTime = timeFormatter.string(from: endDate)
+                    viewModel.formattedStartTime = timeFormatter.string(from: viewModel.startDate)
+                    viewModel.formattedEndTime = timeFormatter.string(from: viewModel.endDate)
                     
-                    print("Start Date:", formattedStartDate)
-                    print("Start Time:", formattedStartTime)
-                    print("End Date:", formattedEndDate)
-                    print("End Time:", formattedEndTime)
+                    print("Start Date:", viewModel.formattedStartDate)
+                    print("Start Time:", viewModel.formattedStartTime)
+                    print("End Date:", viewModel.formattedEndDate)
+                    print("End Time:", viewModel.formattedEndTime)
                 }) {
                     Text("Confirm")
                         .font(.headline)
@@ -52,14 +50,14 @@ struct DateTimePickerView: View {
                 }
                 .padding()
                 
-                Text("Formatted Start Date: \(formattedStartDate)")
-                Text("Formatted End Date: \(formattedEndDate)")
+                Text("Formatted Start Date: \(viewModel.formattedStartDate)")
+                Text("Formatted End Date: \(viewModel.formattedEndDate)")
             }
         }
     }
 }
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
-        DateTimePickerView()
+        DateTimePickerView(viewModel: AddEventViewModel())
     }
 }

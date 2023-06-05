@@ -9,9 +9,10 @@ import SwiftUI
 import MapKit
 
 struct SearchLocationView: View {
+    @ObservedObject var viewModel: AddEventViewModel
     var body: some View {
         NavigationView {
-            SearchView2()
+            SearchView2(viewModel: viewModel)
                 .navigationBarHidden(true)
         }
     }
@@ -21,6 +22,7 @@ struct SearchView2: View {
     
     @StateObject var locationManager: LocationManager = .init()
     @State var navigationTag: String?
+    @ObservedObject var viewModel: AddEventViewModel
     
     var body: some View {
         VStack {
@@ -112,7 +114,7 @@ struct SearchView2: View {
         .frame(maxHeight: .infinity, alignment: .top)
         .background {
             NavigationLink(tag: "MAPVIEW", selection: $navigationTag) {
-                MapViewSelection()
+                MapViewSelection(viewModel: viewModel)
                     .environmentObject(locationManager)
                     .navigationBarHidden(true)
             } label: {
@@ -126,6 +128,7 @@ struct SearchView2: View {
 struct MapViewSelection: View {
     // location = place.name + place.locality
     @EnvironmentObject var locationManager: LocationManager
+    @ObservedObject var viewModel: AddEventViewModel
     @Environment(\.dismiss) var dismiss
     var body: some View {
         ZStack {
@@ -166,7 +169,12 @@ struct MapViewSelection: View {
                     .padding(.vertical, 10)
                     
                     Button {
-                        
+                        // on click of this button, set the pickedlocation and pickedmark to the add event view model
+                        viewModel.pickedLocation = locationManager.pickedLocation
+                        viewModel.pickedMark = locationManager.pickedMark
+                        viewModel.printData()
+                        viewModel.postNewEvent()
+                        // also call the corresponding api method to post the event to the backend
                     } label: {
                         Text("confirm location")
                             .fontWeight(.semibold)
@@ -218,6 +226,6 @@ struct MapViewHelper: UIViewRepresentable {
 
 struct SearchLocationView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchLocationView()
+        SearchLocationView(viewModel: AddEventViewModel())
     }
 }

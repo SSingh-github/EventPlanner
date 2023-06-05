@@ -436,41 +436,7 @@ class NetworkManager {
      use the same token to upload, update and get the user details
      */
     
-//    func uploadUserProfileDetails() {
-//        //set the user profile
-//
-//        guard let url = URL(string: Constants.API.URLs.setProfile) else {
-//            return
-//        }
-//
-//        var request = URLRequest(url: url)
-//
-//        //method, body, headers
-//        request.httpMethod = Constants.API.HttpMethods.post
-//        //request.setValue(Constants.requestValueType, forHTTPHeaderField: Constants.contentTypeHeaderField)
-//
-//        let boundary = "Boundary-\(UUID().uuidString)"
-//        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-//
-//        let httpBody = createHttpBody(viewModel: viewModel)
-//        request.httpBody = httpBody
-//
-//
-//        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-//            guard let data = data, error == nil else {
-//                return
-//            }
-//
-//            do {
-//                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
-//                print(response)
-//            }
-//            catch {
-//                //print("error hai \(error.localizedDescription)")
-//            }
-//        }
-//        task.resume()
-//    }
+
     
     func getUserProfileDetails() {
         
@@ -538,6 +504,132 @@ class NetworkManager {
            }
         }
         task.resume()
+    }
+    
+    func postNewEvent(viewModel: AddEventViewModel) {
+        guard let url = URL(string: Constants.API.URLs.postEvent) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        
+        let boundary = "Boundary-testpqr"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.addValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        
+        let httpBody = createEventHttpBody(viewModel: viewModel)
+        request.httpBody = httpBody
+
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("user profile is updated successfully")
+            }
+            else {
+                print("error in updating the profile")
+            }
+        
+
+            do {
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print(response.message)
+            }
+            catch {
+                print("error decoding the response")
+            }
+            
+//            DispatchQueue.main.async {
+//                viewModel.editProfileLoading = false
+//
+//                if httpResponse.statusCode == 200 {
+//                    print("profile was updated successfully")
+//                    viewModel.showEditProfileView.toggle()
+//                }
+//                else {
+//                    print("some error occured")
+//                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+//                    viewModel.showAlert = true
+//                }
+//           }
+        }
+        task.resume()
+    }
+    
+    func createEventHttpBody(viewModel: AddEventViewModel) -> Data? {
+        let boundary = "Boundary-testpqr"
+        var body = Data()
+
+
+        // Add first name field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"event_category_id\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0)\r\n".data(using: .utf8)!)
+
+        // Add last name field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"title\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.title)\r\n".data(using: .utf8)!)
+
+        // Add dob field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.description)\r\n".data(using: .utf8)!)
+
+        // Add phone number field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"location\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")\r\n".data(using: .utf8)!)
+
+        // Add address field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"latitude\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.pickedLocation?.coordinate.latitude ?? 0.0)\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"longitude\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.pickedLocation?.coordinate.longitude ?? 0.0)\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"start_date\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.formattedStartDate)\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"start_time\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.formattedStartTime)\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"end_date\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.formattedEndDate)\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"end_time\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.formattedEndTime)\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"hashtags\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(viewModel.hashtags)\r\n".data(using: .utf8)!)
+
+        // Add image field
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.3) ?? Data())
+        body.append("\r\n".data(using: .utf8)!)
+
+        // Add closing boundary
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        return body
     }
     
     func createHttpBody(viewModel: MainTabViewModel) -> Data? {
