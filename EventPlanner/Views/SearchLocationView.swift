@@ -65,7 +65,7 @@ struct SearchView2: View {
                             HStack(spacing: 15) {
                                 Image(systemName: "mappin.circle.fill")
                                     .font(.title2)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.red)
                                 
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(place.name ?? "")
@@ -154,7 +154,7 @@ struct MapViewSelection: View {
                     HStack(spacing: 15) {
                         Image(systemName: "mappin.circle.fill")
                             .font(.title2)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.red)
                         
                         VStack(alignment: .leading, spacing: 6) {
                             Text(place.name ?? "")
@@ -182,7 +182,7 @@ struct MapViewSelection: View {
                             .padding(.vertical, 12)
                             .background {
                                 RoundedRectangle (cornerRadius: 10, style: .continuous)
-                                    .fill(.green)
+                                    .fill(Constants.Colors.blueThemeColor)
                             }
                             .overlay(alignment: .trailing) {
                                 Image(systemName: "arrow.right")

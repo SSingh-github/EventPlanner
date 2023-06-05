@@ -534,7 +534,7 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                print("user profile is updated successfully")
+                print("New event is posted successfully")
             }
             else {
                 print("error in updating the profile")
@@ -571,50 +571,57 @@ class NetworkManager {
         var body = Data()
 
 
-        // Add first name field
+        // Add event category
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"event_category_id\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0)\r\n".data(using: .utf8)!)
 
-        // Add last name field
+        // Add title
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"title\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.title)\r\n".data(using: .utf8)!)
 
-        // Add dob field
+        // Add description
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.description)\r\n".data(using: .utf8)!)
 
-        // Add phone number field
+        // Add location
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"location\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")\r\n".data(using: .utf8)!)
 
-        // Add address field
+        // Add latitude
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"latitude\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.pickedLocation?.coordinate.latitude ?? 0.0)\r\n".data(using: .utf8)!)
         
+        // add longitude
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"longitude\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.pickedLocation?.coordinate.longitude ?? 0.0)\r\n".data(using: .utf8)!)
+        
+        // add start time
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"start_date\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.formattedStartDate)\r\n".data(using: .utf8)!)
         
+        // add start time
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"start_time\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.formattedStartTime)\r\n".data(using: .utf8)!)
         
+        // Add ending date
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"end_date\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.formattedEndDate)\r\n".data(using: .utf8)!)
         
+        // Add ending time
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"end_time\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.formattedEndTime)\r\n".data(using: .utf8)!)
         
+        // Add hashtags array
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"hashtags\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(viewModel.hashtags)\r\n".data(using: .utf8)!)

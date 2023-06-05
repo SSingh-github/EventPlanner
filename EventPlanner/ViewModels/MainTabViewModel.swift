@@ -16,6 +16,7 @@ class MainTabViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
     @Published var dob = ""
+    @Published var formattedDateOfBirth = ""
     @Published var address = ""
     @Published var phoneNumber = ""
     @Published var isLoggedOut = false

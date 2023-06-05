@@ -71,9 +71,13 @@ struct Constants {
         static let profile = "person"
         static let explore = "safari"
         static let edit = "pencil"
+        static let logout = "rectangle.portrait.and.arrow.right.fill"
+        static let settings = "gearshape.fill"
     }
     
     struct Labels {
+        static let settings = " Settings"
+        static let editProfileWithSpace = "  Edit profile"
         static let eventTypes = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
         static let authToken = "token"
         static let editProfile = "Edit Profile"
@@ -100,6 +104,7 @@ struct Constants {
         static let pickRides = "Your pick of rides at\nlow prices"
         static let signUp = "Sign Up"
         static let skip = "Skip"
+        static let logOut = "Log out"
         static let logIn = "Login"
         static let signUpQuery = "Sign Up with your email to get started."
         static let logInQuery = "Login with your email to get started."

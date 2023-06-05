@@ -11,6 +11,10 @@ struct MainTabView: View {
     
     @StateObject var viewModel: MainTabViewModel = MainTabViewModel()
     
+    init() {
+        UITabBar.appearance().backgroundColor = .systemBackground
+        }
+    
     var body: some View {
         TabView {
             ExploreView()
