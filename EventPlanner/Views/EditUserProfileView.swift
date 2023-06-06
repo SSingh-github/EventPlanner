@@ -90,16 +90,19 @@ struct EditUserProfileView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.red)
                     }
-                    Text(Constants.Labels.Questions.dob)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.top)
-                    TextFieldView(placeholder: Constants.Labels.Placeholders.dob, text: $viewModel.dob)
-                    if viewModel.showDobWarning() {
-                        Text(Constants.Labels.Warnings.dob)
+                    
+                        Text(Constants.Labels.Questions.dob)
+                            .font(.title2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.red)
-                    }
+                        .padding(.top)
+                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate...viewModel.endDate, displayedComponents: .date)
+                        .padding(.bottom)
+//                    TextFieldView(placeholder: Constants.Labels.Placeholders.dob, text: $viewModel.dob)
+//                    if viewModel.showDobWarning() {
+//                        Text(Constants.Labels.Warnings.dob)
+//                            .fontWeight(.semibold)
+//                            .foregroundColor(.red)
+//                    }
                     Text(Constants.Labels.Questions.address)
                         .font(.title2)
                         .fontWeight(.semibold)

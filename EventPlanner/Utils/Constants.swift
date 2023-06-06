@@ -17,8 +17,9 @@ struct Constants {
         static let requestValueType = "application/json"
         static let contentTypeHeaderField = "Content-type"
         static let authorizationHeaderField = "Authorization"
+        
         struct URLs {
-            static private let baseUrl = "https://a0b6-112-196-113-2.ngrok-free.app/"
+            static private let baseUrl = "https://4e5f-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -38,6 +39,28 @@ struct Constants {
         }
     }
     
+    struct Keys {
+        static let email = "email"
+        static let password = "password"
+        static let otp = "otp"
+        static let firstName = "first_name"
+        static let lastName = "last_name"
+        static let dob = "dob"
+        static let phoneNumber = "phone_number"
+        static let address = "address"
+        static let eventCategoryId = "event_category_id"
+        static let title = "title"
+        static let description = "description"
+        static let location = "location"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
+        static let startDate = "start_date"
+        static let startTime = "start_time"
+        static let endDate = "end_date"
+        static let endTime = "end_time"
+        static let hashtags = "hashtags"
+    }
+    
     struct Regex {
         static let firstNameRegex = "^[a-zA-Z]+$"
         static let lastNameRegex = "^[a-zA-Z]+(-[a-zA-Z]+)*$"
@@ -49,6 +72,9 @@ struct Constants {
     }
     
     struct Images {
+        static let location = "Location"
+        static let eyeSlash = "eye.slash.fill"
+        static let eye = "eye.fill"
         static let carsImage = "cars"
         static let xmark = "xmark"
         static let envelope = "envelope"
@@ -62,6 +88,7 @@ struct Constants {
         static let personFill = "person.circle.fill"
         static let calendar = "calendar"
         static let circle = "circle"
+        static let circleFill = "circle.fill"
         static let travelPlan = "travelPlan"
         static let minusCircle = "minus.circle"
         static let rightArrowWithCircle = "arrow.right.circle.fill"
@@ -73,9 +100,15 @@ struct Constants {
         static let edit = "pencil"
         static let logout = "rectangle.portrait.and.arrow.right.fill"
         static let settings = "gearshape.fill"
+        static let phone = "phone"
     }
     
     struct Labels {
+        static let selectDob = "Select your date of birth"
+        static let phoneNumber = "Phone number:"
+        static let address = "Address:"
+        static let dateOfBirth = "Date of birth:"
+        static let eventsForYou = "Events for you"
         static let settings = " Settings"
         static let editProfileWithSpace = "  Edit profile"
         static let eventTypes = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
@@ -175,7 +208,8 @@ struct Constants {
     }
     
     struct StringFormats {
-        static let dateFormat = "dd/MM/yyyy"
+        static let dateFormat = "yyyy-MM-dd"
+        static let timeFormat = "HH:mm"
     }
 
     

@@ -82,6 +82,8 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
             manager.requestLocation()
         case .authorizedWhenInUse:
             manager.requestLocation()
+        case .restricted:
+            print("restricted")
         @unknown default:
             break
         }

@@ -15,10 +15,10 @@ struct ProfileView: View {
 
     var body: some View {
         
-        if !viewModel.guestLogin {
+        if viewModel.guestLogin {
             LoginSignupView()
         }
-        else  {
+        else if viewModel.userLogin {
             ZStack {
                 ScrollView(showsIndicators: false) {
                     
@@ -45,42 +45,42 @@ struct ProfileView: View {
                     Divider()
                     
                     VStack (alignment:.leading){
-                        Text("Date of birth:")
+                        Text(Constants.Labels.dateOfBirth)
                             .font(.title2)
-                            .bold()
+                            //.bold()
                             .padding(.vertical)
                         HStack {
-                            Image(systemName: "calendar.circle")
-                                .font(.largeTitle)
+                            Image(systemName: Constants.Images.calendar)
+                                .font(.title3)
                             Text("12-12-1999")
-                                .fontWeight(.semibold)
+                                //.fontWeight(.semibold)
                             Spacer()
                         }
                     }
                     VStack (alignment:.leading){
-                        Text("Address:")
+                        Text(Constants.Labels.address)
                             .font(.title2)
-                            .bold()
+                            //.bold()
                             .padding(.vertical)
                         HStack {
-                            Image(systemName: "map.circle")
-                                .font(.largeTitle)
+                            Image(Constants.Images.location)
+                                .font(.title)
                             Text("Mohali, phase 5")
-                                .fontWeight(.semibold)
+                                //.fontWeight(.semibold)
 
                             Spacer()
                         }
                     }
                     VStack (alignment:.leading){
-                        Text("Phone number:")
+                        Text(Constants.Labels.phoneNumber)
                             .font(.title2)
-                            .bold()
+                            //.bold()
                             .padding(.vertical)
                         HStack {
-                            Image(systemName: "phone.circle")
-                                .font(.largeTitle)
+                            Image(systemName: Constants.Images.phone)
+                                .font(.title3)
                             Text("9888802022")
-                                .fontWeight(.semibold)
+                                //.fontWeight(.semibold)
 
                             Spacer()
                         }

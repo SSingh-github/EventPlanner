@@ -16,6 +16,7 @@ class MainTabViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
     @Published var dob = ""
+    @Published var dateOfBirth = Date()
     @Published var formattedDateOfBirth = ""
     @Published var address = ""
     @Published var phoneNumber = ""
@@ -25,6 +26,10 @@ class MainTabViewModel: ObservableObject {
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
+    
+    let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
+    let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
+
     
     func signOutCall() {
         self.isLoggedOut = true
@@ -50,6 +55,11 @@ class MainTabViewModel: ObservableObject {
     
     func updateUserProfile() {
         self.editProfileLoading = true
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.StringFormats.dateFormat
+        self.dob = dateFormatter.string(from: self.dateOfBirth)
+        
         NetworkManager.shared.updateUserProfileDetails(viewModel: self)
     }
 }

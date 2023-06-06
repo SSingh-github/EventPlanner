@@ -5,15 +5,37 @@
 //  Created by Chicmic on 05/06/23.
 //
 
+
 import SwiftUI
 
 
 struct ContentView2: View {
     
-    @State var showEditView = false
-    
     var body: some View {
-       Text("h")
+        VStack {
+            Button {
+                
+            } label: {
+                Label {
+                    Text("  use current location")
+                        .font(.callout)
+                } icon: {
+                    Image(systemName: "location.north.circle.fill")
+                }
+                .foregroundColor(.green)
+            }
+            .padding(.vertical)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            
+            VStack(alignment: .center, spacing: 20) {
+                Image(systemName: "magnifyingglass")
+                    .font(.largeTitle)
+                Text("Your Search results will appear here")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+            }
+        }
     }
 }
 

@@ -5,6 +5,7 @@
 //  Created by Chicmic on 31/05/23.
 //
 
+
 import SwiftUI
 
 struct MainTabView: View {
@@ -52,6 +53,7 @@ struct MainTabView: View {
         .fullScreenCover(isPresented: $viewModel.showWelcomeViewModel) {
             WelcomeTabView()
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

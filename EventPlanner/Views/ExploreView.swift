@@ -9,7 +9,15 @@ import SwiftUI
 
 struct ExploreView: View {
     var body: some View {
-        Text("Explore View")
+        NavigationView {
+            List {
+                ForEach(0..<10) {_ in
+                    EventCard()
+                }
+            }
+            .listStyle(.plain)
+            .navigationTitle(Constants.Labels.eventsForYou)
+        }
     }
 }
 

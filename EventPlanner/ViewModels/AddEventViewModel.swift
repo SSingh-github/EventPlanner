@@ -28,6 +28,9 @@ class AddEventViewModel: ObservableObject {
     @Published var pickedMark: CLPlacemark?
     // var location = pickedMark.name + " " + pickedMark.locality
     @Published var imagePicker = ImagePicker()
+    @Published var postingNewEvent = false
+    @Published var showAlert = false
+    @Published var alertMessage = ""
     
     func printData() {
         print("selected option is \(selectedOption)")
@@ -41,6 +44,7 @@ class AddEventViewModel: ObservableObject {
     }
     
     func postNewEvent() {
+        self.postingNewEvent = true
         NetworkManager.shared.postNewEvent(viewModel: self)
     }
 

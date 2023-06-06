@@ -8,31 +8,31 @@ struct DateTimePickerView: View {
     var body: some View {
         ScrollView {
             VStack {
-                DatePicker("Start Date", selection: $viewModel.startDate, displayedComponents: .date)
+                DatePicker("", selection: $viewModel.startDate, displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("Start Time", selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
+                DatePicker("", selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("End Date", selection: $viewModel.endDate, displayedComponents: .date)
+                DatePicker("", selection: $viewModel.endDate, displayedComponents: .date)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
-                DatePicker("End Time", selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
+                DatePicker("", selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                 
                 Button(action: {
                     // Format and store the start date and end date in separate strings
                     let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    dateFormatter.dateFormat = Constants.StringFormats.dateFormat
                     viewModel.formattedStartDate = dateFormatter.string(from: viewModel.startDate)
                     viewModel.formattedEndDate = dateFormatter.string(from: viewModel.endDate)
                     
                     let timeFormatter = DateFormatter()
-                    timeFormatter.dateFormat = "HH:mm"
+                    timeFormatter.dateFormat = Constants.StringFormats.timeFormat
                     viewModel.formattedStartTime = timeFormatter.string(from: viewModel.startDate)
                     viewModel.formattedEndTime = timeFormatter.string(from: viewModel.endDate)
                     

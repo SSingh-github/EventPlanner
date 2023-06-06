@@ -3,9 +3,9 @@
 //  EventPlanner
 //
 //  Created by Chicmic on 29/05/23.
-// handle all the error cases in network calls
 
 import Foundation
+import UIKit
 
 
 class NetworkManager {
@@ -21,34 +21,36 @@ class NetworkManager {
         guard let url = URL(string: Constants.API.URLs.signUp) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
         
-        let body =  """
-        {
-        "email": "\(userCredentials.email)",
-        "password":"\(userCredentials.password)"
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : userCredentials.email,
+            Constants.Keys.password : userCredentials.password
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
         }
-        """
-        request.httpBody = body.data(using: .utf8)
-
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
-               // print("Invalid response")
                 return
             }
             
             if httpResponse.statusCode == 200 {
                 if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
                     self.authorizationKey = authorizationKey
-                    UserDefaults.standard.set(authorizationKey, forKey: Constants.Labels.authToken)
+                    UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
                     print(self.authorizationKey)
                 }
             } else {
@@ -68,7 +70,7 @@ class NetworkManager {
             
             DispatchQueue.main.async {
                 viewModel.isLoggedIn = false
-               // Present the full-screen cover sheet view here
+                
                 if httpResponse.statusCode == 200 {
                     viewModel.presentMainTabView.toggle()
                     UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
@@ -76,12 +78,12 @@ class NetworkManager {
                 }
                 else {
                     print("some error occured while signing up")
-                    //show alert here
+                    
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
-            //print("successs? \(viewModel.signInIsSuccessful)")
+            }
+            
         }
         task.resume()
     }
@@ -90,95 +92,97 @@ class NetworkManager {
         
         print("login button clicked")
         
-         guard let url = URL(string: Constants.API.URLs.logIn) else {
-             return
-         }
-
-         var request = URLRequest(url: url)
-
-         request.httpMethod = Constants.API.HttpMethods.post
-         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-
-         let body =  """
-         {
-         "email": "\(userCredentials.email)",
-         "password":"\(userCredentials.password)"
-         }
-         """
-         //sukhpreetsingh@gmail.com, 1111111
-         request.httpBody = body.data(using: .utf8)
-
-         //make the request
-
-         let task = URLSession.shared.dataTask(with: request) {data, response, error in
-             guard let data = data, error == nil else {
-                 print("error occured while logging in")
-                 return
-             }
-             guard let httpResponse = response as? HTTPURLResponse else {
-                 print("Invalid response")
-                 return
-             }
-             
-             if httpResponse.statusCode == 200 {
-                 if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
-                     self.authorizationKey = authorizationKey
-                     UserDefaults.standard.set(authorizationKey, forKey: Constants.Labels.authToken)
-                     print(self.authorizationKey)
-                 }
-             } else {
-                 print("unable to login")
-                 print("Error: Unexpected status code \(httpResponse.statusCode)")
-             }
-             
-             do {
-                 let response = try JSONDecoder().decode(Response.self, from: data)
-                 print("decode successful " + response.message)
-                 print("code is \(response.code)")
-             }
-             catch {
-                 print("unable to decode the response")
-                 print(error.localizedDescription)
-             }
-
-             
-             DispatchQueue.main.async {
-                 viewModel.isLoggedIn = false
-                
-                 if httpResponse.statusCode == 200 {
-                     print(httpResponse.statusCode)
-                     viewModel.presentMainTabView.toggle()
-                     UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                     UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                 }
-                 else {
-                     print("some error occured while logging in")
-                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                     viewModel.showAlert = true
-                 }
+        guard let url = URL(string: Constants.API.URLs.logIn) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : userCredentials.email,
+            Constants.Keys.password : userCredentials.password
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while logging in")
+                return
             }
-         }
-         task.resume()
-     }
-
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
+                    self.authorizationKey = authorizationKey
+                    UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                    print(self.authorizationKey)
+                }
+            } else {
+                print("unable to login")
+                print("Error: Unexpected status code \(httpResponse.statusCode)")
+            }
+            
+            do {
+                let response = try JSONDecoder().decode(Response.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.code)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+            
+            
+            DispatchQueue.main.async {
+                viewModel.isLoggedIn = false
+                
+                if httpResponse.statusCode == 200 {
+                    print(httpResponse.statusCode)
+                    viewModel.presentMainTabView.toggle()
+                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                }
+                else {
+                    print("some error occured while logging in")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+            }
+        }
+        task.resume()
+    }
+    
     
     func signOutCall(viewModel: MainTabViewModel) {
         
         UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
-
-
+        
+        
         guard let url = URL(string: Constants.API.URLs.logOut) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.setValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-
-
+        request.setValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
@@ -199,7 +203,7 @@ class NetworkManager {
             
             DispatchQueue.main.async {
                 viewModel.isLoggedOut = false
-               
+                
                 if httpResponse.statusCode == 200 {
                     viewModel.showWelcomeViewModel.toggle()
                     UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
@@ -210,7 +214,7 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
+            }
         }
         task.resume()
     }
@@ -219,22 +223,25 @@ class NetworkManager {
         guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-
-        let body =  """
-        {
-        "email": "\(viewModel.email)"
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : viewModel.email
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
         }
-        """
-    
-        request.httpBody = body.data(using: .utf8)
-
-
+        
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
@@ -266,22 +273,25 @@ class NetworkManager {
         guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-
-        let body =  """
-        {
-        "email": "\(viewModel.email)"
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : viewModel.email
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
         }
-        """
-    
-        request.httpBody = body.data(using: .utf8)
-
-
+        
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
@@ -299,7 +309,7 @@ class NetworkManager {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-
+            
             DispatchQueue.main.async {
                 viewModel.forgotPasswordLoading = false
                 if httpResponse.statusCode == 200 {
@@ -311,31 +321,35 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
+            }
         }
         task.resume()
     }
-
+    
     func verifyOtp(viewModel: ForgotPasswordViewModel) {
         guard let url = URL(string: Constants.API.URLs.verifyOtp) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-
-        let body =  """
-        {
-        "email": "\(viewModel.email)",
-        "otp":"\(viewModel.otp)"
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : viewModel.email,
+            Constants.Keys.otp : viewModel.otp
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
         }
-        """
-        request.httpBody = body.data(using: .utf8)
-
-
+        
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
@@ -353,7 +367,7 @@ class NetworkManager {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-
+            
             DispatchQueue.main.async {
                 viewModel.verifyOtpLoading = false
                 if httpResponse.statusCode == 200 {
@@ -364,35 +378,38 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
+            }
         }
         task.resume()
     }
     
     
-
+    
     func resetPassword(viewModel: ForgotPasswordViewModel) {
         
         viewModel.resetPasswordSuccessful = false
         guard let url = URL(string: Constants.API.URLs.resetPassword) else {
             return
         }
-
+        
         var request = URLRequest(url: url)
-
+        
         request.httpMethod = Constants.API.HttpMethods.put
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-
-        let body =  """
-        {
-        "email": "\(viewModel.email)",
-        "password": "\(viewModel.newPassword)"
-        }
-        """
         
-        request.httpBody = body.data(using: .utf8)
-
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email: viewModel.email,
+            Constants.Keys.password : viewModel.newPassword
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 return
@@ -402,7 +419,7 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                viewModel.resetPasswordSuccessful = true
+                print("password reset was successful")
             }
             
             do{
@@ -414,34 +431,28 @@ class NetworkManager {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-
+            
             DispatchQueue.main.async {
                 viewModel.resetPasswordLoading = false
                 
                 if httpResponse.statusCode == 200 {
-                    viewModel.resetPasswordSuccessful = true
+                    UserDefaults.standard.set(true, forKey: Constants.Labels.guestLoginKey)
+                    viewModel.resetPasswordSuccessful.toggle()
                 }
                 else {
                     print("some error occured while resetting the password")
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
+            }
         }
         task.resume()
     }
     
-    /*
-     whenever the user signs in or signs up, save the token in the user defaults
-     use the same token to upload, update and get the user details
-     */
-    
-
     
     func getUserProfileDetails() {
         
     }
-    
     
     
     func updateUserProfileDetails(viewModel: MainTabViewModel) {
@@ -454,15 +465,23 @@ class NetworkManager {
         request.httpMethod = Constants.API.HttpMethods.put
         
         let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.addValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         print("first name is \(viewModel.firstName)")
         print("last name is \(viewModel.lastName)")
         
-        let httpBody = createHttpBody(viewModel: viewModel)
+        var fields: [String: Any] = [
+            Constants.Keys.firstName : viewModel.firstName,
+            Constants.Keys.lastName : viewModel.lastName,
+            Constants.Keys.dob : viewModel.dob,
+            Constants.Keys.phoneNumber : viewModel.phoneNumber,
+            Constants.Keys.address : viewModel.address
+        ]
+        
+        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
         request.httpBody = httpBody
-
+        
         
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
@@ -479,8 +498,8 @@ class NetworkManager {
             else {
                 print("error in updating the profile")
             }
-        
-
+            
+            
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print(response.message)
@@ -501,7 +520,7 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
-           }
+            }
         }
         task.resume()
     }
@@ -516,13 +535,26 @@ class NetworkManager {
         request.httpMethod = Constants.API.HttpMethods.post
         
         let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.addValue("\(self.authorizationKey)", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
+        var fields: [String: Any] = [:]
         
-        let httpBody = createEventHttpBody(viewModel: viewModel)
+        fields[Constants.Keys.eventCategoryId] = Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0
+        fields[Constants.Keys.title] = viewModel.title
+        fields[Constants.Keys.description] = viewModel.description
+        fields[Constants.Keys.location] = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")"
+        fields[Constants.Keys.latitude] = viewModel.pickedLocation?.coordinate.latitude ?? 0.0
+        fields[Constants.Keys.longitude] = viewModel.pickedLocation?.coordinate.longitude ?? 0.0
+        fields[Constants.Keys.startDate] = viewModel.formattedStartDate
+        fields[Constants.Keys.startTime] = viewModel.formattedStartTime
+        fields[Constants.Keys.endDate] = viewModel.formattedEndDate
+        fields[Constants.Keys.endTime] = viewModel.formattedEndTime
+        fields[Constants.Keys.hashtags] = viewModel.hashtags
+        
+        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.imagePicker.image)
         request.httpBody = httpBody
-
+        
         
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
@@ -537,10 +569,10 @@ class NetworkManager {
                 print("New event is posted successfully")
             }
             else {
-                print("error in updating the profile")
+                print("error in posting the event")
             }
-        
-
+            
+            
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print(response.message)
@@ -549,137 +581,68 @@ class NetworkManager {
                 print("error decoding the response")
             }
             
-//            DispatchQueue.main.async {
-//                viewModel.editProfileLoading = false
-//
-//                if httpResponse.statusCode == 200 {
-//                    print("profile was updated successfully")
-//                    viewModel.showEditProfileView.toggle()
-//                }
-//                else {
-//                    print("some error occured")
-//                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-//                    viewModel.showAlert = true
-//                }
-//           }
+            DispatchQueue.main.async {
+                viewModel.postingNewEvent = false
+                
+                if httpResponse.statusCode == 200 {
+                    print("event was posted successfully")
+                    
+                }
+                else {
+                    print("some error occured")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+            }
         }
         task.resume()
     }
     
-    func createEventHttpBody(viewModel: AddEventViewModel) -> Data? {
+    func createHttpBodyForPostingEvent(from fields: [String: Any], image: UIImage?) -> Data? {
         let boundary = "Boundary-testpqr"
         var body = Data()
-
-
-        // Add event category
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"event_category_id\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0)\r\n".data(using: .utf8)!)
-
-        // Add title
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"title\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.title)\r\n".data(using: .utf8)!)
-
-        // Add description
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.description)\r\n".data(using: .utf8)!)
-
-        // Add location
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"location\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")\r\n".data(using: .utf8)!)
-
-        // Add latitude
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"latitude\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.pickedLocation?.coordinate.latitude ?? 0.0)\r\n".data(using: .utf8)!)
         
-        // add longitude
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"longitude\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.pickedLocation?.coordinate.longitude ?? 0.0)\r\n".data(using: .utf8)!)
+        for (key, value) in fields {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
         
-        // add start time
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"start_date\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.formattedStartDate)\r\n".data(using: .utf8)!)
+        if let image = image {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(image.jpegData(compressionQuality: 0.3)!)
+            body.append("\r\n".data(using: .utf8)!)
+        }
         
-        // add start time
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"start_time\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.formattedStartTime)\r\n".data(using: .utf8)!)
-        
-        // Add ending date
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"end_date\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.formattedEndDate)\r\n".data(using: .utf8)!)
-        
-        // Add ending time
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"end_time\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.formattedEndTime)\r\n".data(using: .utf8)!)
-        
-        // Add hashtags array
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"hashtags\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.hashtags)\r\n".data(using: .utf8)!)
-
-        // Add image field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.3) ?? Data())
-        body.append("\r\n".data(using: .utf8)!)
-
-        // Add closing boundary
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
+        
         return body
     }
     
-    func createHttpBody(viewModel: MainTabViewModel) -> Data? {
+    func createHttpBodyForUpdatingProfile(from fields: [String: Any], image: UIImage?) -> Data? {
         let boundary = "Boundary-testpqr"
         var body = Data()
-
-
-        // Add first name field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"first_name\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.firstName)\r\n".data(using: .utf8)!)
-
-        // Add last name field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"last_name\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.lastName)\r\n".data(using: .utf8)!)
-
-        // Add dob field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"dob\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.dob)\r\n".data(using: .utf8)!)
-
-        // Add phone number field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"phone_number\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.phoneNumber)\r\n".data(using: .utf8)!)
-
-        // Add address field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"address\"\r\n\r\n".data(using: .utf8)!)
-        body.append("\(viewModel.address)\r\n".data(using: .utf8)!)
-
-        // Add image field
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(viewModel.imagePicker.image?.jpegData(compressionQuality: 0.3) ?? Data())
-        body.append("\r\n".data(using: .utf8)!)
-
-        // Add closing boundary
+        
+        for (key, value) in fields {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+        
+        if let image = image {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(image.jpegData(compressionQuality: 0.3)!)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
+        
         return body
     }
+    
 }
 

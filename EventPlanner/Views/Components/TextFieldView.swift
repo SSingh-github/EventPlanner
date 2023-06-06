@@ -13,6 +13,7 @@ struct TextFieldView: View {
     
     var body: some View {
         TextField(placeholder, text: $text)
+            .disableAutocorrection(true)
             .padding()
             .frame(height: 60)
             .background(Color.gray.opacity(0.3))
