@@ -679,7 +679,7 @@ class NetworkManager {
         task.resume()
     }
     
-    func postNewEvent(viewModel: AddEventViewModel) {
+    func postNewEvent(viewModel: AddEventViewModel, appState: AppState) {
         guard let url = URL(string: Constants.API.URLs.postEvent) else {
             return
         }
@@ -695,16 +695,16 @@ class NetworkManager {
         var fields: [String: Any] = [:]
         
         fields[Constants.Keys.eventCategoryId] = Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0
-        fields[Constants.Keys.title] = viewModel.title
-        fields[Constants.Keys.description] = viewModel.description
-        fields[Constants.Keys.location] = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")"
-        fields[Constants.Keys.latitude] = viewModel.pickedLocation?.coordinate.latitude ?? 0.0
-        fields[Constants.Keys.longitude] = viewModel.pickedLocation?.coordinate.longitude ?? 0.0
-        fields[Constants.Keys.startDate] = viewModel.formattedStartDate
-        fields[Constants.Keys.startTime] = viewModel.formattedStartTime
-        fields[Constants.Keys.endDate] = viewModel.formattedEndDate
-        fields[Constants.Keys.endTime] = viewModel.formattedEndTime
-        fields[Constants.Keys.hashtags] = viewModel.hashtags
+        fields[Constants.Keys.title]           = viewModel.title
+        fields[Constants.Keys.description]     = viewModel.description
+        fields[Constants.Keys.location]        = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")"
+        fields[Constants.Keys.latitude]        = viewModel.pickedLocation?.coordinate.latitude ?? 0.0
+        fields[Constants.Keys.longitude]       = viewModel.pickedLocation?.coordinate.longitude ?? 0.0
+        fields[Constants.Keys.startDate]       = viewModel.formattedStartDate
+        fields[Constants.Keys.startTime]       = viewModel.formattedStartTime
+        fields[Constants.Keys.endDate]         = viewModel.formattedEndDate
+        fields[Constants.Keys.endTime]         = viewModel.formattedEndTime
+        fields[Constants.Keys.hashtags]        = viewModel.hashtags
         
         let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.imagePicker.image)
         request.httpBody = httpBody
@@ -740,7 +740,8 @@ class NetworkManager {
                 
                 if httpResponse.statusCode == 200 {
                     print("event was posted successfully")
-                    
+                    //pop the navigation views
+                    appState.rootViewId = UUID()
                 }
                 else {
                     print("some error occured")

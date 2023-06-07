@@ -18,6 +18,7 @@ struct NewEventView: View {
         }
         else if viewModel.userLogin {
             AddNewEventView()
+                .environmentObject(viewModel)
         }
     }
 }

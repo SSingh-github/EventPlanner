@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainTabView: View {
     
+    @EnvironmentObject var appState: AppState
     @StateObject var viewModel: MainTabViewModel = MainTabViewModel()
     
     init() {
@@ -17,36 +18,42 @@ struct MainTabView: View {
         }
     
     var body: some View {
-        TabView {
+        TabView(selection: $viewModel.selection) {
             ExploreView()
                 .tabItem {
                     Label(Constants.Labels.explore, systemImage: Constants.Images.explore)
                        
                 }
+                .tag(Tab.explore)
             
             SearchView()
                 .tabItem {
                     Label(Constants.Labels.tabSearch, systemImage: Constants.Images.search)
                         
                 }
+                .tag(Tab.search)
             
             NewEventView(viewModel: viewModel)
+                .id(appState.rootViewId) 
                 .tabItem {
                     Label(Constants.Labels.new, systemImage: Constants.Images.addEvent)
                         
                 }
+                .tag(Tab.createEvent)
             
             MyEventsView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.list, systemImage: Constants.Images.list)
                         
                 }
+                .tag(Tab.myEvents)
             
             ProfileView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.profile, systemImage: Constants.Images.profile)
                        
                 }
+                .tag(Tab.profile)
         }
         .accentColor(Constants.Colors.blueThemeColor)
         .tabViewStyle(DefaultTabViewStyle())

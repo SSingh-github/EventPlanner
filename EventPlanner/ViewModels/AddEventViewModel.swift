@@ -27,6 +27,16 @@ class AddEventViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var alertMessage = ""
     
+    func refreshViewModel() {
+        self.title = ""
+        self.description = ""
+        self.description = ""
+        self.hashtags = []
+        self.startDate = Date()
+        self.endDate = Date()
+        self.imagePicker = ImagePicker()
+    }
+    
     func printData() {
         print("selected option is \(selectedOption)")
         print("title is \(title)")
@@ -38,9 +48,12 @@ class AddEventViewModel: ObservableObject {
         print("coordinates are \(pickedLocation?.coordinate.latitude ?? 0.0), \(pickedLocation?.coordinate.longitude ?? 0.0)")
     }
     
-    func postNewEvent() {
+    func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
         self.postingNewEvent = true
-        NetworkManager.shared.postNewEvent(viewModel: self)
+        NetworkManager.shared.postNewEvent(viewModel: self, appState: appState)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            viewModel.shiftTabToMyEvents()
+        }
     }
 
 }

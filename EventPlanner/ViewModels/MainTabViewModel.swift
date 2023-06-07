@@ -26,6 +26,7 @@ class MainTabViewModel: ObservableObject {
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
     @Published var imageUrl = ""
+    @Published var selection: Tab = .explore
 
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
@@ -62,5 +63,9 @@ class MainTabViewModel: ObservableObject {
         self.dob = dateFormatter.string(from: self.dateOfBirth)
         
         NetworkManager.shared.updateUserProfileDetails(viewModel: self)
+    }
+    
+    func shiftTabToMyEvents() {
+        self.selection = .myEvents
     }
 }

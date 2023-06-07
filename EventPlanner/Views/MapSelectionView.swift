@@ -10,7 +10,9 @@ import MapKit
 
 struct MapViewSelection: View {
    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var mainViewModel: MainTabViewModel
     @ObservedObject var viewModel: AddEventViewModel
     @Environment(\.colorScheme) var colorScheme
    
@@ -48,7 +50,7 @@ struct MapViewSelection: View {
                         viewModel.pickedLocation = locationManager.pickedLocation
                         viewModel.pickedMark = locationManager.pickedMark
                         viewModel.printData()
-                        viewModel.postNewEvent()
+                        viewModel.postNewEvent(viewModel: mainViewModel, appState: appState)
                     } label: {
                         Text("confirm location")
                             .fontWeight(.semibold)
@@ -77,11 +79,22 @@ struct MapViewSelection: View {
                 .background(colorScheme == .dark ? .black : .white)
                 .frame(maxHeight: .infinity, alignment: .bottom)
             }
+            
+            if viewModel.postingNewEvent {
+                LoadingView()
+                    .navigationBarBackButtonHidden(true)
+            }
         }
         .onDisappear {
             locationManager.pickedMark = nil
             locationManager.pickedLocation = nil
             locationManager.mapView.removeAnnotations(locationManager.mapView.annotations)
+        }
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(
+                title: Text(""), message: Text(viewModel.alertMessage),
+                dismissButton: .default(Text(Constants.Labels.ok)
+                    .foregroundColor(Constants.Colors.blueThemeColor)))
         }
     }
 }
