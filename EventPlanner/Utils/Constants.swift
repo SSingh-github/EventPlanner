@@ -19,7 +19,8 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static private let baseUrl = "https://f501-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "https://22f9-112-196-113-2.ngrok-free.app/"
+            static let baseUrlForImage = String(baseUrl.prefix(baseUrl.count - 4))
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -30,6 +31,7 @@ struct Constants {
             static let getProfile = baseUrl + "user_profile"
             static let updateProfile = baseUrl + "update_profile"
             static let postEvent = baseUrl + "events/"
+            static let getEvents = "https://f501-112-196-113-2.ngrok-free.app/events/?user_latitude=30.711214&user_longitude=76.690276"
         }
         
         struct HttpMethods {

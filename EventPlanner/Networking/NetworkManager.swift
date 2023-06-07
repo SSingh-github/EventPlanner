@@ -506,7 +506,7 @@ class NetworkManager {
         task.resume()
     }
     
-    func getUserProfileDetails() {
+    func getUserProfileDetails(viewModel: MainTabViewModel) {
         guard let url = URL(string: Constants.API.URLs.getProfile) else {
             print("unable to create url")
             return
@@ -537,13 +537,20 @@ class NetworkManager {
             
             do {
                 print(data)
-                _ = try JSONDecoder().decode(UserData.self, from: data)
+                let response = try JSONDecoder().decode(UserData.self, from: data)
                 
-//                print(response.message)
-//                print(response.data.dob)
-//                print(response.data.phone_number)
-//                print(response.data.address)
-//                print(response.data.profile_image ?? "")
+                print(response.message)
+                print(response.data.dob)
+                print(response.data.phone_number)
+                print(response.data.address)
+                print(response.data.profile_image ?? "")
+                
+                viewModel.phoneNumber = String(response.data.phone_number)
+                viewModel.address = response.data.address
+                viewModel.firstName = response.data.first_name
+                viewModel.lastName = response.data.last_name
+                viewModel.dob = response.data.dob
+                viewModel.imageUrl = response.data.profile_image ?? ""
             }
             catch {
                 print("unable to decode the response")
@@ -615,6 +622,58 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
+            }
+        }
+        task.resume()
+    }
+    
+    func getEvents() {
+        guard let url = URL(string: Constants.API.URLs.getEvents) else {
+            print("unable to create url")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+//        request.addValue("Token 081f05876aebc70b249e87d8f0cc58358e9f1d39", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+//        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while logging in")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting user profile successful")
+            }
+            else {
+                print("some error in gettting the user profile")
+            }
+            
+            do {
+                print(data)
+                let response = try JSONDecoder().decode(EventData.self, from: data)
+                
+                for event in response.data {
+                    print(event.location)
+                }
+                
+//                print(response.message)
+//                print(response.data.dob)
+//                print(response.data.phone_number)
+//                print(response.data.address)
+//                print(response.data.profile_image ?? "")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
         }
         task.resume()

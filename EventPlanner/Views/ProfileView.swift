@@ -24,21 +24,50 @@ struct ProfileView: View {
                     
                     HStack(alignment: .center) {
                         VStack(alignment: .leading) {
-                            Text("Sukhpreet")
+                            Text(viewModel.firstName)
                                 .font(.title)
                                 .bold()
-                            Text("Singh")
+                            Text(viewModel.lastName)
                                 .font(.title)
                                 .bold()
                         }
                         
                         Spacer()
-                        Image(systemName: Constants.Images.personFill)
-                            .font(.system(size: 100))
-                            .frame(width: 100, height: 100)
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .foregroundColor(.gray)
+                        if let imageUrl = viewModel.imageUrl, !imageUrl.isEmpty {
+                            // Show the image using the URL
+                            AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                switch phase {
+                                case .empty:
+                                    // Placeholder view while the image is being loaded
+                                    ProgressView()
+                                case .success(let image):
+                                    // Display the loaded image
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(Circle())
+                                case .failure(_):
+                                    // Show an error placeholder if the image fails to load
+                                    Image(systemName: Constants.Images.personFill)
+                                        .font(.system(size: 100))
+                                        .frame(width: 100, height: 100)
+                                        .scaledToFit()
+                                        .clipShape(Circle())
+                                        .foregroundColor(.gray)
+                                @unknown default:
+                                    // Handle any future cases if needed
+                                    EmptyView()
+                                }                            }
+                        } else {
+                            // Show a default image when the URL is empty or nil
+                            Image(systemName: Constants.Images.personFill)
+                                .font(.system(size: 100))
+                                .frame(width: 100, height: 100)
+                                .scaledToFit()
+                                .clipShape(Circle())
+                                .foregroundColor(.gray)
+                        }
                     }
                     .padding(.vertical)
                     
@@ -52,7 +81,7 @@ struct ProfileView: View {
                         HStack {
                             Image(systemName: Constants.Images.calendar)
                                 .font(.title3)
-                            Text("12-12-1999")
+                            Text(viewModel.dob == "" ? "2000-02-02" : viewModel.dob)
                                 //.fontWeight(.semibold)
                             Spacer()
                         }
@@ -65,7 +94,7 @@ struct ProfileView: View {
                         HStack {
                             Image(Constants.Images.location)
                                 .font(.title)
-                            Text("Mohali, phase 5")
+                            Text(viewModel.address)
                                 //.fontWeight(.semibold)
 
                             Spacer()
@@ -79,7 +108,7 @@ struct ProfileView: View {
                         HStack {
                             Image(systemName: Constants.Images.phone)
                                 .font(.title3)
-                            Text("9888802022")
+                            Text(viewModel.phoneNumber)
                                 //.fontWeight(.semibold)
 
                             Spacer()
@@ -146,6 +175,9 @@ struct ProfileView: View {
                     if viewModel.isLoggedOut {
                         LoadingView()
                     }
+                }
+                .refreshable {
+                    NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
                 }
                 .padding()
             }

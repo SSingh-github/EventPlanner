@@ -13,18 +13,19 @@ class MainTabViewModel: ObservableObject {
     @Published var userLogin = UserDefaults.standard.bool(forKey: Constants.Labels.userLoggedIn)
     @Published var showWelcomeViewModel = false
     @Published var showEditProfileView = false
-    @Published var firstName = ""
-    @Published var lastName = ""
+    @Published var firstName = "first name"
+    @Published var lastName = "last name"
     @Published var dob = ""
     @Published var dateOfBirth = Date()
-    @Published var address = ""
-    @Published var phoneNumber = ""
+    @Published var address = "mohali"
+    @Published var phoneNumber = "0000000000"
     @Published var isLoggedOut = false
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
+    @Published var imageUrl = ""
 
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
