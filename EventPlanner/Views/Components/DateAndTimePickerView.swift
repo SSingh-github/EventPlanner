@@ -6,52 +6,48 @@ struct DateTimePickerView: View {
     @ObservedObject var viewModel: AddEventViewModel
     
     var body: some View {
-        ScrollView {
-            VStack {
-                DatePicker("", selection: $viewModel.startDate, displayedComponents: .date)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                
-                DatePicker("", selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                
-                DatePicker("", selection: $viewModel.endDate, displayedComponents: .date)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                
-                DatePicker("", selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                
-                Button(action: {
-                    // Format and store the start date and end date in separate strings
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = Constants.StringFormats.dateFormat
-                    viewModel.formattedStartDate = dateFormatter.string(from: viewModel.startDate)
-                    viewModel.formattedEndDate = dateFormatter.string(from: viewModel.endDate)
-                    
-                    let timeFormatter = DateFormatter()
-                    timeFormatter.dateFormat = Constants.StringFormats.timeFormat
-                    viewModel.formattedStartTime = timeFormatter.string(from: viewModel.startDate)
-                    viewModel.formattedEndTime = timeFormatter.string(from: viewModel.endDate)
-                    
-                    print("Start Date:", viewModel.formattedStartDate)
-                    print("Start Time:", viewModel.formattedStartTime)
-                    print("End Date:", viewModel.formattedEndDate)
-                    print("End Time:", viewModel.formattedEndTime)
-                }) {
-                    Text("Confirm")
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+        VStack {
+            Text(Constants.Labels.dateAndTime)
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.bottom, 40)
+            Picker("", selection: $viewModel.selected) {
+                ForEach(Constants.Labels.segments, id:\.self) { segment in
+                    Text(segment)
+                        .tag(segment)
                 }
-                .padding()
+            }
+            .pickerStyle(.segmented)
+            .background(Constants.Colors.blueThemeColor)
+            .cornerRadius(8)
+            .padding()
+            
+            if viewModel.selected == Constants.Labels.segments[0] {
+                DatePicker("", selection: $viewModel.startDate, in: Date()..., displayedComponents: .date)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
                 
-                Text("Formatted Start Date: \(viewModel.formattedStartDate)")
-                Text("Formatted End Date: \(viewModel.formattedEndDate)")
+                DatePicker(Constants.Labels.selectStartTime, selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+            }
+            else {
+                DatePicker("", selection: $viewModel.endDate, in: viewModel.startDate..., displayedComponents: .date)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+                
+                DatePicker(Constants.Labels.selectEndTime, selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+               
+            }
+            if viewModel.startDate == viewModel.endDate {
+                Text(Constants.Labels.durationMessage)
+                    .font(.caption)
             }
         }
     }

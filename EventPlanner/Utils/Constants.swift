@@ -20,7 +20,6 @@ struct Constants {
         
         struct URLs {
             static let baseUrl = "https://22f9-112-196-113-2.ngrok-free.app/"
-            static let baseUrlForImage = String(baseUrl.prefix(baseUrl.count - 4))
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -74,6 +73,9 @@ struct Constants {
     }
     
     struct Images {
+        static let rightArrow = "arrow.right"
+        static let northLocation = "location.north.circle.fill"
+        static let mappin = "mappin.circle.fill"
         static let location = "Location"
         static let eyeSlash = "eye.slash.fill"
         static let eye = "eye.fill"
@@ -106,6 +108,13 @@ struct Constants {
     }
     
     struct Labels {
+        static let selectStartTime = "Select the Start time:"
+        static let selectEndTime = "Select the End time:"
+        static let dateAndTime = "Date and Time"
+        static let currentLocation = "Current Location"
+        static let confirmLocation = "confirm location"
+        static let useCurrentLocation = "  use current location"
+        static let searchResults = "Your Search results will appear here"
         static let selectDob = "Select your date of birth"
         static let phoneNumber = "Phone number:"
         static let address = "Address:"
@@ -113,6 +122,7 @@ struct Constants {
         static let eventsForYou = "Events for you"
         static let settings = " Settings"
         static let editProfileWithSpace = "  Edit profile"
+        static let segments = ["Start", "End"]
         static let eventTypes = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
         static let authToken = "token"
         static let createProfile = "Create Profile"
@@ -125,6 +135,7 @@ struct Constants {
         static let enterOtp = "Enter the OTP"
         static let sendOtp = "Send OTP"
         static let enterEmail = "Enter your email:"
+        static let durationMessage = "Note: The total duration of the event must be atleast 1 hour."
         static let otpMessage = "The OTP will be sent to your email. Please check your email inbox for getting the OTP to proceed further and reset your account password"
         static let loading = "Loading..."
         static let userLoggedIn = "userLoggedIn"
@@ -208,6 +219,7 @@ struct Constants {
             static let lastName = "Last name"
             static let otp = "Enter 4 digit OTP"
             static let address = "Address"
+            static let findLocation = "Find location here"
         }
     }
     

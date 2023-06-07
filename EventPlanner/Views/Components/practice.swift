@@ -11,29 +11,46 @@ import SwiftUI
 
 struct ContentView2: View {
     
+    @ObservedObject var viewModel: AddEventViewModel
+    
     var body: some View {
         VStack {
-            Button {
-                
-            } label: {
-                Label {
-                    Text("  use current location")
-                        .font(.callout)
-                } icon: {
-                    Image(systemName: "location.north.circle.fill")
+            Text("Date and Time")
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.bottom, 40)
+            Picker("", selection: $viewModel.selected) {
+                ForEach(Constants.Labels.segments, id:\.self) { segment in
+                    Text(segment)
+                        .tag(segment)
                 }
-                .foregroundColor(.green)
             }
-            .padding(.vertical)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .pickerStyle(.segmented)
+            .background(Constants.Colors.blueThemeColor)
+            .cornerRadius(8)
+            .padding()
             
-            
-            VStack(alignment: .center, spacing: 20) {
-                Image(systemName: "magnifyingglass")
-                    .font(.largeTitle)
-                Text("Your Search results will appear here")
-                    .font(.title3)
-                    .fontWeight(.semibold)
+            if viewModel.selected == "Start" {
+                DatePicker("", selection: $viewModel.startDate, in: Date()..., displayedComponents: .date)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+                
+                DatePicker("Select the Start time:", selection: $viewModel.startDate, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+            }
+            else {
+                DatePicker("", selection: $viewModel.endDate, in: viewModel.startDate..., displayedComponents: .date)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
+                
+                DatePicker("Select the End time:", selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding()
+                    .accentColor(Constants.Colors.blueThemeColor)
             }
         }
     }
@@ -41,6 +58,6 @@ struct ContentView2: View {
 
 struct ContentView2_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView2()
+        ContentView2(viewModel: AddEventViewModel())
     }
 }

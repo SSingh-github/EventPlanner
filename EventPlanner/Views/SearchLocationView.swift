@@ -27,9 +27,9 @@ struct SearchView2: View {
     var body: some View {
         VStack {
             HStack(spacing: 10) {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: Constants.Images.search)
                     .foregroundColor(.gray)
-                TextFieldView(placeholder: "find location here", text: $locationManager.searchText)
+                TextFieldView(placeholder: Constants.Labels.Placeholders.findLocation, text: $locationManager.searchText)
             }
             
             if let places = locationManager.fetchedPlaces, !places.isEmpty {
@@ -48,7 +48,7 @@ struct SearchView2: View {
                             
                         } label: {
                             HStack(spacing: 15) {
-                                Image(systemName: "mappin.circle.fill")
+                                Image(systemName: Constants.Images.mappin)
                                     .font(.title2)
                                     .foregroundColor(.red)
                                 
@@ -79,10 +79,10 @@ struct SearchView2: View {
                         navigationTag = "MAPVIEW"
                     } label: {
                         Label {
-                            Text("  use current location")
+                            Text(Constants.Labels.useCurrentLocation)
                                 .font(.callout)
                         } icon: {
-                            Image(systemName: "location.north.circle.fill")
+                            Image(systemName: Constants.Images.northLocation)
                         }
                         .foregroundColor(.green)
                     }
@@ -92,9 +92,9 @@ struct SearchView2: View {
                     Spacer()
                     
                     VStack(alignment: .center, spacing: 20) {
-                        Image(systemName: "magnifyingglass")
+                        Image(systemName: Constants.Images.search)
                             .font(.largeTitle)
-                        Text("Your Search results will appear here")
+                        Text(Constants.Labels.searchResults)
                             .font(.title3)
                             .fontWeight(.semibold)
                     }

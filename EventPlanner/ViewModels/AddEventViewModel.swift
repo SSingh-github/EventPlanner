@@ -26,16 +26,8 @@ class AddEventViewModel: ObservableObject {
     @Published var postingNewEvent = false
     @Published var showAlert = false
     @Published var alertMessage = ""
+    @Published var selected = "Start"
     
-    func refreshViewModel() {
-        self.title = ""
-        self.description = ""
-        self.description = ""
-        self.hashtags = []
-        self.startDate = Date()
-        self.endDate = Date()
-        self.imagePicker = ImagePicker()
-    }
     
     func printData() {
         print("selected option is \(selectedOption)")
@@ -51,7 +43,7 @@ class AddEventViewModel: ObservableObject {
     func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
         self.postingNewEvent = true
         NetworkManager.shared.postNewEvent(viewModel: self, appState: appState)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
             viewModel.shiftTabToMyEvents()
         }
     }

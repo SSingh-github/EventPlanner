@@ -11,11 +11,21 @@ struct DateAndTimeView: View {
     
     @ObservedObject var viewModel: AddEventViewModel
     var body: some View {
+        
         ScrollView {
             VStack {
                 DateTimePickerView(viewModel: viewModel)
                 NavigationLink(destination: SearchLocationView(viewModel: viewModel)) {
-                    Text("continue")
+                    ZStack {
+                        Rectangle()
+                            .frame(height: 50)
+                            .foregroundColor( Constants.Colors.blueThemeColor)
+                            .cornerRadius(10)
+                        Text( Constants.Labels.Continue)
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                    }
+                    .padding()
                 }
             }
         }

@@ -24,12 +24,12 @@ struct MapViewSelection: View {
             
             if let place = locationManager.pickedMark {
                 VStack(spacing: 15) {
-                    Text("Current location")
+                    Text(Constants.Labels.currentLocation)
                         .font(.title2)
                         .bold()
                     
                     HStack(spacing: 15) {
-                        Image(systemName: "mappin.circle.fill")
+                        Image(systemName: Constants.Images.mappin)
                             .font(.title2)
                             .foregroundColor(.red)
                         
@@ -52,7 +52,7 @@ struct MapViewSelection: View {
                         viewModel.printData()
                         viewModel.postNewEvent(viewModel: mainViewModel, appState: appState)
                     } label: {
-                        Text("confirm location")
+                        Text(Constants.Labels.confirmLocation)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
@@ -61,7 +61,7 @@ struct MapViewSelection: View {
                                     .fill(Constants.Colors.blueThemeColor)
                             }
                             .overlay(alignment: .trailing) {
-                                Image(systemName: "arrow.right")
+                                Image(systemName: Constants.Images.rightArrow)
                                     .font(.title3.bold())
                                     .padding(.trailing)
                             }
