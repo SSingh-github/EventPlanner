@@ -5,10 +5,6 @@
 //  Created by Chicmic on 29/05/23.
 //
 
-/*
- TODO: 1. decide and change the flow of app till now  2.improve the ui of the app till now, also make it accessible, improve the image picker 3. improve the code quality till now
- */
-
 import SwiftUI
 
 struct LoginSignupView: View {
@@ -72,14 +68,19 @@ struct LoginSignupView: View {
                             }
                             
                             Button {
-                                viewModel.buttonClicked()
+                                if viewModel.isLoginView {
+                                    viewModel.buttonClicked()
+                                }
+                                else {
+                                    viewModel.showCreateProfileView.toggle()
+                                }
                             } label: {
                                 ZStack {
                                     Rectangle()
                                         .frame(height: 60)
                                         .foregroundColor(viewModel.loginButtonDisabled() ? .gray : Constants.Colors.blueThemeColor)
                                         .cornerRadius(10)
-                                    Text(viewModel.isLoginView ? Constants.Labels.logIn : Constants.Labels.signUp)
+                                    Text(viewModel.isLoginView ? Constants.Labels.logIn : Constants.Labels.Continue)
                                         .foregroundColor(.white)
                                         .fontWeight(.semibold)
                                 }
@@ -87,6 +88,9 @@ struct LoginSignupView: View {
                             .disabled(viewModel.loginButtonDisabled())
                             .navigationDestination(isPresented: $viewModel.presentMainTabView, destination: {
                                 MainTabView()
+                            })
+                            .navigationDestination(isPresented: $viewModel.showCreateProfileView, destination:  {
+                                CreateProfileView(viewModel: viewModel)
                             })
                             .alert(isPresented: $viewModel.showAlert) {
                                 Alert(

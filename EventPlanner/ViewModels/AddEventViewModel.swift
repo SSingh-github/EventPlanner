@@ -7,14 +7,10 @@
 
 import Foundation
 import CoreLocation
-// fields to send are :
-/*
- selectedOption, title, description, hastags, formattedStartDate, formattedEndDate, formattedStartTime, formattedEndTime
- pickedLocation.latitude, pickedLocation.longitude, pickedMark.name + pickedMark.locality, imagePicker.image
- */
+
 
 class AddEventViewModel: ObservableObject {
-    @Published var selectedOption = "" // when sending the data send the index array.firstIndex(of: selectedOption)
+    @Published var selectedOption = ""
     @Published var title = ""
     @Published var description = ""
     @Published var hashtags: [String] = []
@@ -26,7 +22,6 @@ class AddEventViewModel: ObservableObject {
     @Published var formattedEndTime = ""
     @Published var pickedLocation: CLLocation?
     @Published var pickedMark: CLPlacemark?
-    // var location = pickedMark.name + " " + pickedMark.locality
     @Published var imagePicker = ImagePicker()
     @Published var postingNewEvent = false
     @Published var showAlert = false

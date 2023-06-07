@@ -51,11 +51,15 @@ class NetworkManager {
                 if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
                     self.authorizationKey = authorizationKey
                     UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
                     print(self.authorizationKey)
                 }
             } else {
                 print("unable to sign up")
                 print("Error: Unexpected status code \(httpResponse.statusCode)")
+                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                viewModel.showAlert = true
             }
             
             do{
@@ -67,25 +71,13 @@ class NetworkManager {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-            
-            DispatchQueue.main.async {
-                viewModel.isLoggedIn = false
-                
-                if httpResponse.statusCode == 200 {
-                    viewModel.presentMainTabView.toggle()
-                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                }
-                else {
-                    print("some error occured while signing up")
-                    
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
-                }
-            }
-            
         }
         task.resume()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // Call your function here
+            self.createUserProfile(viewModel: viewModel)
+
+        }
     }
     
     func logInCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
@@ -165,7 +157,6 @@ class NetworkManager {
         }
         task.resume()
     }
-    
     
     func signOutCall(viewModel: MainTabViewModel) {
         
@@ -383,8 +374,6 @@ class NetworkManager {
         task.resume()
     }
     
-    
-    
     func resetPassword(viewModel: ForgotPasswordViewModel) {
         
         viewModel.resetPasswordSuccessful = false
@@ -449,11 +438,120 @@ class NetworkManager {
         task.resume()
     }
     
-    
-    func getUserProfileDetails() {
+    private func createUserProfile(viewModel: LoginViewModel) {
+        guard let url = URL(string: Constants.API.URLs.setProfile) else {
+            return
+        }
         
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        
+        let boundary = "Boundary-testpqr"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        
+        let fields: [String: Any] = [
+            Constants.Keys.firstName : viewModel.firstName,
+            Constants.Keys.lastName : viewModel.lastName,
+            Constants.Keys.dob : viewModel.dob,
+            Constants.Keys.phoneNumber : viewModel.phoneNumber,
+            Constants.Keys.address : viewModel.address
+        ]
+        
+        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
+        request.httpBody = httpBody
+        
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("user profile is updated successfully")
+            }
+            else {
+                print("error in creating the profile")
+            }
+            
+            
+            do {
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print(response.message)
+            }
+            catch {
+                print("error decoding the response")
+            }
+            
+            DispatchQueue.main.async {
+                viewModel.isLoggedIn = false
+                
+                if httpResponse.statusCode == 200 {
+                    viewModel.presentMainTabView.toggle()
+                }
+                else {
+                    print("some error occured while signing up")
+                    
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+            }
+        }
+        task.resume()
     }
     
+    func getUserProfileDetails() {
+        guard let url = URL(string: Constants.API.URLs.getProfile) else {
+            print("unable to create url")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while logging in")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting user profile successful")
+            }
+            else {
+                print("some error in gettting the user profile")
+            }
+            
+            do {
+                print(data)
+                _ = try JSONDecoder().decode(UserData.self, from: data)
+                
+//                print(response.message)
+//                print(response.data.dob)
+//                print(response.data.phone_number)
+//                print(response.data.address)
+//                print(response.data.profile_image ?? "")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
     
     func updateUserProfileDetails(viewModel: MainTabViewModel) {
         guard let url = URL(string: Constants.API.URLs.updateProfile) else {
@@ -468,10 +566,7 @@ class NetworkManager {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
         request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
-        print("first name is \(viewModel.firstName)")
-        print("last name is \(viewModel.lastName)")
-        
-        var fields: [String: Any] = [
+        let fields: [String: Any] = [
             Constants.Keys.firstName : viewModel.firstName,
             Constants.Keys.lastName : viewModel.lastName,
             Constants.Keys.dob : viewModel.dob,
@@ -598,7 +693,15 @@ class NetworkManager {
         task.resume()
     }
     
-    func createHttpBodyForPostingEvent(from fields: [String: Any], image: UIImage?) -> Data? {
+    private func createHttpBodyForPostingEvent(from fields: [String: Any], image: UIImage?) -> Data? {
+        return createMultipartBody(from: fields, image: image)
+    }
+    
+    private func createHttpBodyForUpdatingProfile(from fields: [String: Any], image: UIImage?) -> Data? {
+        return createMultipartBody(from: fields, image: image)
+    }
+    
+    private func createMultipartBody(from fields: [String: Any], image: UIImage?) -> Data? {
         let boundary = "Boundary-testpqr"
         var body = Data()
         
@@ -620,29 +723,5 @@ class NetworkManager {
         
         return body
     }
-    
-    func createHttpBodyForUpdatingProfile(from fields: [String: Any], image: UIImage?) -> Data? {
-        let boundary = "Boundary-testpqr"
-        var body = Data()
-        
-        for (key, value) in fields {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            body.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        if let image = image {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-            body.append(image.jpegData(compressionQuality: 0.3)!)
-            body.append("\r\n".data(using: .utf8)!)
-        }
-        
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        return body
-    }
-    
 }
 

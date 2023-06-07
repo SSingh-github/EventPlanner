@@ -17,7 +17,6 @@ class MainTabViewModel: ObservableObject {
     @Published var lastName = ""
     @Published var dob = ""
     @Published var dateOfBirth = Date()
-    @Published var formattedDateOfBirth = ""
     @Published var address = ""
     @Published var phoneNumber = ""
     @Published var isLoggedOut = false
@@ -26,6 +25,7 @@ class MainTabViewModel: ObservableObject {
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
+
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
     let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!

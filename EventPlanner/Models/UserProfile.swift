@@ -7,13 +7,21 @@
 
 import Foundation
 
-struct UserProfile {
-    let firstName: String
-    let lastName: String
-    let phoneNumber: String 
-    let dob: String
-    let address: String
+struct UserData: Codable {
+    let status: Int
+    let message: String
+    let data: UserDataDetails
 }
+
+struct UserDataDetails: Codable {
+    let dob: String
+    let phone_number: Int
+    let address: String
+    let first_name: String
+    let last_name: String
+    let profile_image: String?
+}
+
 // this is the format for get profile request
 //{
 //    "status":200,

@@ -12,12 +12,22 @@ class LoginViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var email: String = ""
     @Published var isLoginView: Bool = false
-    @Published var isLoading: Bool = false
     @Published var presentMainTabView: Bool = false
     @Published var isLoggedIn = false
     @Published var showForgotPasswordSheet = false
     @Published var showAlert = false
     @Published var alertMessage = ""
+    @Published var showCreateProfileView = false
+    @Published var firstName = ""
+    @Published var lastName = ""
+    @Published var dob = ""
+    @Published var dateOfBirth = Date()
+    @Published var address = ""
+    @Published var phoneNumber = ""
+    @Published var imagePicker = ImagePicker()
+    
+    let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
+    let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
    
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
@@ -31,6 +41,23 @@ class LoginViewModel: ObservableObject {
         return showEmailWarning() || showPasswordWarning() || email.isEmpty || password.isEmpty
     }
     
+    func showFirstNameWarning() -> Bool {
+        return !Validations.shared.isValidFirstName(self.firstName) && !self.firstName.isEmpty
+    }
+    
+    func showLastNameWarning() -> Bool {
+        return !Validations.shared.isValidLastName(self.lastName) && !self.lastName.isEmpty
+    }
+    
+    func showPhoneNumberWarning() -> Bool {
+        return !Validations.shared.isValidPhoneNumber(self.phoneNumber) && !self.phoneNumber.isEmpty
+    }
+    
+    func showDobWarning() -> Bool {
+        return !Validations.shared.isValidDob(self.dob) && !self.dob.isEmpty
+    }
+
+    
     func buttonClicked() {
         
         isLoggedIn = true
@@ -43,24 +70,10 @@ class LoginViewModel: ObservableObject {
         else {
             NetworkManager.shared.signUpCall(for: user, viewModel: self)
         }
-        
-        
-        // show progress view until the function completes
-        // if call is successful, go to the main tab view (toggle the 'presentMainView' boolean), else show the appropriate message to the user
-        // handle the case if the user is already logged in as a guest
-        // if call is successful, there are two cases
-        // 1. user is already loggedin as a guest
-        //    make the userdefault of the guestloginkey to false
-        // 2. user is not already logged in as a guest
-        //    make the userdefault of the guestloginkey to false
-        //    load the main tab view afresh
-        // if user is entered successfully, store the status in the user defaults also
     }
     
     func loginGuest() {
-        // store in the user defaults that the user is logged in as a guest in the app
         UserDefaults.standard.set(true, forKey: Constants.Labels.guestLoginKey)
-        // toggle 'presentMainView' boolean
         presentMainTabView.toggle()
     }
 }

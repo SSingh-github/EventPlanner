@@ -165,6 +165,7 @@
 			children = (
 				93EC5B5A2A24A50D0065A286 /* Components */,
 				93EC5B482A249E330065A286 /* LoginSignupView.swift */,
+				93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */,
 				93EC5B462A249C280065A286 /* WelcomeTabView.swift */,
 				93AC9B962A27184700E3A61A /* MainTabView.swift */,
 				93AC9B982A271E3900E3A61A /* ExploreView.swift */,
@@ -176,7 +177,6 @@
 				93B35F8D2A286B16006C7CA7 /* ResetPasswordView.swift */,
 				93AC9BA02A271E7D00E3A61A /* ProfileView.swift */,
 				93B35F8F2A28781C006C7CA7 /* EditUserProfileView.swift */,
-				93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */,
 				93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */,
 				93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */,
 				93AC81B62A2B64E300A43131 /* SearchLocationView.swift */,

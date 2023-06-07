@@ -19,7 +19,7 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static private let baseUrl = "https://4e5f-112-196-113-2.ngrok-free.app/"
+            static private let baseUrl = "https://f501-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -113,6 +113,7 @@ struct Constants {
         static let editProfileWithSpace = "  Edit profile"
         static let eventTypes = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
         static let authToken = "token"
+        static let createProfile = "Create Profile"
         static let editProfile = "Edit Profile"
         static let resendOtp = "Resend OTP"
         static let verify = "Verify"
@@ -170,6 +171,7 @@ struct Constants {
         static let phoneRule = "Enter 10-digit phone number"
         static let createAccount = "Let's create your account"
         static let ok = "OK"
+        static let Continue = "continue"
         
         struct Questions {
             static let name = "What's your name?"
