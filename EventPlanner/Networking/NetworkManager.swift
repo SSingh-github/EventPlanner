@@ -438,74 +438,6 @@ class NetworkManager {
         task.resume()
     }
     
-    private func createUserProfile(viewModel: LoginViewModel) {
-        guard let url = URL(string: Constants.API.URLs.setProfile) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        
-        let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        
-        let fields: [String: Any] = [
-            Constants.Keys.firstName : viewModel.firstName,
-            Constants.Keys.lastName : viewModel.lastName,
-            Constants.Keys.dob : viewModel.dob,
-            Constants.Keys.phoneNumber : viewModel.phoneNumber,
-            Constants.Keys.address : viewModel.address
-        ]
-        
-        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
-        request.httpBody = httpBody
-        
-        
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("user profile is updated successfully")
-            }
-            else {
-                print("error in creating the profile")
-            }
-            
-            
-            do {
-                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
-                print(response.message)
-            }
-            catch {
-                print("error decoding the response")
-            }
-            
-            DispatchQueue.main.async {
-                viewModel.isLoggedIn = false
-                
-                if httpResponse.statusCode == 200 {
-                    viewModel.presentMainTabView.toggle()
-                }
-                else {
-                    print("some error occured while signing up")
-                    
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
-                }
-            }
-        }
-        task.resume()
-    }
-    
     func getUserProfileDetails(viewModel: MainTabViewModel) {
         guard let url = URL(string: Constants.API.URLs.getProfile) else {
             print("unable to create url")
@@ -627,9 +559,22 @@ class NetworkManager {
         task.resume()
     }
     
-    func getEvents() {
-        guard let url = URL(string: Constants.API.URLs.getEvents) else {
-            print("unable to create url")
+    func getEvents(viewModel: MainTabViewModel) { 
+        //you can create an object of location manager here to get the coordinates of the user
+        // for trial purposes use static coordinates
+        // Create a URLComponents object with your base URL
+        var urlComponents = URLComponents(string: Constants.API.URLs.postEvent)!
+
+        // Add query parameters
+        urlComponents.queryItems = [
+            URLQueryItem(name: "user_latitude", value: "30.711214"),
+            URLQueryItem(name: "user_longitude", value: "76.690276")
+            // Add more query items as needed
+        ]
+
+        // Create a URL from the URLComponents
+        guard let url = urlComponents.url else {
+            print("Invalid URL")
             return
         }
         
@@ -637,12 +582,10 @@ class NetworkManager {
         
         request.httpMethod = Constants.API.HttpMethods.get
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-//        request.addValue("Token 081f05876aebc70b249e87d8f0cc58358e9f1d39", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-//        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
+
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
-                print("error occured while logging in")
+                print("error while getting events")
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -651,25 +594,22 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                print("getting user profile successful")
+                print("getting events successful")
             }
             else {
-                print("some error in gettting the user profile")
+                print("some error in gettting the events")
             }
             
             do {
                 print(data)
+        
                 let response = try JSONDecoder().decode(EventData.self, from: data)
+                
+                viewModel.events = response.data
                 
                 for event in response.data {
                     print(event.location)
                 }
-                
-//                print(response.message)
-//                print(response.data.dob)
-//                print(response.data.phone_number)
-//                print(response.data.address)
-//                print(response.data.profile_image ?? "")
             }
             catch {
                 print("unable to decode the response")
@@ -697,7 +637,7 @@ class NetworkManager {
         fields[Constants.Keys.eventCategoryId] = Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0
         fields[Constants.Keys.title]           = viewModel.title
         fields[Constants.Keys.description]     = viewModel.description
-        fields[Constants.Keys.location]        = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? ""), \(viewModel.pickedMark?.subLocality ?? "")"
+        fields[Constants.Keys.location]        = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? "")"
         fields[Constants.Keys.latitude]        = viewModel.pickedLocation?.coordinate.latitude ?? 0.0
         fields[Constants.Keys.longitude]       = viewModel.pickedLocation?.coordinate.longitude ?? 0.0
         fields[Constants.Keys.startDate]       = viewModel.formattedStartDate
@@ -745,6 +685,178 @@ class NetworkManager {
                 }
                 else {
                     print("some error occured")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func markEventAsFavourite(eventId: Int) {
+        // this method will mark the event with the id equal to eventId as a favourite
+        guard let url = URL(string: Constants.API.URLs.markFavEvent) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.id : eventId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("event was successfully marked as favourite")
+            }
+            else {
+                print("error in marking the event as favourite")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
+    func likeTheEvent(eventId: Int) {
+        // this method will like the event with the id equal to eventId
+        guard let url = URL(string: Constants.API.URLs.likeEvent) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.id : eventId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("event was successfully liked")
+            }
+            else {
+                print("error in liking the event")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
+    private func createUserProfile(viewModel: LoginViewModel) {
+        guard let url = URL(string: Constants.API.URLs.setProfile) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        
+        let boundary = "Boundary-testpqr"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        
+        let fields: [String: Any] = [
+            Constants.Keys.firstName : viewModel.firstName,
+            Constants.Keys.lastName : viewModel.lastName,
+            Constants.Keys.dob : viewModel.dob,
+            Constants.Keys.phoneNumber : viewModel.phoneNumber,
+            Constants.Keys.address : viewModel.address
+        ]
+        
+        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
+        request.httpBody = httpBody
+        
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("user profile is updated successfully")
+            }
+            else {
+                print("error in creating the profile")
+            }
+            
+            
+            do {
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print(response.message)
+            }
+            catch {
+                print("error decoding the response")
+            }
+            
+            DispatchQueue.main.async {
+                viewModel.isLoggedIn = false
+                
+                if httpResponse.statusCode == 200 {
+                    viewModel.presentMainTabView.toggle()
+                }
+                else {
+                    print("some error occured while signing up")
+                    
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }

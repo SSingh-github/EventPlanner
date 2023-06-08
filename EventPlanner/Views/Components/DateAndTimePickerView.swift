@@ -39,7 +39,7 @@ struct DateTimePickerView: View {
                     .padding()
                     .accentColor(Constants.Colors.blueThemeColor)
                 
-                DatePicker(Constants.Labels.selectEndTime, selection: $viewModel.endDate, displayedComponents: .hourAndMinute)
+                DatePicker(Constants.Labels.selectEndTime, selection: $viewModel.endDate,in: (viewModel.startDate + (3600))..., displayedComponents: .hourAndMinute)
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                     .accentColor(Constants.Colors.blueThemeColor)

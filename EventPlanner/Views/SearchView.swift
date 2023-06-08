@@ -9,7 +9,10 @@ import SwiftUI
 
 struct SearchView: View {
     var body: some View {
-        Text("SearchView")
+//        Button("get events") {
+//            NetworkManager.shared.getEvents()
+//        }
+        Text("Search view")
     }
 }
 

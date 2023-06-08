@@ -19,7 +19,7 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static let baseUrl = "https://22f9-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "https://e37b-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -30,7 +30,8 @@ struct Constants {
             static let getProfile = baseUrl + "user_profile"
             static let updateProfile = baseUrl + "update_profile"
             static let postEvent = baseUrl + "events/"
-            static let getEvents = "https://f501-112-196-113-2.ngrok-free.app/events/?user_latitude=30.711214&user_longitude=76.690276"
+            static let likeEvent = baseUrl + "like_event/"
+            static let markFavEvent = baseUrl + "mark_favourite/"
         }
         
         struct HttpMethods {
@@ -41,6 +42,7 @@ struct Constants {
     }
     
     struct Keys {
+        static let id = "id"
         static let email = "email"
         static let password = "password"
         static let otp = "otp"
@@ -123,7 +125,8 @@ struct Constants {
         static let settings = " Settings"
         static let editProfileWithSpace = "  Edit profile"
         static let segments = ["Start", "End"]
-        static let eventTypes = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"]
+        static let eventTypes = ["Social Events", "Corporate Events", "Cultural and Artistic Events", "Sports and recreation Events", "Educational and Academic Events"]
+        static let months = ["01":"Jan", "02":"Feb", "03":"Mar", "04":"Apr", "05":"May", "06":"Jun", "07":"Jul", "08":"Aug", "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec"]
         static let authToken = "token"
         static let createProfile = "Create Profile"
         static let editProfile = "Edit Profile"

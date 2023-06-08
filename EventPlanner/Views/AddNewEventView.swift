@@ -4,6 +4,7 @@
 //
 //  Created by Chicmic on 03/06/23.
 //
+//hashtags are not working
 
 import SwiftUI
 import _PhotosUI_SwiftUI
@@ -11,12 +12,14 @@ import _PhotosUI_SwiftUI
 struct AddNewEventView: View {
     
     @StateObject var viewModel = AddEventViewModel()
+    @StateObject var locationManager = LocationManager()
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            
                 VStack(spacing: 20) {
-                    // Drop-down for selecting between 5 strings
+            
                     Picker("Select an option", selection: $viewModel.selectedOption) {
                         ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
                             Text(eventType)
@@ -25,18 +28,19 @@ struct AddNewEventView: View {
                     .pickerStyle(MenuPickerStyle())
                     .frame(maxWidth: .infinity)
                     .padding()
+                    .fontWeight(.semibold)
+                    .accentColor(colorScheme == .dark ? .white : .black)
+                    Text("latitude is \(locationManager.userLocation?.coordinate.latitude ?? 0)")
+                    Text("longitude \(locationManager.userLocation?.coordinate.longitude ?? 0)")
                     
-                    // Field for adding a title
                     TextField("Title", text: $viewModel.title)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
+                       // .padding()
                     
-                    // Field for adding a description
                     TextField("Description", text: $viewModel.description)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
+                        //.padding()
                     
-                    // Image view containing the system image of a person
                     ZStack(alignment: .bottomTrailing) {
                         
                         if let image = viewModel.imagePicker.image {
@@ -47,12 +51,18 @@ struct AddNewEventView: View {
                                 .clipShape(Circle())
                         }
                         else {
-                            Image(systemName: Constants.Images.personFill)
-                                .font(.system(size: 100))
+                            Circle()
+                                .frame(width: 100, height: 100)
+                                .foregroundColor(colorScheme == .light ? .white : .black
+                                )
+                                .shadow(color:colorScheme == .light ?.black : .white, radius: 5)
+                            
+                            Image(systemName: "photo.on.rectangle")
+                                .font(.system(size: 40))
                                 .frame(width: 100, height: 100)
                                 .scaledToFit()
                                 .clipShape(Circle())
-                            .foregroundColor(.gray)
+                                
                         }
                         PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
                             Image(systemName: Constants.Images.edit)
@@ -68,12 +78,11 @@ struct AddNewEventView: View {
                         HStack {
                             Button {
                                 viewModel.hashtags.append("")
+                                print(viewModel.hashtags.count)
                             }label: {
                                 Image(systemName: "plus")
                                     .foregroundColor(.blue)
                             }
-                            
-                            
                             Text("Add Hashtag")
                         }
                         .padding()
@@ -85,20 +94,21 @@ struct AddNewEventView: View {
                                     .padding(.horizontal)
                             }
                         }
+                        .listStyle(PlainListStyle())
                         
-                        Spacer()
+                        //Spacer()
                     }
-                    .padding()
+                    //.padding()
                     Spacer()
                     NavigationLink(destination: DateAndTimeView(viewModel: viewModel)) {
                         Text("continue")
                     }
                 }
                 .padding()
-            .navigationTitle("Create Event")
+            //.navigationTitle("Create Event")
             }
             
-        }
+        
         
     }
 }

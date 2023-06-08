@@ -8,21 +8,41 @@
 import SwiftUI
 
 struct ExploreView: View {
+    
+    @ObservedObject var viewModel: MainTabViewModel
+   
+    
     var body: some View {
         NavigationView {
-            List {
-                ForEach(0..<10) {_ in
-                    EventCard()
+            //if events array is empty, show some other view
+            if viewModel.events.isEmpty == false {
+                List {
+                    ForEach(viewModel.events.indices, id: \.self) {index in
+                       NavigationLink(destination: EventDetailsView()) {
+                            EventCard(event: $viewModel.events[index])
+                        }
+                    }
+                }
+                .listStyle(.plain)
+                .navigationTitle(Constants.Labels.eventsForYou)
+                .refreshable {
+                    viewModel.getEventList()
                 }
             }
-            .listStyle(.plain)
-            .navigationTitle(Constants.Labels.eventsForYou)
+            else {
+                ScrollView {
+                    Text("Events meant for you will be shown here")
+                }
+                .refreshable {
+                    viewModel.getEventList()
+                }
+            }
         }
     }
 }
 
 struct ExploreView_Previews: PreviewProvider {
     static var previews: some View {
-        ExploreView()
+        ExploreView(viewModel: MainTabViewModel())
     }
 }

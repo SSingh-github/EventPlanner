@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class AppState : ObservableObject {
+class AppState : ObservableObject {
     @Published var rootViewId = UUID()
 }

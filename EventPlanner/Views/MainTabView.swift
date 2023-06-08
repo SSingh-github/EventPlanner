@@ -19,7 +19,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $viewModel.selection) {
-            ExploreView()
+            ExploreView(viewModel: viewModel)
                 .tabItem {
                     Label(Constants.Labels.explore, systemImage: Constants.Images.explore)
                        
@@ -64,8 +64,8 @@ struct MainTabView: View {
     }
 }
 
-struct MainTabView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainTabView()
-    }
-}
+//struct MainTabView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainTabView()
+//    }
+//}
