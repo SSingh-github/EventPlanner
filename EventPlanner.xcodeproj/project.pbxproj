@@ -11,6 +11,8 @@
 		93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */; };
 		93A8B9212A2DC937007593C0 /* practice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B9202A2DC937007593C0 /* practice.swift */; };
 		93A8B9232A2DDD54007593C0 /* AddEventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */; };
+		93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */; };
+		93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A965C32A3350CB005B14BA /* DirectionsView.swift */; };
 		93AC81AF2A2AFEEC00A43131 /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */; };
 		93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */; };
 		93AC81B32A2B487C00A43131 /* DateAndTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */; };
@@ -64,6 +66,8 @@
 		93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimePickerView.swift; sourceTree = "<group>"; };
 		93A8B9202A2DC937007593C0 /* practice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = practice.swift; sourceTree = "<group>"; };
 		93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewModel.swift; sourceTree = "<group>"; };
+		93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinator.swift; sourceTree = "<group>"; };
+		93A965C32A3350CB005B14BA /* DirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsView.swift; sourceTree = "<group>"; };
 		93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
 		93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewEventView.swift; sourceTree = "<group>"; };
 		93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimeView.swift; sourceTree = "<group>"; };
@@ -124,6 +128,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		93A965C02A334CC7005B14BA /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				93080F702A2DA5C00074978C /* LocationManager.swift */,
+				93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		93AC9BA62A27723C00E3A61A /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +170,7 @@
 				93EC5B452A249C140065A286 /* Views */,
 				93EC5B4F2A24A03C0065A286 /* ViewModels */,
 				93AC9BA62A27723C00E3A61A /* Networking */,
+				93A965C02A334CC7005B14BA /* Location */,
 				93EC5B4C2A249EA80065A286 /* Utils */,
 				93EC5B3B2A2490B30065A286 /* Assets.xcassets */,
 				93EC5B3D2A2490B30065A286 /* Preview Content */,
@@ -218,7 +232,6 @@
 				93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */,
 				93AC9BA22A273F7600E3A61A /* MainTabViewModel.swift */,
 				93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */,
-				93080F702A2DA5C00074978C /* LocationManager.swift */,
 				93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */,
 			);
 			path = ViewModels;
@@ -235,6 +248,7 @@
 				93AC9BA42A27648500E3A61A /* LoadingView.swift */,
 				93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */,
 				93A8B9202A2DC937007593C0 /* practice.swift */,
+				93A965C32A3350CB005B14BA /* DirectionsView.swift */,
 				93EE9A6B2A2EF28B00478DAA /* EventCard.swift */,
 				93B472CE2A31A8180042C628 /* SheetView.swift */,
 			);
@@ -345,6 +359,7 @@
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
+				93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */,
 				93AC9BA82A27784E00E3A61A /* ForgotPasswordView.swift in Sources */,
 				93EC5B4E2A249EB80065A286 /* Constants.swift in Sources */,
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,
@@ -367,6 +382,7 @@
 				93AC9BA32A273F7600E3A61A /* MainTabViewModel.swift in Sources */,
 				93B472CD2A3198DF0042C628 /* Formatting.swift in Sources */,
 				93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */,
+				93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */,
 				93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */,
 				93080F712A2DA5C00074978C /* LocationManager.swift in Sources */,
 				93AC9BA52A27648500E3A61A /* LoadingView.swift in Sources */,

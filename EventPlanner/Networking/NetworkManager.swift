@@ -619,6 +619,55 @@ class NetworkManager {
         task.resume()
     }
     
+    func getMyEvents(viewModel: MainTabViewModel) {
+        guard let url = URL(string: Constants.API.URLs.myEvents) else {
+            print("unable to create url")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while fetching my events")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting user events successful")
+            }
+            else {
+                print("some error in gettting the user events")
+            }
+            
+            do {
+                print(data)
+        
+                let response = try JSONDecoder().decode(EventData.self, from: data)
+                
+                viewModel.myEvents = response.data
+                
+                for event in response.data {
+                    print(event.location)
+                }
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+           
+        }
+        task.resume()
+    }
+    
     func postNewEvent(viewModel: AddEventViewModel, appState: AppState) {
         guard let url = URL(string: Constants.API.URLs.postEvent) else {
             return
@@ -703,10 +752,10 @@ class NetworkManager {
         
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
-            Constants.Keys.id : eventId
+            Constants.Keys.eventId : eventId
         ]
         
         do {
@@ -755,10 +804,10 @@ class NetworkManager {
         
         request.httpMethod = Constants.API.HttpMethods.post
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
-            Constants.Keys.id : eventId
+            Constants.Keys.eventId : eventId
         ]
         
         do {

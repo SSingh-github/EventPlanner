@@ -17,13 +17,38 @@ struct MyEventsView: View {
             LoginSignupView()
         }
         else if viewModel.userLogin {
-            Text("my event view in user login")
+            
+            NavigationView {
+                //if events array is empty, show some other view
+                if viewModel.myEvents.isEmpty == false {
+                    List {
+                        ForEach(viewModel.myEvents.indices, id: \.self) {index in
+                            NavigationLink(destination: EventDetailsView(viewModel: viewModel)) {
+                                EventCard(event: $viewModel.myEvents[index], myEvent: true)
+                            }
+                        }
+                    }
+                    .listStyle(.plain)
+                    .navigationTitle("My events")
+                    .refreshable {
+                        viewModel.getMyEvents()
+                    }
+                }
+                else {
+                    ScrollView {
+                        Text("Events posted by you will be shown here")
+                    }
+                    .refreshable {
+                        viewModel.getMyEvents()
+                    }
+                }
+            }
         }
     }
 }
 
-//struct MyEventsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MyEventsView()
-//    }
-//}
+struct MyEventsView_Previews: PreviewProvider {
+    static var previews: some View {
+        MyEventsView(viewModel: MainTabViewModel())
+    }
+}

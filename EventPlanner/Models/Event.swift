@@ -31,4 +31,5 @@ struct Event: Codable {
     let is_liked: Bool
     let is_favourite: Bool
     let event_attendees_count: Int
+    let like_count: Int
 }

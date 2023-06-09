@@ -13,6 +13,7 @@ struct EventCard: View {
     @Environment(\.colorScheme) var colorScheme
     @State var liked = false
     @State var markedFavorite = false
+    var myEvent: Bool
     
     var body: some View {
         
@@ -71,6 +72,7 @@ struct EventCard: View {
                         Button {
                             withAnimation{
                                 markedFavorite.toggle()
+                                NetworkManager.shared.markEventAsFavourite(eventId: event.id)
                             }
                         } label: {
                             if markedFavorite {
@@ -80,6 +82,8 @@ struct EventCard: View {
                             }
                             else {
                                 Image(systemName: "star")
+                                    .foregroundColor(.gray)
+                                    .bold()
                                     .frame(width: 45, height: 45)
                             }
                         }
@@ -88,16 +92,18 @@ struct EventCard: View {
                         Button {
                             withAnimation{
                                 liked = !liked
+                                NetworkManager.shared.likeTheEvent(eventId: event.id)
                             }
                         } label: {
+                          
                             if liked {
-                                Image(systemName: "hand.thumbsup.fill")
-                                    .foregroundColor(Constants.Colors.blueThemeColor)
-                                    .frame(width: 45, height: 45)
+                                Image(systemName: "heart.fill")
+                                    .foregroundColor(Constants.Colors.pinkColor)
                             }
                             else {
-                                Image(systemName: "hand.thumbsup")
-                                    .frame(width: 45, height: 45)
+                                Image(systemName: "heart")
+                                    .foregroundColor(.gray)
+                                    .bold()
                             }
                         }
                         .buttonStyle(PlainButtonStyle())

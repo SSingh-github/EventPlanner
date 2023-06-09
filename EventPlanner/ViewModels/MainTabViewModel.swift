@@ -28,6 +28,7 @@ class MainTabViewModel: ObservableObject {
     @Published var imageUrl = ""
     @Published var selection: Tab = .explore
     @Published var events: [Event] = []
+    @Published var myEvents: [Event] = []
 
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
@@ -72,5 +73,9 @@ class MainTabViewModel: ObservableObject {
     
     func getEventList() {
         NetworkManager.shared.getEvents(viewModel: self)
+    }
+    
+    func getMyEvents() {
+        NetworkManager.shared.getMyEvents(viewModel: self)
     }
 }

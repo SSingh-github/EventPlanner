@@ -11,6 +11,7 @@ import SwiftUI
 struct Constants {
     struct Colors {
         static let blueThemeColor = Color(red: 0.04, green: 0.33, blue: 1.81)
+        static let pinkColor = Color(red: 2.45, green: 0.05, blue: 0.77)
     }
     
     struct API {
@@ -19,7 +20,7 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static let baseUrl = "https://e37b-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "https://be6c-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -30,8 +31,9 @@ struct Constants {
             static let getProfile = baseUrl + "user_profile"
             static let updateProfile = baseUrl + "update_profile"
             static let postEvent = baseUrl + "events/"
-            static let likeEvent = baseUrl + "like_event/"
-            static let markFavEvent = baseUrl + "mark_favourite/"
+            static let likeEvent = baseUrl + "like_event"
+            static let markFavEvent = baseUrl + "favourites/"
+            static let myEvents = baseUrl + "user_events"
         }
         
         struct HttpMethods {
@@ -43,6 +45,7 @@ struct Constants {
     
     struct Keys {
         static let id = "id"
+        static let eventId = "event_id"
         static let email = "email"
         static let password = "password"
         static let otp = "otp"

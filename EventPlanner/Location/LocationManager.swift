@@ -17,12 +17,10 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
     @Published var manager: CLLocationManager = .init()
     @Published var searchText: String = ""
     @Published var fetchedPlaces: [CLPlacemark]?
-    
     @Published var userLocation: CLLocation?
     @Published var pickedLocation: CLLocation?
     @Published var pickedMark: CLPlacemark?
-    //latitude = pickedLocation.coordinate.latitude, longitude = pickedLocation.coordinate.longitude
-    
+   
     var cancellable: AnyCancellable?
     
     override init() {
@@ -75,7 +73,6 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
             
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-        
         case .denied:
             handleLocationError()
         case .authorizedAlways:
@@ -102,7 +99,6 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
         annotation.title = "This will be the event location."
-        
         mapView.addAnnotation(annotation)
     }
     
@@ -110,7 +106,6 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "EVENTPIN")
         marker.isDraggable = true
         marker.canShowCallout = false
-        
         return marker
     }
     
@@ -118,7 +113,6 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         guard let newLocation = view.annotation?.coordinate else {return}
         self.pickedLocation = .init(latitude: newLocation.latitude, longitude: newLocation.longitude)
         self.updatePlacemark(location: .init(latitude: newLocation.latitude, longitude: newLocation.longitude))
-        print("\(String(describing: pickedLocation?.coordinate.latitude)) is the latitude \(pickedLocation?.coordinate.longitude) is the longitude")
     }
     
     func updatePlacemark(location: CLLocation) {
@@ -128,7 +122,6 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
                 await MainActor.run(body: {
                     self.pickedMark = place
                 })
-                
             }
             catch {
                 
