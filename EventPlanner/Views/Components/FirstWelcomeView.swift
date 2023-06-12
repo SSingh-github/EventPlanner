@@ -11,6 +11,7 @@ struct FirstWelcomeView: View {
     
     @ObservedObject var viewModel: WelcomeViewModel
     
+    
     var body: some View {
         ZStack {
             VStack {

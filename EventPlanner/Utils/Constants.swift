@@ -12,6 +12,7 @@ struct Constants {
     struct Colors {
         static let blueThemeColor = Color(red: 0.04, green: 0.33, blue: 1.81)
         static let pinkColor = Color(red: 2.45, green: 0.05, blue: 0.77)
+        static let polylineColor = UIColor(red: 0.04, green: 0.33, blue: 1.81, alpha: 1)
     }
     
     struct API {
@@ -20,13 +21,13 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static let baseUrl = "https://be6c-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "https://e976-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
             static let forgotPassword = baseUrl + "users/forgot_password"
             static let verifyOtp = baseUrl + "users/verify_otp"
-            static let resetPassword = baseUrl + "users/reset_password" 
+            static let resetPassword = baseUrl + "users/reset_password"
             static let setProfile = baseUrl + "profile"
             static let getProfile = baseUrl + "user_profile"
             static let updateProfile = baseUrl + "update_profile"

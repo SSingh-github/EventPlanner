@@ -23,7 +23,19 @@ struct ExploreView: View {
                     }
                 }
                 .listStyle(.plain)
+                .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(Constants.Labels.eventsForYou)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Filter") {
+                            viewModel.showFilterView.toggle()
+                        }
+                        .foregroundColor(Constants.Colors.blueThemeColor)
+                        .sheet(isPresented: $viewModel.showFilterView) {
+                            FilterView(viewModel: viewModel)
+                        }
+                    }
+                }
                 .refreshable {
                     viewModel.getEventList()
                 }

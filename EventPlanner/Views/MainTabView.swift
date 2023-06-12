@@ -26,12 +26,12 @@ struct MainTabView: View {
                 }
                 .tag(Tab.explore)
             
-            SearchView()
-                .tabItem {
-                    Label(Constants.Labels.tabSearch, systemImage: Constants.Images.search)
-                        
-                }
-                .tag(Tab.search)
+//            SearchView()
+//                .tabItem {
+//                    Label(Constants.Labels.tabSearch, systemImage: Constants.Images.search)
+//
+//                }
+//                .tag(Tab.search)
             
             NewEventView(viewModel: viewModel)
                 .id(appState.rootViewId) 

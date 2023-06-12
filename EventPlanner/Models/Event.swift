@@ -26,7 +26,7 @@ struct Event: Codable {
     let end_date: String
     let end_time: String
     let image: String?
-    let event_status: String
+    let event_status: Int
     let hashtags: [String]
     let is_liked: Bool
     let is_favourite: Bool

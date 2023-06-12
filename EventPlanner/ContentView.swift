@@ -18,6 +18,7 @@ struct ContentView: View {
         }
         else {
             WelcomeTabView()
+                .environmentObject(appState)
         }
     }
 }

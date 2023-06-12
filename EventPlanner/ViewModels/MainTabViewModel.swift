@@ -29,6 +29,8 @@ class MainTabViewModel: ObservableObject {
     @Published var selection: Tab = .explore
     @Published var events: [Event] = []
     @Published var myEvents: [Event] = []
+    @Published var showFilterView = false
+    @Published var filter: Filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 0.0, location: "")
 
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
@@ -77,5 +79,13 @@ class MainTabViewModel: ObservableObject {
     
     func getMyEvents() {
         NetworkManager.shared.getMyEvents(viewModel: self)
+    }
+    
+    func resetFilter() {
+        self.filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 0.0, location: "")
+    }
+    
+    func getFilteredEvents() {
+        NetworkManager.shared.getFilteredEvents(viewModel: self)
     }
 }

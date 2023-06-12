@@ -112,6 +112,7 @@ struct LoginSignupView: View {
                                 }
                                 .navigationDestination(isPresented: $viewModel.presentMainTabView, destination: {
                                     MainTabView()
+                                       
                                 })
                             
                             }
@@ -144,8 +145,8 @@ struct LoginSignupView: View {
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginSignupView()
-    }
-}
+//struct LoginView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginSignupView()
+//    }
+//}

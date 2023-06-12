@@ -17,18 +17,25 @@ struct ContentView2: View {
     @State var showDirectionsSheet = false
     
     var body: some View {
-        VStack {
+        ZStack(alignment: .bottomTrailing) {
             MapView(directions: $directions)
             
             Button {
                 showDirectionsSheet.toggle()
             } label: {
-                Text("show directions")
+                Image(systemName: "arrow.triangle.turn.up.right.diamond.fill")
+                    .font(.largeTitle)
                     .foregroundColor(Constants.Colors.blueThemeColor)
+                    .background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                            .shadow(radius: 10)
+                    }
             }
             .disabled(directions.isEmpty)
-            .padding()
-
+            .padding(.bottom, 150)
+            .padding(.trailing)
+           
         }
         .sheet(isPresented: $showDirectionsSheet, content: {DirectionsView(directions: $directions)})
         .ignoresSafeArea()

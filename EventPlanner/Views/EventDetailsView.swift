@@ -11,6 +11,7 @@ import SwiftUI
 
 struct EventDetailsView: View {
     @ObservedObject var viewModel: MainTabViewModel
+    @State var showMap = false
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -43,7 +44,7 @@ struct EventDetailsView: View {
                 
                 HStack {
                    // Spacer()
-                    Text("12")
+                    Text("10+")
                         .bold()
                         .font(.system(size: 17))
                     Text("joined ")
@@ -82,10 +83,14 @@ struct EventDetailsView: View {
                     
                     Button {
                         print("move to map view")
+                        showMap.toggle()
                     } label: {
-                        Image(systemName: "arrow.triangle.turn.up.right.diamond.fill")
+                        Image(systemName: "location.square.fill")
                             .font(.title)
                             .foregroundColor(Constants.Colors.blueThemeColor)
+                    }
+                    NavigationLink(destination: ContentView2(), isActive: $showMap) {
+                        Text("")
                     }
                 }
                 .padding(.vertical)
@@ -138,6 +143,8 @@ struct EventDetailsView: View {
           //  Divider()
             
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("")
         .padding()
     }
 }
