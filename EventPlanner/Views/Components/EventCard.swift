@@ -42,11 +42,13 @@ struct EventCard: View {
                                     .resizable()
                                     .frame(height: 150)
                                     .scaledToFit()
+                                    .cornerRadius(20)
                             case .failure(_):
                                 // Show an error placeholder if the image fails to load
                                Rectangle()
                                     .frame(height: 150)
                                     .foregroundColor(.gray)
+                                    .cornerRadius(20)
                             @unknown default:
                                 // Handle any future cases if needed
                                 EmptyView()
@@ -56,6 +58,7 @@ struct EventCard: View {
                     Rectangle()
                          .frame(height: 150)
                          .foregroundColor(.gray)
+                         .cornerRadius(20)
                 }
                     
                 
@@ -113,15 +116,17 @@ struct EventCard: View {
                     }
                     HStack {
                         Text(event.location)
+                            .foregroundColor(.gray)
+                            .bold()
                         
                         Spacer()
                     }
                 }
-                .padding([.bottom, .horizontal])
+                .padding([.bottom, .trailing])
             }
             .background(colorScheme == .dark ? .black : .white)
             .cornerRadius(20)
-            .shadow(color: colorScheme == .dark ? .white : .black, radius: 5)
+            //.shadow(color: colorScheme == .dark ? .white : .black, radius: 5)
             
             VStack(alignment: .leading) {
                 Text(event.start_date.suffix(2))

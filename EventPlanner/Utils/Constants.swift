@@ -21,7 +21,7 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static let baseUrl = "https://e976-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "https://c2c8-112-196-113-2.ngrok-free.app/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -35,6 +35,7 @@ struct Constants {
             static let likeEvent = baseUrl + "like_event"
             static let markFavEvent = baseUrl + "favourites/"
             static let myEvents = baseUrl + "user_events"
+            static let joinEvent = baseUrl + "join_event"
         }
         
         struct HttpMethods {

@@ -724,6 +724,7 @@ class NetworkManager {
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
                 viewModel.events = response.data
+                print("number of filtered events are \(viewModel.events.count)")
                 
                 for event in response.data {
                     print(event.location)
@@ -900,6 +901,57 @@ class NetworkManager {
             }
             else {
                 print("error in liking the event")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
+    func joinEvent(eventId: Int) {
+        guard let url = URL(string: Constants.API.URLs.joinEvent) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.eventId : eventId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("event was successfully joined")
+            }
+            else {
+                print("error in joining the event")
             }
             
             do{

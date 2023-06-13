@@ -53,7 +53,7 @@ struct FilterView: View {
                     
                     
                    
-                    DatePicker("", selection: $viewModel.filter.startDate, in: Date()..., displayedComponents: .date)
+                    DatePicker("", selection: $viewModel.filter.startDate, in: viewModel.startDate..., displayedComponents: .date)
                         .datePickerStyle(GraphicalDatePickerStyle())
                         .padding(.horizontal)
                         .accentColor(Constants.Colors.blueThemeColor)

@@ -4,7 +4,7 @@
 //
 //  Created by Chicmic on 08/06/23.
 
-// change the font size
+// person.fill.badge.plus symbol to join the event
 
 
 import SwiftUI

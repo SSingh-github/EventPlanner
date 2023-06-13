@@ -11,7 +11,7 @@ import SwiftUI
 struct EventPlannerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MyEventsView(viewModel: MainTabViewModel())
         }
     }
 }
