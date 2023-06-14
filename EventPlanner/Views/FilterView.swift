@@ -18,6 +18,7 @@ struct FilterView: View {
             VStack(alignment: .leading) {
                 ScrollView(showsIndicators: false) {
                     HStack {
+                        CheckBoxView(checked: $viewModel.checks[0])
                         Text("Category")
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -44,12 +45,15 @@ struct FilterView: View {
                     )
                     
                     HStack {
+                        CheckBoxView(checked: $viewModel.checks[1])
+
                         Text("Start Date:")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .padding([.leading, .top])
+                            
                         Spacer()
                     }
+                    .padding([.leading, .top])
                     
                     
                    
@@ -59,44 +63,56 @@ struct FilterView: View {
                         .accentColor(Constants.Colors.blueThemeColor)
                     
                     HStack {
+                        CheckBoxView(checked: $viewModel.checks[2])
+
                         Text("Title:")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .padding([.leading, .top])
                         Spacer()
                     }
+                    .padding([.leading, .top])
+
                     
                     TextFieldView(placeholder: "Event title", text: $viewModel.filter.title)
                     
                     HStack {
+                        CheckBoxView(checked: $viewModel.checks[3])
+
                         Text("Hashtag:")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .padding([.leading, .top])
                         Spacer()
                     }
+                    .padding([.leading, .top])
+
                     
                     TextFieldView(placeholder: "#tag", text: $viewModel.filter.hashtag)
                     
                     HStack {
+                        CheckBoxView(checked: $viewModel.checks[4])
+
                         Text("Radius: " + String(format: "%.1f", viewModel.filter.radius) + " Km")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .padding([.leading, .top])
                         Spacer()
                     }
+                    .padding([.leading, .top])
+
                     .padding(.top)
                     Slider(value: $viewModel.filter.radius, in: 5...100)
                         .accentColor(Constants.Colors.blueThemeColor)
                     
                     VStack {
                         HStack {
+                            CheckBoxView(checked: $viewModel.checks[5])
+
                             Text("Location:")
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                                .padding([.leading, .top])
                             Spacer()
                         }
+                        .padding([.leading, .top])
+
                         TextFieldView(placeholder: "Location", text: $viewModel.filter.location)
                             .padding(.bottom)
 

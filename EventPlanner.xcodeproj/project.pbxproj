@@ -15,6 +15,7 @@
 		93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */; };
 		93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */; };
 		93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A965C32A3350CB005B14BA /* DirectionsView.swift */; };
+		93AC56472A39A88E00B7DCD8 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC56462A39A88E00B7DCD8 /* CheckBox.swift */; };
 		93AC81AF2A2AFEEC00A43131 /* CreateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */; };
 		93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */; };
 		93AC81B32A2B487C00A43131 /* DateAndTimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */; };
@@ -31,6 +32,8 @@
 		93ACA6312A37295C00D6ACFC /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6302A37295C00D6ACFC /* FilterView.swift */; };
 		93ACA6332A3745BF00D6ACFC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6322A3745BF00D6ACFC /* Extensions.swift */; };
 		93ACA6352A374FAB00D6ACFC /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6342A374FAB00D6ACFC /* Filter.swift */; };
+		93AE786E2A39934D00042CF6 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE786D2A39934D00042CF6 /* SplashScreenView.swift */; };
+		93B19F182A39C1F400CDE3EB /* DetailedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */; };
 		93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */; };
 		93B35F8C2A286B04006C7CA7 /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B35F8B2A286B04006C7CA7 /* OtpView.swift */; };
 		93B35F8E2A286B16006C7CA7 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B35F8D2A286B16006C7CA7 /* ResetPasswordView.swift */; };
@@ -75,6 +78,7 @@
 		93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryEventCard.swift; sourceTree = "<group>"; };
 		93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinator.swift; sourceTree = "<group>"; };
 		93A965C32A3350CB005B14BA /* DirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsView.swift; sourceTree = "<group>"; };
+		93AC56462A39A88E00B7DCD8 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileView.swift; sourceTree = "<group>"; };
 		93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewEventView.swift; sourceTree = "<group>"; };
 		93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimeView.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		93ACA6302A37295C00D6ACFC /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		93ACA6322A3745BF00D6ACFC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		93ACA6342A374FAB00D6ACFC /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		93AE786D2A39934D00042CF6 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
+		93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedEvent.swift; sourceTree = "<group>"; };
 		93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		93B35F8B2A286B04006C7CA7 /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		93B35F8D2A286B16006C7CA7 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
@@ -265,6 +271,8 @@
 				93B472CE2A31A8180042C628 /* SheetView.swift */,
 				93A91CC12A38420400773E80 /* CalendarView.swift */,
 				93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */,
+				93AE786D2A39934D00042CF6 /* SplashScreenView.swift */,
+				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -277,6 +285,7 @@
 				93F0A61D2A29CC1600B10B71 /* Response.swift */,
 				93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */,
 				93ED89B92A3083C100856AA2 /* Event.swift */,
+				93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */,
 				93ACA6342A374FAB00D6ACFC /* Filter.swift */,
 			);
 			path = Models;
@@ -359,6 +368,7 @@
 				93B472D12A31ED5C0042C628 /* EventDetailsView.swift in Sources */,
 				93EE9A6E2A2F4C9000478DAA /* MapSelectionView.swift in Sources */,
 				93B35F8C2A286B04006C7CA7 /* OtpView.swift in Sources */,
+				93AE786E2A39934D00042CF6 /* SplashScreenView.swift in Sources */,
 				93B35F8E2A286B16006C7CA7 /* ResetPasswordView.swift in Sources */,
 				93AC9B9D2A271E5C00E3A61A /* NewEventView.swift in Sources */,
 				93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */,
@@ -377,6 +387,7 @@
 				93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
+				93AC56472A39A88E00B7DCD8 /* CheckBox.swift in Sources */,
 				93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */,
 				93AC9BA82A27784E00E3A61A /* ForgotPasswordView.swift in Sources */,
 				93EC5B4E2A249EB80065A286 /* Constants.swift in Sources */,
@@ -402,6 +413,7 @@
 				93B472CD2A3198DF0042C628 /* Formatting.swift in Sources */,
 				93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */,
 				93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */,
+				93B19F182A39C1F400CDE3EB /* DetailedEvent.swift in Sources */,
 				93ACA6332A3745BF00D6ACFC /* Extensions.swift in Sources */,
 				93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */,
 				93080F712A2DA5C00074978C /* LocationManager.swift in Sources */,

@@ -110,14 +110,11 @@ struct EventCard: View {
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
-                        
-                        
-
                     }
                     HStack {
                         Text(event.location)
-                            .foregroundColor(.gray)
-                            .bold()
+                            .foregroundColor(colorScheme == .dark ? .gray : .black)
+                            .bold(colorScheme == .dark)
                         
                         Spacer()
                     }
@@ -126,7 +123,6 @@ struct EventCard: View {
             }
             .background(colorScheme == .dark ? .black : .white)
             .cornerRadius(20)
-            //.shadow(color: colorScheme == .dark ? .white : .black, radius: 5)
             
             VStack(alignment: .leading) {
                 Text(event.start_date.suffix(2))

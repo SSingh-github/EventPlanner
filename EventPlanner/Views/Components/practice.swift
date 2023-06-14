@@ -15,10 +15,11 @@ struct ContentView2: View {
   
     @State var directions: [String] = []
     @State var showDirectionsSheet = false
+    @State var destination : (Double, Double) = (30.378180, 76.776695)
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            MapView(directions: $directions)
+            MapView(directions: $directions, destination: $destination)
             
             Button {
                 showDirectionsSheet.toggle()
@@ -52,6 +53,7 @@ struct MapView: UIViewRepresentable {
     typealias UIViewType = MKMapView
     
     @Binding var directions: [String]
+    @Binding var destination: (Double, Double)
     @StateObject var locationManger = LocationManager()
     
     func makeCoordinator() -> MapViewCoordinator {
@@ -74,7 +76,7 @@ struct MapView: UIViewRepresentable {
         
         let p1 = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276))
         //30.378180, 76.776695
-        let p2 = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.378180, longitude: 76.776695)) // placemark for ambala
+        let p2 = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: destination.0, longitude: destination.1)) // placemark for ambala
         
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: p1)

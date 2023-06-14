@@ -22,11 +22,16 @@ struct MyEventsView: View {
                     NavigationLink {
                         if index < 3 {
                             List {
-                                SecondaryEventCard()
+                                NavigationLink {
+                                    EventDetailsView(viewModel: viewModel)
+                                } label: {
+                                    SecondaryEventCard()
+
+                                }
                             }
                         }
                         else {
-                            CalendarView(viewModel: viewModel)
+                            //CalendarView(viewModel: viewModel)
                         }
                     } label: {
                         HStack {
@@ -38,7 +43,7 @@ struct MyEventsView: View {
                     }
                 }
             }
-            .listStyle(PlainListStyle())
+            //.listStyle(PlainListStyle())
             .navigationTitle("My Events")
         }
 

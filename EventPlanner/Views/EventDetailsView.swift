@@ -12,140 +12,293 @@ import SwiftUI
 struct EventDetailsView: View {
     @ObservedObject var viewModel: MainTabViewModel
     @State var showMap = false
-    
+    @Environment(\.colorScheme) var colorScheme
+    var indexOfEvent: Int = 0
+
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack {
-                
-                Text("Birthday party")
-                    .font(.title)
-                    .fontWeight(.semibold)
-                    .padding(.bottom, 4)
-                Text("(Approved)")
-                    .foregroundColor(.green)
-            }
-            .padding(.bottom, 20)
-            
-            VStack {
-                Image("background")
-                    .resizable()
-                    .frame(height: 250)
-                    .scaledToFit()
-                    .cornerRadius(20)
-                
-                Text("This is a birthday party event to be held in the mohali sector 74, all of you who want to join can do so without any hesitation.")
-                    .multilineTextAlignment(.leading)
-                    .padding(.vertical)
-                //Divider()
-                
-                Text("#hashtag1 #hashtag2 #hashtag3 #hashtag4 #hashtag5 #hashtag6")
-                    .padding(.vertical, 8)
-                    .multilineTextAlignment(.leading)
-                
-                HStack {
-                   // Spacer()
-                    Text("10+")
-                        .bold()
-                        .font(.system(size: 17))
-                    Text("joined ")
-                    Spacer()
-                    HStack {
-                        Image(systemName: "heart.fill")
-                            .foregroundColor(Constants.Colors.pinkColor)
-                            .font(.system(size: 17))
-                        Text("liked")
+    
+        ZStack {
+            ScrollView(showsIndicators: false) {
+                    VStack {
+                        
+                        Text(viewModel.detailedEventForExplore?.title ?? "no title")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 4)
+                        Text(viewModel.detailedEventForExplore?.is_approved ?? true ? "(Approved)" : "(Not Approved)")
+                            .foregroundColor(viewModel.detailedEventForExplore?.is_approved ?? true ? .green : .red)
                     }
-                    Spacer()
-                    HStack {
-                        Image(systemName: "star.fill")
-                            .foregroundColor(.yellow)
-                            .font(.system(size: 17))
-                        Text("favourite")
+                    .padding(.bottom, 20)
+                    
+                    VStack {
+//                        Image("background")
+//                            .resizable()
+//                            .frame(height: 250)
+//                            .scaledToFit()
+//                            .cornerRadius(20)
+                        if let imageUrl = viewModel.detailedEventForExplore?.image, !imageUrl.isEmpty {
+                            // Show the image using the URL
+                            AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                switch phase {
+                                case .empty:
+                                    // Placeholder view while the image is being loaded
+                                    HStack {
+                                        Spacer()
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
+                                            .frame(width: 200, height: 150)
+                                            .scaleEffect(3)
+                                            
+                                        Spacer()
+                                    }
+                                case .success(let image):
+                                    // Display the loaded image
+                                    image
+                                        .resizable()
+                                        .frame(height: 250)
+                                        .scaledToFit()
+                                        .cornerRadius(20)
+                                case .failure(_):
+                                    // Show an error placeholder if the image fails to load
+                                   Rectangle()
+                                        //.resizable()
+                                        .frame(height: 250)
+                                        .scaledToFit()
+                                        .cornerRadius(20)
+                                @unknown default:
+                                    // Handle any future cases if needed
+                                    EmptyView()
+                                }                            }
+                        }
+                    else {
+                        Rectangle()
+                            //.resizable()
+                            .frame(height: 250)
+                            .scaledToFit()
+                            .cornerRadius(20)
                     }
-                    //Spacer()
-                }
-                .foregroundColor(.gray)
-                .font(.caption)
-                .fontWeight(.bold)
-                .padding(.vertical)
-                //Divider()
-                HStack {
-                    Text("Social and cultural events")
-                        //.font(.title3)
-                    Spacer()
-                }
-                //Divider()
-                HStack {
-                    Image("Location")
-                    Text("Mohali, sector 74, phase 8b")
-                        //.font(.title3)
-                    Spacer()
+                        
+                        Text(viewModel.detailedEventForExplore?.description ?? "no description")
+                            .multilineTextAlignment(.leading)
+                            .padding(.vertical)
+                        //Divider()
+                        
+//                        ScrollView {
+//                            HStack {
+//                                ForEach(0...20, id:\.self) { _ in
+//                                    Text("hello world")
+//                                }
+//                            }
+//                        }
+                        
+                        Text(viewModel.getHashtagString())
+                            .padding(.vertical, 8)
+                            .multilineTextAlignment(.leading)
+//
+                        
+                        
+                        HStack {
+                           // Spacer()
+                            Text("\(viewModel.detailedEventForExplore?.event_attendees_count ?? 0)")
+                                .bold()
+                                .font(.system(size: 17))
+                            Text("attendees ")
+                            Spacer()
+                            HStack {
+                                Image(systemName: "heart.fill")
+                                    .foregroundColor(Constants.Colors.pinkColor)
+                                    .font(.system(size: 17))
+                                Text("liked")
+                            }
+                            Spacer()
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                    .font(.system(size: 17))
+                                Text("favourite")
+                            }
+                            //Spacer()
+                        }
+                        .foregroundColor(.gray)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .padding(.vertical)
+                        //Divider()
+                        HStack {
+                            Text(Constants.Labels.eventTypes[(viewModel.detailedEventForExplore?.event_category_id ?? 2) - 1])
+                                //.font(.title3)
+                            Spacer()
+                        }
+                        //Divider()
+                        HStack {
+                            Image("Location")
+                            Text(viewModel.detailedEventForExplore?.location ?? "no location")
+                                //.font(.title3)
+                            Spacer()
+                            
+                            Button {
+                                print("move to map view")
+                                showMap.toggle()
+                            } label: {
+                                Image(systemName: "location.square.fill")
+                                    .font(.title)
+                                    .foregroundColor(Constants.Colors.blueThemeColor)
+                            }
+                            NavigationLink(destination: ContentView2(destination: (viewModel.detailedEventForExplore?.latitude ?? 0, viewModel.detailedEventForExplore?.longitude ?? 0)), isActive: $showMap) {
+                                Text("")
+                            }
+                        }
+                        .padding(.vertical)
+                        //Divider()
+                    }
+                    HStack {
+                        Text("Commencement")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
+                    .padding(.bottom)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text(viewModel.detailedEventForExplore?.start_date ?? "00")
+                            Spacer()
+                        }
+                        .padding(.bottom)
+                        HStack {
+                            Image(systemName: "clock")
+                            Text(viewModel.detailedEventForExplore?.start_time ?? "00")
+                            Spacer()
+                        }
+                    }
+                    .padding(.bottom)
+                    
+                    HStack {
+                        Text("Culmination")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
+                    .padding(.bottom)
+                    
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Image(systemName: "calendar")
+                            Text(viewModel.detailedEventForExplore?.end_date ?? "00")
+                            Spacer()
+                        }
+                        .padding(.bottom)
+                        HStack {
+                            Image(systemName: "clock")
+                            Text(viewModel.detailedEventForExplore?.end_time ?? "00")
+                            Spacer()
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    HStack {
+//                        Image("background")
+//                            .resizable()
+//                            .scaledToFill()
+//                            .frame(width: 80, height: 80)
+//                            .clipShape(Circle())
+                        if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
+                            // Show the image using the URL
+                            AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                switch phase {
+                                case .empty:
+                                    // Placeholder view while the image is being loaded
+                                    HStack {
+                                        Spacer()
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
+                                            .frame(width: 200, height: 150)
+                                            .scaleEffect(3)
+                                            
+                                        Spacer()
+                                    }
+                                case .success(let image):
+                                    // Display the loaded image
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 80, height: 80)
+                                        .clipShape(Circle())
+                                case .failure(_):
+                                    // Show an error placeholder if the image fails to load
+                                   Rectangle()
+                                        .scaledToFill()
+                                        .frame(width: 80, height: 80)
+                                        .clipShape(Circle())
+                                @unknown default:
+                                    // Handle any future cases if needed
+                                    EmptyView()
+                                }                            }
+                        }
+                    else {
+                        Rectangle()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                    }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text(viewModel.detailedEventForExplore?.user_name ?? "user")
+                                .font(.title3)
+                            Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) followers")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        
+                        Button {
+                            print("follow the user")
+                        } label: {
+                            ZStack {
+                                Rectangle()
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                    .frame(width: 80,height: 30)
+                                    .cornerRadius(14)
+                                Text("follow")
+                                    .foregroundColor(colorScheme == .light ? .white: .black)
+                                    .padding()
+                            }
+                        }
+
+                        Spacer()
+                    }
+                    .padding(.top, 20)
                     
                     Button {
-                        print("move to map view")
-                        showMap.toggle()
+       
                     } label: {
-                        Image(systemName: "location.square.fill")
-                            .font(.title)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
+                        ZStack {
+                            Rectangle()
+                                .frame(height: 60)
+                                .foregroundColor(Constants.Colors.blueThemeColor)
+                                .cornerRadius(10)
+                            Text("Join event")
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                        }
                     }
-                    NavigationLink(destination: ContentView2(), isActive: $showMap) {
-                        Text("")
-                    }
+                    .frame(height: 60)
+                    .padding(.top, 40)
                 }
-                .padding(.vertical)
-                //Divider()
-            }
-            HStack {
-                Text("Commencement")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                Spacer()
-            }
-            .padding(.bottom)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
+                .padding()
             
-            VStack(alignment: .leading) {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("12, June, 2023")
-                    Spacer()
-                }
-                .padding(.bottom)
-                HStack {
-                    Image(systemName: "clock")
-                    Text("10:00 AM")
-                    Spacer()
-                }
+            if viewModel.showDetailedEventForExplore {
+                LoadingView()
             }
-            .padding(.bottom)
-            
-            HStack {
-                Text("Culmination")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                Spacer()
-            }
-            .padding(.bottom)
-            
-            VStack(alignment: .leading) {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("15, June, 2023")
-                    Spacer()
-                }
-                .padding(.bottom)
-                HStack {
-                    Image(systemName: "clock")
-                    Text("12:00 PM")
-                    Spacer()
-                }
-            }
-          //  Divider()
-            
         }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("")
-        .padding()
+        .onAppear {
+            viewModel.showDetailedEventForExplore = true
+            NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.events[indexOfEvent].id)
+            print(viewModel.showDetailedEventForExplore, "is the value of boolean")
+        }
     }
 }
 

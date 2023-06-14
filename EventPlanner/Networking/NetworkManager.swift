@@ -668,6 +668,55 @@ class NetworkManager {
         task.resume()
     }
     
+    func eventDetails(viewModel: MainTabViewModel, eventId: Int) {
+        let urlComponents = URLComponents(string: Constants.API.URLs.postEvent + "\(eventId)")!
+        
+        // Create a URL from the URLComponents
+        guard let url = urlComponents.url else {
+            print("Invalid URL")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error while getting events")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting events successful")
+            }
+            else {
+                print("some error in gettting the events")
+            }
+            
+            do {
+                print(data)
+        
+                let response = try JSONDecoder().decode(DetailedEventData.self, from: data)
+                viewModel.detailedEventForExplore = response.data
+                
+                viewModel.showDetailedEventForExplore = false
+                
+                print("fetched event by the user \(String(describing: viewModel.detailedEventForExplore?.user_name))")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
     func getFilteredEvents(viewModel: MainTabViewModel) {
         //you can create an object of location manager here to get the coordinates of the user
         // for trial purposes use static coordinates
@@ -675,20 +724,28 @@ class NetworkManager {
         var urlComponents = URLComponents(string: Constants.API.URLs.postEvent)!
 
         // Add query parameters
-        
+        let queryItems: [(String, String)] = [
+            ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory) ?? 0) + 1)"),
+            ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate)),
+            ("title"         , viewModel.filter.title),
+            ("hashtag"       ,viewModel.filter.hashtag),
+            ("radius"        ,"\(viewModel.filter.radius)"),
+            ("location"      ,viewModel.filter.location)
+        ]
        
         urlComponents.queryItems = [
             URLQueryItem(name: "user_latitude", value: "30.711214"),
             URLQueryItem(name: "user_longitude", value: "76.690276"),
             // Add more query items as needed
-            //event_category, radius, hashtag, location, start_date, title
-            URLQueryItem(name: "event_category", value: "\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory) ?? 0) + 1)"),
-            URLQueryItem(name: "radius", value: "\(viewModel.filter.radius)"),
-            URLQueryItem(name: "hashtag", value: viewModel.filter.hashtag),
-            URLQueryItem(name: "location", value: viewModel.filter.location),
-            URLQueryItem(name: "start_date", value: Formatter.shared.formatSingleDate(date: viewModel.filter.startDate)),
-            URLQueryItem(name: "title", value: viewModel.filter.title)
         ]
+        
+        for index in viewModel.checks.indices {
+            if viewModel.checks[index] {
+                urlComponents.queryItems?.append(URLQueryItem(name: queryItems[index].0, value: queryItems[index].1))
+            }
+        }
+        
+        
 
         // Create a URL from the URLComponents
         guard let url = urlComponents.url else {
@@ -724,7 +781,7 @@ class NetworkManager {
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
                 viewModel.events = response.data
-                print("number of filtered events are \(viewModel.events.count)")
+                print("number of filtered events are \(response.data.count)")
                 
                 for event in response.data {
                     print(event.location)

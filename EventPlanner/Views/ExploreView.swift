@@ -4,7 +4,9 @@
 //
 //  Created by Chicmic on 31/05/23.
 //
-
+/*
+ filtering api fixing, checkboxes in filter view for selective filtering, showing details of the event in detailsview, fixing the like and favrourite events, modifying the annotation in map view
+ */
 import SwiftUI
 
 struct ExploreView: View {
@@ -13,11 +15,11 @@ struct ExploreView: View {
    
     var body: some View {
         NavigationView {
-            //if events array is empty, show some other view
+           
             if viewModel.events.isEmpty == false {
                 List {
                     ForEach(viewModel.events.indices, id: \.self) {index in
-                       NavigationLink(destination: EventDetailsView(viewModel: viewModel)) {
+                       NavigationLink(destination: EventDetailsView(viewModel: viewModel, indexOfEvent: index)) {
                            EventCard(event: $viewModel.events[index], myEvent: false)
                         }
                     }

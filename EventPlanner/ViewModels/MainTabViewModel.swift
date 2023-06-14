@@ -27,10 +27,15 @@ class MainTabViewModel: ObservableObject {
     @Published var editProfileLoading = false
     @Published var imageUrl = ""
     @Published var selection: Tab = .explore
+    @Published var checks = [false, false, false, false, false, false]
+    @Published var detailedEventForExplore: DetailedEvent? // detailed event object for explore view
+    @Published var detailedEventForMyEvents: DetailedEvent? // detialed event object for my events view
+    @Published var showDetailedEventForExplore = true
+    @Published var showDetialedEventForMyEvents = false
     @Published var events: [Event] = []
     @Published var myEvents: [Event] = []
     @Published var exampleEvents: [Event] = [
-        Event(id: 0, event_category_id: 1, is_approved: true, title: "new event", description: "", location: "", longitude: 0.0, latitude: 0.0, start_date: "", start_time: "", end_date: "", end_time: "", image: "", event_status: 0, hashtags: [""], is_liked: true, is_favourite: true, event_attendees_count: 0, like_count: 0, date: Date().diff(numDays: 2))
+      
     ]
     @Published var showFilterView = false
     @Published var filter: Filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 5.0, location: "")
@@ -39,6 +44,17 @@ class MainTabViewModel: ObservableObject {
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
     let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
 
+    
+    func getHashtagString()-> String {
+        if let detailedEvent = detailedEventForExplore{
+            var string = ""
+            for hashtag in detailedEvent.hashtags {
+                string += hashtag + " "
+            }
+            return string
+        }
+        return "no hashtags"
+    }
     
     func signOutCall() {
         self.isLoggedOut = true

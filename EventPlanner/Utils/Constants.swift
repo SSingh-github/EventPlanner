@@ -21,7 +21,7 @@ struct Constants {
         static let authorizationHeaderField = "Authorization"
         
         struct URLs {
-            static let baseUrl = "https://c2c8-112-196-113-2.ngrok-free.app/"
+            static let baseUrl = "http://192.180.1.197:5000/"
             static let signUp = baseUrl + "users/sign_up"
             static let logIn = baseUrl + "users/sign_in"
             static let logOut = baseUrl + "users/sign_out"
@@ -130,7 +130,7 @@ struct Constants {
         static let settings = " Settings"
         static let editProfileWithSpace = "  Edit profile"
         static let segments = ["Start", "End"]
-        static let eventTypes = ["Social Events", "Corporate Events", "Cultural and Artistic Events", "Sports and recreation Events", "Educational and Academic Events"]
+        static let eventTypes = ["Social", "Corporate", "Cultural / Artistic", "Sports / recreation", "Edu. / Academic"]
         static let months = ["01":"Jan", "02":"Feb", "03":"Mar", "04":"Apr", "05":"May", "06":"Jun", "07":"Jul", "08":"Aug", "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec"]
         static let authToken = "token"
         static let createProfile = "Create Profile"
