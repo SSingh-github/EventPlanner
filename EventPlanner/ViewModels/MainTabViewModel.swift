@@ -34,9 +34,8 @@ class MainTabViewModel: ObservableObject {
     @Published var showDetialedEventForMyEvents = false
     @Published var events: [Event] = []
     @Published var myEvents: [Event] = []
-    @Published var exampleEvents: [Event] = [
-      
-    ]
+    @Published var favouriteEvents: [Event] = []
+    @Published var joinedEvents: [Event] = []
     @Published var showFilterView = false
     @Published var filter: Filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 5.0, location: "")
 
@@ -98,6 +97,14 @@ class MainTabViewModel: ObservableObject {
     
     func getMyEvents() {
         NetworkManager.shared.getMyEvents(viewModel: self)
+    }
+    
+    func getJoinedEvents() {
+        NetworkManager.shared.getJoinedEvents(viewModel: self)
+    }
+    
+    func getFavouriteEvents() {
+        NetworkManager.shared.getFavouriteEvents(viewModel: self)
     }
     
     func resetFilter() {

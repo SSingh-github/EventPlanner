@@ -11,7 +11,7 @@ struct MyEventsView: View {
     
     @ObservedObject var viewModel: MainTabViewModel
     
-    var options = ["Favourite events", "Joined Events", "Created Events", "Calendar"]
+    var options = ["Favourite events", "Joined Events", "Created Events", "Upcoming"]
     
     var body: some View {
         
@@ -20,18 +20,17 @@ struct MyEventsView: View {
 
                 ForEach(options.indices, id:\.self) { index in
                     NavigationLink {
-                        if index < 3 {
-                            List {
-                                NavigationLink {
-                                    EventDetailsView(viewModel: viewModel)
-                                } label: {
-                                    SecondaryEventCard()
-
-                                }
-                            }
+                        if index == 0 {
+                            FavouriteEvents(viewModel: viewModel)
+                        }
+                        else if index == 1 {
+                            JoinedEvents(viewModel: viewModel)
+                        }
+                        else if index == 2 {
+                            CreatedEvents(viewModel: viewModel)
                         }
                         else {
-                            //CalendarView(viewModel: viewModel)
+                            CalendarView(viewModel: viewModel)
                         }
                     } label: {
                         HStack {

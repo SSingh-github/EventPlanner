@@ -67,16 +67,20 @@ struct MapView: UIViewRepresentable {
         //userLocation holds the coordinates of the current user location
         let userLocation = CLLocationCoordinate2D(latitude: locationManger.userLocation?.coordinate.latitude ?? 0, longitude: locationManger.userLocation?.coordinate.longitude ?? 0)
         
-        //destination location holds the coordinates of the destination location
-        //this variable will store the coordinates of the event i.e. event.longitude, event.latitude
-        let destinationLocation = 0
-        
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
         mapView.setRegion(region, animated: true)
         
         let p1 = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276))
         //30.378180, 76.776695
         let p2 = MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: destination.0, longitude: destination.1)) // placemark for ambala
+        
+        let annotation1 = MKPointAnnotation()
+        annotation1.coordinate = CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276)
+        annotation1.title = "Starting location"
+        
+        let annotation2 = MKPointAnnotation()
+        annotation2.coordinate = CLLocationCoordinate2D(latitude: destination.0, longitude: destination.1)
+        annotation2.title = "Destination location"
         
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: p1)
@@ -86,7 +90,7 @@ struct MapView: UIViewRepresentable {
         let directions = MKDirections(request: request)
         directions.calculate {response, error in
             guard let route = response?.routes.first else {return}
-            mapView.addAnnotations([p1, p2])
+            mapView.addAnnotations([annotation1, annotation2])
             mapView.addOverlay(route.polyline)
             mapView.setVisibleMapRect(
                 route.polyline.boundingMapRect,

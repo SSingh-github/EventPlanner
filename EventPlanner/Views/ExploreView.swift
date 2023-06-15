@@ -4,9 +4,7 @@
 //
 //  Created by Chicmic on 31/05/23.
 //
-/*
- filtering api fixing, checkboxes in filter view for selective filtering, showing details of the event in detailsview, fixing the like and favrourite events, modifying the annotation in map view
- */
+
 import SwiftUI
 
 struct ExploreView: View {
@@ -25,7 +23,7 @@ struct ExploreView: View {
                     }
                 }
                 .listStyle(.plain)
-                .navigationBarTitleDisplayMode(.inline)
+                //.navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(Constants.Labels.eventsForYou)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {

@@ -19,167 +19,175 @@ struct ProfileView: View {
             LoginSignupView()
         }
         else if viewModel.userLogin {
-            ZStack {
-                ScrollView(showsIndicators: false) {
-                    
-                    HStack(alignment: .center) {
-                        VStack(alignment: .leading) {
-                            Text(viewModel.firstName)
-                                .font(.title)
-                                .bold()
-                            Text(viewModel.lastName)
-                                .font(.title)
-                                .bold()
-                        }
+            NavigationView {
+                ZStack {
+                    ScrollView(showsIndicators: false) {
                         
-                        Spacer()
-                        if let imageUrl = viewModel.imageUrl, !imageUrl.isEmpty {
-                            // Show the image using the URL
-                            AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
-                                switch phase {
-                                case .empty:
-                                    // Placeholder view while the image is being loaded
-                                    ProgressView()
-                                case .success(let image):
-                                    // Display the loaded image
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(Circle())
-                                case .failure(_):
-                                    // Show an error placeholder if the image fails to load
-                                    Image(systemName: Constants.Images.personFill)
-                                        .font(.system(size: 100))
-                                        .frame(width: 100, height: 100)
-                                        .scaledToFit()
-                                        .clipShape(Circle())
-                                        .foregroundColor(.gray)
-                                @unknown default:
-                                    // Handle any future cases if needed
-                                    EmptyView()
-                                }                            }
-                        } else {
-                            // Show a default image when the URL is empty or nil
-                            Image(systemName: Constants.Images.personFill)
-                                .font(.system(size: 100))
-                                .frame(width: 100, height: 100)
-                                .scaledToFit()
-                                .clipShape(Circle())
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.vertical)
-                    
-                    Divider()
-                    
-                    VStack (alignment:.leading){
-                        Text(Constants.Labels.dateOfBirth)
-                            .font(.title2)
-                            //.bold()
-                            .padding(.vertical)
-                        HStack {
-                            Image(systemName: Constants.Images.calendar)
-                                .font(.title3)
-                            Text(viewModel.dob == "" ? "2000-02-02" : viewModel.dob)
-                                //.fontWeight(.semibold)
+                        HStack(alignment: .center) {
+                            HStack {
+                                Text(viewModel.firstName)
+                                    .font(.title2)
+                                    .bold()
+                                Text(viewModel.lastName)
+                                    .font(.title2)
+                                    .bold()
+                            }
+                            
                             Spacer()
+                            if let imageUrl = viewModel.imageUrl, !imageUrl.isEmpty {
+                                // Show the image using the URL
+                                AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        // Placeholder view while the image is being loaded
+                                        ProgressView()
+                                    case .success(let image):
+                                        // Display the loaded image
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(Circle())
+                                    case .failure(_):
+                                        // Show an error placeholder if the image fails to load
+                                        Image(systemName: Constants.Images.personFill)
+                                            .font(.system(size: 100))
+                                            .frame(width: 100, height: 100)
+                                            .scaledToFit()
+                                            .clipShape(Circle())
+                                            .foregroundColor(.gray)
+                                    @unknown default:
+                                        // Handle any future cases if needed
+                                        EmptyView()
+                                    }                            }
+                            } else {
+                                // Show a default image when the URL is empty or nil
+                                Image(systemName: Constants.Images.personFill)
+                                    .font(.system(size: 100))
+                                    .frame(width: 100, height: 100)
+                                    .scaledToFit()
+                                    .clipShape(Circle())
+                                    .foregroundColor(.gray)
+                            }
                         }
-                    }
-                    VStack (alignment:.leading){
-                        Text(Constants.Labels.address)
-                            .font(.title2)
-                            //.bold()
-                            .padding(.vertical)
-                        HStack {
-                            Image(Constants.Images.location)
-                                .font(.title)
-                            Text(viewModel.address)
-                                //.fontWeight(.semibold)
-
-                            Spacer()
-                        }
-                    }
-                    VStack (alignment:.leading){
-                        Text(Constants.Labels.phoneNumber)
-                            .font(.title2)
-                            //.bold()
-                            .padding(.vertical)
-                        HStack {
-                            Image(systemName: Constants.Images.phone)
-                                .font(.title3)
-                            Text(viewModel.phoneNumber)
-                                //.fontWeight(.semibold)
-
-                            Spacer()
-                        }
-                    }
-                    .padding(.bottom)
-                    
-                    Divider()
                         .padding(.vertical)
-                    Button(action: {
-                        viewModel.showEditProfileView.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: Constants.Images.edit)
-                                .font(.title2)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
-                            Text(Constants.Labels.editProfileWithSpace)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
-                        }
-                    }
-                    .fullScreenCover(isPresented: $viewModel.showEditProfileView) {
-                        EditUserProfileView(viewModel: viewModel)
-                    }
-                    
-                    Button(action: {
-                        print("open the settings")
-                    }) {
-                        HStack {
-                            Image(systemName: Constants.Images.settings)
-                                .font(.title2)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
-                            Text(Constants.Labels.settings)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
-                        }
-                    }
-                    .padding(.vertical)
-                    
-                    Button(action: {
-                        viewModel.showSignoutAlert.toggle()
                         
-                    }) {
-                        HStack {
-                            Image(systemName: Constants.Images.logout)
-                                .font(.title2)
-                                .foregroundColor(.red)
-                            Text(Constants.Labels.logOut)
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                            Spacer()
+                        Divider()
+                        
+                        VStack (alignment:.leading){
+                            Text(Constants.Labels.phoneNumber)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding(.bottom)
+                            HStack {
+                                Image(systemName: Constants.Images.phone)
+                                    .font(.title3)
+                                Text(viewModel.phoneNumber)
+                                    //.fontWeight(.semibold)
+
+                                Spacer()
+                            }
                         }
+                        .padding(.bottom)
+                        
+                        VStack (alignment:.leading){
+                            Text(Constants.Labels.dateOfBirth)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding(.bottom)
+                            HStack {
+                                Image(systemName: Constants.Images.calendar)
+                                    .font(.title3)
+                                Text(viewModel.dob == "" ? "2000-02-02" : viewModel.dob)
+                                    //.fontWeight(.semibold)
+                                Spacer()
+                            }
+                        }
+                        .padding(.bottom)
+
+                        VStack (alignment:.leading){
+                            Text(Constants.Labels.address)
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .padding(.bottom)
+                            HStack {
+                                Image(Constants.Images.location)
+                                    .font(.title)
+                                Text(viewModel.address)
+                                    //.fontWeight(.semibold)
+
+                                Spacer()
+                            }
+                        }
+                        
+                        
+                        Divider()
+                            .padding(.vertical)
+                        Button(action: {
+                            viewModel.showEditProfileView.toggle()
+                        }) {
+                            HStack {
+                                Image(systemName: Constants.Images.edit)
+                                    .font(.title2)
+                                .foregroundColor(Constants.Colors.blueThemeColor)
+                                Text(Constants.Labels.editProfileWithSpace)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                Spacer()
+                            }
+                        }
+                        .fullScreenCover(isPresented: $viewModel.showEditProfileView) {
+                            EditUserProfileView(viewModel: viewModel)
+                        }
+                        
+                        Button(action: {
+                            print("open the settings")
+                        }) {
+                            HStack {
+                                Image(systemName: Constants.Images.settings)
+                                    .font(.title2)
+                                .foregroundColor(Constants.Colors.blueThemeColor)
+                                Text(Constants.Labels.settings)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                Spacer()
+                            }
+                        }
+                        .padding(.vertical)
+                        
+                        Button(action: {
+                            viewModel.showSignoutAlert.toggle()
+                            
+                        }) {
+                            HStack {
+                                Image(systemName: Constants.Images.logout)
+                                    .font(.title2)
+                                    .foregroundColor(.red)
+                                Text(Constants.Labels.logOut)
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                Spacer()
+                            }
+                        }
+                        .alert(isPresented: $viewModel.showAlert) {
+                            Alert(
+                                title: Text(""), message: Text(viewModel.alertMessage),
+                                dismissButton: .default(Text(Constants.Labels.ok)
+                                    .foregroundColor(Constants.Colors.blueThemeColor)))
+                        }
+                        .alert(isPresented: $viewModel.showSignoutAlert) {
+                            Alert(title: Text(Constants.Labels.Questions.logout), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
+                                viewModel.signOutCall()
+                            })
+                        }
+                     
                     }
-                    .alert(isPresented: $viewModel.showAlert) {
-                        Alert(
-                            title: Text(""), message: Text(viewModel.alertMessage),
-                            dismissButton: .default(Text(Constants.Labels.ok)
-                                .foregroundColor(Constants.Colors.blueThemeColor)))
+                    .refreshable {
+                        NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
                     }
-                    .alert(isPresented: $viewModel.showSignoutAlert) {
-                        Alert(title: Text(Constants.Labels.Questions.logout), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
-                            viewModel.signOutCall()
-                        })
-                    }
+                    .padding()
                     if viewModel.isLoggedOut {
                         LoadingView()
                     }
                 }
-                .refreshable {
-                    NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
-                }
-                .padding()
+                .navigationTitle("Profile")
             }
         }
     }

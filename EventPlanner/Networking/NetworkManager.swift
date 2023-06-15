@@ -58,8 +58,11 @@ class NetworkManager {
             } else {
                 print("unable to sign up")
                 print("Error: Unexpected status code \(httpResponse.statusCode)")
-                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                viewModel.showAlert = true
+                DispatchQueue.main.async {
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+                
             }
             
             do{
@@ -242,8 +245,11 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode != 200 {
-                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                viewModel.showAlert = true
+                DispatchQueue.main.async {
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+                
                 return
             }
             
@@ -477,12 +483,15 @@ class NetworkManager {
                 print(response.data.address)
                 print(response.data.profile_image ?? "")
                 
-                viewModel.phoneNumber = String(response.data.phone_number)
-                viewModel.address = response.data.address
-                viewModel.firstName = response.data.first_name
-                viewModel.lastName = response.data.last_name
-                viewModel.dob = response.data.dob
-                viewModel.imageUrl = response.data.profile_image ?? ""
+                DispatchQueue.main.async {
+                    viewModel.phoneNumber = String(response.data.phone_number)
+                    viewModel.address = response.data.address
+                    viewModel.firstName = response.data.first_name
+                    viewModel.lastName = response.data.last_name
+                    viewModel.dob = response.data.dob
+                    viewModel.imageUrl = response.data.profile_image ?? ""
+                }
+               
             }
             catch {
                 print("unable to decode the response")
@@ -582,6 +591,10 @@ class NetworkManager {
         
         request.httpMethod = Constants.API.HttpMethods.get
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        
+        if UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) == false {
+            request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        }
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
@@ -605,7 +618,10 @@ class NetworkManager {
         
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
-                viewModel.events = response.data
+                DispatchQueue.main.async {
+                    viewModel.events = response.data
+
+                }
                 
                 for event in response.data {
                     print(event.location)
@@ -653,7 +669,114 @@ class NetworkManager {
         
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
-                viewModel.myEvents = response.data
+                DispatchQueue.main.async {
+                    viewModel.myEvents = response.data
+
+                }
+                
+                for event in response.data {
+                    print(event.location)
+                }
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+           
+        }
+        task.resume()
+    }
+    
+    func getJoinedEvents(viewModel: MainTabViewModel) {
+        guard let url = URL(string: Constants.API.URLs.joinedEvents) else {
+            print("unable to create url")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while fetching my events")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting user events successful")
+            }
+            else {
+                print("some error in gettting the user events")
+            }
+            
+            do {
+                print(data)
+        
+                let response = try JSONDecoder().decode(EventData.self, from: data)
+                
+                DispatchQueue.main.async {
+                    viewModel.joinedEvents = response.data
+
+                }
+                
+                for event in response.data {
+                    print(event.location)
+                }
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+           
+        }
+        task.resume()
+    }
+    
+    func getFavouriteEvents(viewModel: MainTabViewModel) {
+        guard let url = URL(string: Constants.API.URLs.favouriteEvents) else {
+            print("unable to create url")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.get
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                print("error occured while fetching my events")
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("getting user events successful")
+            }
+            else {
+                print("some error in gettting the user events")
+            }
+            
+            do {
+                print(data)
+        
+                let response = try JSONDecoder().decode(EventData.self, from: data)
+                
+                DispatchQueue.main.async {
+                    viewModel.favouriteEvents = response.data
+
+                }
                 
                 for event in response.data {
                     print(event.location)
@@ -681,6 +804,9 @@ class NetworkManager {
         
         request.httpMethod = Constants.API.HttpMethods.get
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        if UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) == false {
+            request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        }
 
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
@@ -703,9 +829,12 @@ class NetworkManager {
                 print(data)
         
                 let response = try JSONDecoder().decode(DetailedEventData.self, from: data)
-                viewModel.detailedEventForExplore = response.data
                 
-                viewModel.showDetailedEventForExplore = false
+                DispatchQueue.main.async {
+                    viewModel.detailedEventForExplore = response.data
+                    viewModel.showDetailedEventForExplore = false
+                }
+                
                 
                 print("fetched event by the user \(String(describing: viewModel.detailedEventForExplore?.user_name))")
             }
@@ -779,8 +908,9 @@ class NetworkManager {
                 print(data)
         
                 let response = try JSONDecoder().decode(EventData.self, from: data)
-                
-                viewModel.events = response.data
+                DispatchQueue.main.async {
+                    viewModel.events = response.data
+                }
                 print("number of filtered events are \(response.data.count)")
                 
                 for event in response.data {
@@ -986,6 +1116,57 @@ class NetworkManager {
         
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("event was successfully joined")
+            }
+            else {
+                print("error in joining the event")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
+    func followUser(userId: Int) {
+        guard let url = URL(string: Constants.API.URLs.followUser) else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.eventId : userId
         ]
         
         do {

@@ -19,6 +19,7 @@ struct FilterView: View {
                 ScrollView(showsIndicators: false) {
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[0])
+                            .padding(.leading)
                         Text("Category")
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -31,19 +32,18 @@ struct FilterView: View {
                                     .padding()
                             }
                         }
-                        .pickerStyle(MenuPickerStyle())
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                        .pickerStyle(.inline)
+                        //.frame(maxWidth: .infinity)
+                        //.padding()
                         .fontWeight(.semibold)
                         .accentColor(Constants.Colors.blueThemeColor)
                     }
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(colorScheme == .light ? Color.black.opacity(1) : Color.white.opacity(1), lineWidth: 2)
-                            .frame(height: CGFloat(60))
-                    )
-                    
+                    //.padding(.horizontal)
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .stroke(colorScheme == .light ? Color.black.opacity(1) : Color.white.opacity(1), lineWidth: 2)
+//                            .frame(height: CGFloat(60))
+//                    )
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[1])
 

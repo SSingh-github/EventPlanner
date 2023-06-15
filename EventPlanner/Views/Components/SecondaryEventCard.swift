@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SecondaryEventCard: View {
+    @Binding var event: Event
     var body: some View {
         VStack {
             HStack {
-                Text("Sports Event")
+                Text(event.title)
                 .font(.title3)
                 .fontWeight(.semibold)
                 .padding(.top, 4)
@@ -20,33 +21,38 @@ struct SecondaryEventCard: View {
             }
             HStack {
                 Image(systemName: "calendar")
-                Text("24, June 2023")
+                Text(event.start_date)
                 Spacer()
             }
             HStack {
                 Image("Location")
-                Text("mohali, sector 74 phase 8b")
+                Text(event.location)
                 Spacer()
                 HStack {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
-                        .font(.subheadline)
-                    Text("approved")
-                        .font(.subheadline)
+                    if event.is_approved {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.subheadline)
+                        Text("approved")
+                            .font(.subheadline)
+                    }
+                    else {
+                        Image(systemName: "hourglass")
+                            .foregroundColor(.orange)
+                            .font(.headline)
+                        Text("pending  ")
+                            .font(.subheadline)
+                    }
                 }
             }
             
            
         }
-        
-        //.background(.red)
-        //.cornerRadius(20)
-        
     }
 }
 
-struct SecondaryEventCard_Previews: PreviewProvider {
-    static var previews: some View {
-        SecondaryEventCard()
-    }
-}
+//struct SecondaryEventCard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SecondaryEventCard()
+//    }
+//}

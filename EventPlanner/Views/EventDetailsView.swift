@@ -105,17 +105,38 @@ struct EventDetailsView: View {
                             Text("attendees ")
                             Spacer()
                             HStack {
-                                Image(systemName: "heart.fill")
-                                    .foregroundColor(Constants.Colors.pinkColor)
-                                    .font(.system(size: 17))
-                                Text("liked")
+                                if let liked = viewModel.detailedEventForExplore?.is_liked {
+                                    if liked {
+                                        Image(systemName: "heart.fill")
+                                            .foregroundColor(Constants.Colors.pinkColor)
+                                            .font(.system(size: 17))
+                                        Text("liked")
+                                    }
+                                    
+                                    else {
+                                        Image(systemName: "heart")
+                                            .foregroundColor(.gray)
+                                            .font(.system(size: 17))
+                                        Text("Not liked")
+                                    }
+                                }
                             }
                             Spacer()
                             HStack {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.yellow)
-                                    .font(.system(size: 17))
-                                Text("favourite")
+                                if let fav = viewModel.detailedEventForExplore?.is_favourite {
+                                    if fav {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                            .font(.system(size: 17))
+                                        Text("favourite")
+                                    }
+                                    else {
+                                        Image(systemName: "star")
+                                            .foregroundColor(.gray)
+                                            .font(.system(size: 17))
+                                        Text("Not favourite")
+                                    }
+                                }
                             }
                             //Spacer()
                         }

@@ -26,6 +26,12 @@ class Formatter {
         return formattedStartDate
     }
     
+    func createDateFromString(date: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.date(from: date)
+    }
+    
     func formatTime(times: [Date]) -> [String] {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"

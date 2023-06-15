@@ -94,17 +94,21 @@ struct EventCard: View {
                         
                         Button {
                             withAnimation{
-                                liked = !liked
+                                liked.toggle()
                                 NetworkManager.shared.likeTheEvent(eventId: event.id)
                             }
                         } label: {
-                          
-                            if liked {
-                                Image(systemName: "heart.fill")
-                                    .foregroundColor(Constants.Colors.pinkColor)
-                            }
-                            else {
-                                Image(systemName: "heart")
+                            HStack{
+                                if liked {
+                                    Image(systemName: "heart.fill")
+                                        .foregroundColor(Constants.Colors.pinkColor)
+                                }
+                                else {
+                                    Image(systemName: "heart")
+                                        .foregroundColor(.gray)
+                                        .bold()
+                                }
+                                Text("\(event.like_count)")
                                     .foregroundColor(.gray)
                                     .bold()
                             }
@@ -131,6 +135,21 @@ struct EventCard: View {
                     .font(.title2)
             }
             .padding(.leading)
+            .padding(.bottom, 47)
+        }
+        .onAppear {
+            if event.is_favourite {
+                self.markedFavorite = true
+            }
+            else {
+                self.markedFavorite = false
+            }
+            if event.is_liked {
+                self.liked = true
+            }
+            else {
+                self.liked = false
+            }
         }
     }
 }

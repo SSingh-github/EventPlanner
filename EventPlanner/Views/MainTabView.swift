@@ -75,9 +75,11 @@ struct MainTabView: View {
             // network calls to load the data before the app screen is visible to the user
             viewModel.getEventList()
             viewModel.getMyEvents()
+            viewModel.getJoinedEvents()
+            viewModel.getFavouriteEvents()
             NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                 withAnimation {
                     self.isActive = true
                 }
