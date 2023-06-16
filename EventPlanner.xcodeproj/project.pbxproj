@@ -61,6 +61,7 @@
 		93EC5B632A24AE2A0065A286 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */; };
 		93EC5B652A24B91E0065A286 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B642A24B91E0065A286 /* NetworkManager.swift */; };
 		93EC5B682A24B9E90065A286 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B672A24B9E90065A286 /* UserCredentials.swift */; };
+		93ECDDAA2A3C331300BE3279 /* CalendarEventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */; };
 		93ED89BA2A3083C100856AA2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89B92A3083C100856AA2 /* Event.swift */; };
 		93ED89BC2A309D3C00856AA2 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BB2A309D3C00856AA2 /* Enumerations.swift */; };
 		93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */; };
@@ -128,6 +129,7 @@
 		93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		93EC5B642A24B91E0065A286 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		93EC5B672A24B9E90065A286 /* UserCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredentials.swift; sourceTree = "<group>"; };
+		93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventsList.swift; sourceTree = "<group>"; };
 		93ED89B92A3083C100856AA2 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		93ED89BB2A309D3C00856AA2 /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdClass.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */,
 				93AE786D2A39934D00042CF6 /* SplashScreenView.swift */,
 				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
+				93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */,
 				93EC5B532A24A09F0065A286 /* Validations.swift in Sources */,
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
+				93ECDDAA2A3C331300BE3279 /* CalendarEventsList.swift in Sources */,
 				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
 				93A8B9212A2DC937007593C0 /* practice.swift in Sources */,
 				93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */,

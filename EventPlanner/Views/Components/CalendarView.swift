@@ -52,7 +52,7 @@ struct CalendarStruct: UIViewRepresentable {
 //
             var foundEvents: [Event] = []
             
-            for event in viewModel.events {
+            for event in viewModel.joinedEvents {
                 let startDate = Formatter.shared.createDateFromString(date: event.start_date)
                 if startDate?.startOfDay == dateComponents.date?.startOfDay  {
                     foundEvents.append(event)
@@ -105,7 +105,7 @@ struct CalendarStruct: UIViewRepresentable {
             guard let dateComponents else { return }
             var foundEvents: [Event] = []
             
-            for event in viewModel.events {
+            for event in viewModel.joinedEvents {
                 let startDate = Formatter.shared.createDateFromString(date: event.start_date)
                 if startDate?.startOfDay == dateComponents.date?.startOfDay  {
                     foundEvents.append(event)
@@ -131,11 +131,12 @@ struct CalendarView: View {
     
     var body: some View {
         ScrollView{
+            //give the starting and ending dates on the calendar.
             CalendarStruct(interval: DateInterval(start: .distantPast, end: .distantFuture), viewModel: viewModel, dateSelected: $dateSelected, displayEvents: $displayEvents)
                 .accentColor(Constants.Colors.blueThemeColor)
         }
         .sheet(isPresented: $displayEvents) {
-            Text("Event details")
+            CalendarEventsList(viewModel: viewModel, dateSelected: $dateSelected)
         }
     }
 }

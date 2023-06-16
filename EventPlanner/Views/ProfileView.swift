@@ -70,7 +70,6 @@ struct ProfileView: View {
                                     .foregroundColor(.gray)
                             }
                         }
-                        .padding(.vertical)
                         
                         Divider()
                         

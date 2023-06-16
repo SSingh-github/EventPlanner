@@ -31,11 +31,7 @@ struct EventDetailsView: View {
                     .padding(.bottom, 20)
                     
                     VStack {
-//                        Image("background")
-//                            .resizable()
-//                            .frame(height: 250)
-//                            .scaledToFit()
-//                            .cornerRadius(20)
+
                         if let imageUrl = viewModel.detailedEventForExplore?.image, !imageUrl.isEmpty {
                             // Show the image using the URL
                             AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
@@ -81,20 +77,10 @@ struct EventDetailsView: View {
                         Text(viewModel.detailedEventForExplore?.description ?? "no description")
                             .multilineTextAlignment(.leading)
                             .padding(.vertical)
-                        //Divider()
-                        
-//                        ScrollView {
-//                            HStack {
-//                                ForEach(0...20, id:\.self) { _ in
-//                                    Text("hello world")
-//                                }
-//                            }
-//                        }
-                        
+                       
                         Text(viewModel.getHashtagString())
                             .padding(.vertical, 8)
                             .multilineTextAlignment(.leading)
-//
                         
                         
                         HStack {
@@ -220,11 +206,7 @@ struct EventDetailsView: View {
                     Divider()
                     
                     HStack {
-//                        Image("background")
-//                            .resizable()
-//                            .scaledToFill()
-//                            .frame(width: 80, height: 80)
-//                            .clipShape(Circle())
+
                         if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
                             // Show the image using the URL
                             AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
@@ -286,7 +268,6 @@ struct EventDetailsView: View {
                                     .padding()
                             }
                         }
-
                         Spacer()
                     }
                     .padding(.top, 20)

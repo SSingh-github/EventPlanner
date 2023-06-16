@@ -27,13 +27,24 @@ struct ExploreView: View {
                 .navigationTitle(Constants.Labels.eventsForYou)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Filter") {
+//                        Button("Filter") {
+//                            viewModel.showFilterView.toggle()
+//                        }
+//                        .foregroundColor(Constants.Colors.blueThemeColor)
+//                        .sheet(isPresented: $viewModel.showFilterView) {
+//                            FilterView(viewModel: viewModel)
+//                        }
+                        Button {
                             viewModel.showFilterView.toggle()
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundColor(.primary)
+                                .font(.title3)
                         }
-                        .foregroundColor(Constants.Colors.blueThemeColor)
                         .sheet(isPresented: $viewModel.showFilterView) {
                             FilterView(viewModel: viewModel)
                         }
+
                     }
                 }
                 .refreshable {

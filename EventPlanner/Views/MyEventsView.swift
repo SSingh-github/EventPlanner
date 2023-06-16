@@ -42,7 +42,7 @@ struct MyEventsView: View {
                     }
                 }
             }
-            //.listStyle(PlainListStyle())
+            .listStyle(PlainListStyle())
             .navigationTitle("My Events")
         }
 

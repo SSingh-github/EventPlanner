@@ -610,6 +610,7 @@ class NetworkManager {
                 print("getting events successful")
             }
             else {
+                print(httpResponse.statusCode)
                 print("some error in gettting the events")
             }
             
@@ -994,6 +995,57 @@ class NetworkManager {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
+            }
+        }
+        task.resume()
+    }
+    
+    func deleteEvent(eventId: Int) {
+        guard let url = URL(string: Constants.API.URLs.postEvent + "\(eventId)/") else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.delete
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.eventId : eventId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("event was successfully deleted")
+            }
+            else {
+                print("error in deleting the event")
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
             }
         }
         task.resume()

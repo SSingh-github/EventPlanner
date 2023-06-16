@@ -13,7 +13,7 @@ struct MapViewSelection: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var mainViewModel: MainTabViewModel
-    @ObservedObject var viewModel: AddEventViewModel
+    @ObservedObject    var viewModel: AddEventViewModel
     @Environment(\.colorScheme) var colorScheme
    
     var body: some View {

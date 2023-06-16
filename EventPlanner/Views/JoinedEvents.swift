@@ -20,6 +20,7 @@ struct JoinedEvents: View {
                 }
             }
         }
+        .listStyle(PlainListStyle())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
     }

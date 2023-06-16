@@ -19,6 +19,7 @@ struct FavouriteEvents: View {
                 }
             }
         }
+        .listStyle(PlainListStyle())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
     }

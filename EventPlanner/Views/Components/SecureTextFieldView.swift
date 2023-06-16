@@ -27,7 +27,7 @@ struct SecureTextFieldView: View {
             Button(action: {
                 isPasswordVisible.toggle() // Toggle the visibility state
             }) {
-                Image(systemName: isPasswordVisible ? Constants.Images.eyeSlash : Constants.Images.eye)
+                Image(systemName: isPasswordVisible ? Constants.Images.eye : Constants.Images.eyeSlash)
                     .foregroundColor(.secondary)
             }
         }

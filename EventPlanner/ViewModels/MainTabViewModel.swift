@@ -114,4 +114,9 @@ class MainTabViewModel: ObservableObject {
     func getFilteredEvents() {
         NetworkManager.shared.getFilteredEvents(viewModel: self)
     }
+    
+    func deleteEvent(id: Int) {
+        NetworkManager.shared.deleteEvent(eventId: id)
+        NetworkManager.shared.getMyEvents(viewModel: self)
+    }
 }
