@@ -13,19 +13,23 @@ class MainTabViewModel: ObservableObject {
     @Published var userLogin = UserDefaults.standard.bool(forKey: Constants.Labels.userLoggedIn)
     @Published var showWelcomeViewModel = false
     @Published var showEditProfileView = false
+    
     @Published var firstName = "first name"
     @Published var lastName = "last name"
     @Published var dob = ""
     @Published var dateOfBirth = Date()
     @Published var address = "mohali"
     @Published var phoneNumber = "0000000000"
+    @Published var imageUrl = ""
+
+    @Published var userProfile: UserDataDetails = UserDataDetails(dob: "0000-00-00", phone_number: 0000000000, address: "", first_name: "first name", last_name: "last name", profile_image: "")
+    
     @Published var isLoggedOut = false
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
-    @Published var imageUrl = ""
     @Published var selection: Tab = .explore
     @Published var checks = [false, false, false, false, false, false]
     @Published var detailedEventForExplore: DetailedEvent? // detailed event object for explore view
@@ -62,11 +66,11 @@ class MainTabViewModel: ObservableObject {
     }
     
     func showFirstNameWarning() -> Bool {
-        return !Validations.shared.isValidFirstName(self.firstName) && !self.firstName.isEmpty
+        return !Validations.shared.isValidFirstName(self.userProfile.first_name) && !self.userProfile.first_name.isEmpty
     }
     
     func showLastNameWarning() -> Bool {
-        return !Validations.shared.isValidLastName(self.lastName) && !self.lastName.isEmpty
+        return !Validations.shared.isValidLastName(self.userProfile.last_name) && !self.userProfile.last_name.isEmpty
     }
     
     func showPhoneNumberWarning() -> Bool {
@@ -74,7 +78,7 @@ class MainTabViewModel: ObservableObject {
     }
     
     func showDobWarning() -> Bool {
-        return !Validations.shared.isValidDob(self.dob) && !self.dob.isEmpty
+        return !Validations.shared.isValidDob(self.userProfile.dob) && !self.userProfile.dob.isEmpty
     }
     
     func updateUserProfile() {

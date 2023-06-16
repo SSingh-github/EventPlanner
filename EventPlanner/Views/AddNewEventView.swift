@@ -92,51 +92,20 @@ struct AddNewEventView: View {
                     }
                     
                 }
-//
-//                    ZStack(alignment: .bottomTrailing) {
-//
-//                        if let image = viewModel.imagePicker.image {
-//                            Image(uiImage:image)
-//                                 .resizable()
-//                                 .frame(height: 250)
-//                                 .scaledToFit()
-//                                 .cornerRadius(20)
-//                        }
-//                        else {
-////                            Circle()
-////                                .frame(width: 100, height: 100)
-////                                .foregroundColor(colorScheme == .light ? .white : .black
-////                                )
-////                                .shadow(color:colorScheme == .light ?.black : .white, radius: 5)
-//
-////                            Image(systemName: "photo.on.rectangle")
-////                                .font(.system(size: 40))
-////                                .frame(width: 100, height: 100)
-////                                .scaledToFit()
-////                                .clipShape(Circle())
-//
-//                            Rectangle()
-//                                 //.resizable()
-//                                 .frame(height: 50)
-//                                 .scaledToFit()
-//                                 .cornerRadius(20)
-//                                 .foregroundColor(.secondary)
-//
-//                        }
-//                        PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
-//                            Image(systemName: Constants.Images.edit)
-//                                .padding(4)
-//                                .foregroundColor(.white)
-//                                .background(Constants.Colors.blueThemeColor)
-//                                .clipShape(Circle())
-//                        }
-//                    }
-                   // .frame(width: 100, height: 100)
                     
                     VStack(spacing: 10) {
                         VStack {
                             ForEach(viewModel.hashtags.indices, id: \.self) { index in
-                                TextFieldView(placeholder: "# hashtag", text: $viewModel.hashtags[index])
+                                HStack {
+                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.hashtags[index])
+                                    Button {
+                                        viewModel.hashtags.remove(at: index)
+                                    } label: {
+                                        Image(systemName: Constants.Images.multiply)
+                                            .font(.title3)
+                                            .foregroundColor(.red)
+                                    }
+                                }
                             }
                         }
                         HStack {
@@ -147,8 +116,8 @@ struct AddNewEventView: View {
                                 print(viewModel.hashtags.count)
                             }label: {
                                 Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(Constants.Colors.blueThemeColor)
-                                    .font(.title)
+                                    .foregroundColor(.green)
+                                    .font(.title3)
                             }
                             Text("Add Hashtag")
                                 .font(.title3)
@@ -158,10 +127,6 @@ struct AddNewEventView: View {
                         }
                         .padding()
                         
-                        
-                        
-                        
-                        //Spacer()
                     }
                     .padding(.top)
                     Spacer()
@@ -180,9 +145,6 @@ struct AddNewEventView: View {
                 .padding()
             .navigationTitle("Create Event")
             }
-            
-        
-        
     }
 }
 

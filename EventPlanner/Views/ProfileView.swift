@@ -25,16 +25,16 @@ struct ProfileView: View {
                         
                         HStack(alignment: .center) {
                             HStack {
-                                Text(viewModel.firstName)
+                                Text(viewModel.userProfile.first_name)
                                     .font(.title2)
                                     .bold()
-                                Text(viewModel.lastName)
+                                Text(viewModel.userProfile.last_name)
                                     .font(.title2)
                                     .bold()
                             }
                             
                             Spacer()
-                            if let imageUrl = viewModel.imageUrl, !imageUrl.isEmpty {
+                            if let imageUrl = viewModel.userProfile.profile_image, !imageUrl.isEmpty {
                                 // Show the image using the URL
                                 AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                                     switch phase {
@@ -74,14 +74,14 @@ struct ProfileView: View {
                         Divider()
                         
                         VStack (alignment:.leading){
-                            Text(Constants.Labels.phoneNumber)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding(.bottom)
+//                            Text(Constants.Labels.phoneNumber)
+//                                .font(.title3)
+//                                .fontWeight(.semibold)
+//                                .padding(.bottom)
                             HStack {
                                 Image(systemName: Constants.Images.phone)
                                     .font(.title3)
-                                Text(viewModel.phoneNumber)
+                                Text(String(viewModel.userProfile.phone_number))
                                     //.fontWeight(.semibold)
 
                                 Spacer()
@@ -90,14 +90,14 @@ struct ProfileView: View {
                         .padding(.bottom)
                         
                         VStack (alignment:.leading){
-                            Text(Constants.Labels.dateOfBirth)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding(.bottom)
+//                            Text(Constants.Labels.dateOfBirth)
+//                                .font(.title3)
+//                                .fontWeight(.semibold)
+//                                .padding(.bottom)
                             HStack {
                                 Image(systemName: Constants.Images.calendar)
                                     .font(.title3)
-                                Text(viewModel.dob == "" ? "2000-02-02" : viewModel.dob)
+                                Text(viewModel.userProfile.dob == "" ? "2000-02-02" : viewModel.userProfile.dob)
                                     //.fontWeight(.semibold)
                                 Spacer()
                             }
@@ -105,14 +105,14 @@ struct ProfileView: View {
                         .padding(.bottom)
 
                         VStack (alignment:.leading){
-                            Text(Constants.Labels.address)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding(.bottom)
+//                            Text(Constants.Labels.address)
+//                                .font(.title3)
+//                                .fontWeight(.semibold)
+//                                .padding(.bottom)
                             HStack {
                                 Image(Constants.Images.location)
                                     .font(.title)
-                                Text(viewModel.address)
+                                Text(viewModel.userProfile.address)
                                     //.fontWeight(.semibold)
 
                                 Spacer()
@@ -187,6 +187,11 @@ struct ProfileView: View {
                     }
                 }
                 .navigationTitle("Profile")
+                .onAppear {
+                    if viewModel.userProfile.first_name == "first name" {
+                        NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
+                    }
+                }
             }
         }
     }

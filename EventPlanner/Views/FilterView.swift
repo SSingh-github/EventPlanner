@@ -32,7 +32,7 @@ struct FilterView: View {
                                     .padding()
                             }
                         }
-                        .pickerStyle(.inline)
+                        .pickerStyle(WheelPickerStyle())
                         //.frame(maxWidth: .infinity)
                         //.padding()
                         .fontWeight(.semibold)

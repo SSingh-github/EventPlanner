@@ -23,6 +23,11 @@ struct JoinedEvents: View {
         .listStyle(PlainListStyle())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
+        .onAppear {
+            if viewModel.myEvents.isEmpty {
+                viewModel.getJoinedEvents()
+            }
+        }
     }
 }
 

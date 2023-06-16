@@ -30,13 +30,6 @@ struct MainTabView: View {
                         }
                         .tag(Tab.explore)
                     
-                    //            SearchView()
-                    //                .tabItem {
-                    //                    Label(Constants.Labels.tabSearch, systemImage: Constants.Images.search)
-                    //
-                    //                }
-                    //                .tag(Tab.search)
-                    
                     NewEventView(viewModel: viewModel)
                         .id(appState.rootViewId)
                         .tabItem {
@@ -74,11 +67,6 @@ struct MainTabView: View {
             
             // network calls to load the data before the app screen is visible to the user
             viewModel.getEventList()
-            viewModel.getMyEvents()
-            viewModel.getJoinedEvents()
-            viewModel.getFavouriteEvents()
-            NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
-
             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                 withAnimation {
                     self.isActive = true

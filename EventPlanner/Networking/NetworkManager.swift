@@ -484,12 +484,12 @@ class NetworkManager {
                 print(response.data.profile_image ?? "")
                 
                 DispatchQueue.main.async {
-                    viewModel.phoneNumber = String(response.data.phone_number)
-                    viewModel.address = response.data.address
-                    viewModel.firstName = response.data.first_name
-                    viewModel.lastName = response.data.last_name
-                    viewModel.dob = response.data.dob
-                    viewModel.imageUrl = response.data.profile_image ?? ""
+                    viewModel.userProfile.phone_number = response.data.phone_number
+                    viewModel.userProfile.address = response.data.address
+                    viewModel.userProfile.first_name = response.data.first_name
+                    viewModel.userProfile.last_name = response.data.last_name
+                    viewModel.userProfile.dob = response.data.dob
+                    viewModel.userProfile.profile_image = response.data.profile_image ?? ""
                 }
                
             }
@@ -702,7 +702,7 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
-                print("error occured while fetching my events")
+                print("error occured while fetching joined events")
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -711,10 +711,11 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                print("getting user events successful")
+                print("getting joined events successful")
             }
             else {
-                print("some error in gettting the user events")
+                print("some error in gettting the joined events")
+                print(httpResponse.statusCode)
             }
             
             do {
@@ -754,7 +755,7 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
-                print("error occured while fetching my events")
+                print("error occured while fetching favourite events")
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -763,10 +764,11 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                print("getting user events successful")
+                print("getting favourite events successful")
             }
             else {
-                print("some error in gettting the user events")
+                print("some error in gettting the favourite events")
+                print(httpResponse.statusCode)
             }
             
             do {
@@ -972,7 +974,7 @@ class NetworkManager {
             else {
                 print("error in posting the event")
             }
-            
+            print(httpResponse.statusCode)
             
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)

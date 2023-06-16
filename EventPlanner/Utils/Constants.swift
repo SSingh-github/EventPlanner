@@ -21,7 +21,7 @@ struct Constants {
         static let authorizationHeaderField             = "Authorization"
         
         struct URLs {
-            static let baseUrl                          = "http://192.180.1.206:5000/"
+            static let baseUrl                          = "http://192.180.1.206:5000/" //http://192.180.1.197:5000
             static let signUp                           = baseUrl + "users/sign_up"
             static let logIn                            = baseUrl + "users/sign_in"
             static let logOut                           = baseUrl + "users/sign_out"
@@ -37,7 +37,7 @@ struct Constants {
             static let myEvents                         = baseUrl + "user_events"
             static let joinEvent                        = baseUrl + "join_event"
             static let followUser                       = baseUrl + "follow_user"
-            static let favouriteEvents                  = baseUrl + "favourites"
+            static let favouriteEvents                  = baseUrl + "favourites/"
             static let joinedEvents                     = baseUrl + "user_joined_events"
         }
         
@@ -84,6 +84,7 @@ struct Constants {
     }
     
     struct Images {
+        static let multiply                             = "multiply.circle.fill"
         static let rightArrow                           = "arrow.right"
         static let northLocation                        = "location.north.circle.fill"
         static let mappin                               = "mappin.circle.fill"

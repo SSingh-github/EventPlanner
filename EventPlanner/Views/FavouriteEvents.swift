@@ -22,6 +22,11 @@ struct FavouriteEvents: View {
         .listStyle(PlainListStyle())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
+        .onAppear {
+            if viewModel.favouriteEvents.isEmpty {
+                viewModel.getFavouriteEvents()
+            }
+        }
     }
 }
 

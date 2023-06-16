@@ -27,16 +27,18 @@ struct CreatedEvents: View {
             }
             .alert(isPresented: $showDeleteAlert) {
                 Alert(title: Text(""),message: Text(Constants.Labels.Questions.delete), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
-                    //make the delete api call here, and reload the my events array showing the loading view
                     viewModel.deleteEvent(id: viewModel.myEvents[index].id)
-
                 })
             }
-
         }
         .listStyle(PlainListStyle())
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
+        .onAppear {
+            if viewModel.myEvents.isEmpty {
+                viewModel.getMyEvents()
+            }
+        }
     }
 }
 
