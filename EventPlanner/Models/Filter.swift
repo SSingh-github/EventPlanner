@@ -8,7 +8,7 @@
 import Foundation
 
 struct Filter {
-    var eventCategory: String
+    var eventCategory: String?
     var startDate: Date
     var hashtag: String
     var title: String

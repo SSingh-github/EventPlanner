@@ -55,15 +55,22 @@ struct AddNewEventView: View {
                         .padding()
                     Spacer()
                     
-                    Picker("Select an option", selection: $viewModel.selectedOption) {
-                        ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
-                            Text(eventType)
-                                .padding()
-                        }
-                    }
-                    .pickerStyle(.inline)
+//                    Picker("Select an option", selection: $viewModel.selectedOption) {
+//                        ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
+//                            Text(eventType)
+//                                .padding()
+//                        }
+//                    }
+//                    .pickerStyle(.inline)
+//                    .fontWeight(.semibold)
+                    
+                    TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex, text: $viewModel.selectedOption)
+                    //.frame(maxWidth: .infinity)
+                    //.padding()
                     .fontWeight(.semibold)
+                    .accentColor(Constants.Colors.blueThemeColor)
                 }
+                
                 
                 
                 ZStack {
@@ -74,22 +81,40 @@ struct AddNewEventView: View {
                              .frame(height: 250)
                              .scaledToFit()
                              .cornerRadius(20)
+                        
+                        PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "photo.on.rectangle")
+                                        .font(.subheadline)
+                                        .padding(15)
+                                        .foregroundColor(.black)
+                                        .background(.white)
+                                        .clipShape(Circle())
+                                }
+                                .padding()
+                            }
+                            .frame(height: 250)
+                        }
                     }
                     else {
                         Rectangle()
                             .frame(height: 250)
                             .cornerRadius(20)
                             .foregroundColor(.secondary)
+                        PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
+                            Image(systemName: "photo.on.rectangle")
+                                .font(.largeTitle)
+                                .padding(15)
+                                .foregroundColor(.black)
+                                .background(.white)
+                                .clipShape(Circle())
+                        }
                     }
                     
-                    PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.largeTitle)
-                            .padding(15)
-                            .foregroundColor(.black)
-                            .background(.white)
-                            .clipShape(Circle())
-                    }
+                   
                     
                 }
                     

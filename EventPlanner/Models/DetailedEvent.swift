@@ -12,32 +12,32 @@ struct DetailedEventData: Codable {
 }
 
 struct DetailedEvent: Codable {
-    let id : Int
-    let event_category_id: Int
-    let is_approved: Bool
-    let title: String
-    let description: String
-    let location: String
-    let longitude: Double
-    let latitude: Double
-    let start_date: String
-    let start_time: String
-    let end_date: String
-    let end_time: String
-    let image: String?
-    let event_status: Int
-    let hashtags: [String]
-    let is_liked: Bool
-    let is_favourite: Bool
-    let event_attendees_count: Int
-    let like_count: Int
-    
-    let user_name: String
-    let user_image: String?
-    let user_id: Int
-    let follower_count: Int
-    let can_join_event: Bool
-    let is_joined: Bool
+    var id : Int
+    var event_category_id: Int
+    var is_approved: Bool
+    var title: String
+    var description: String
+    var location: String
+    var longitude: Double
+    var latitude: Double
+    var start_date: String
+    var start_time: String
+    var end_date: String
+    var end_time: String
+    var image: String?
+    var event_status: Int
+    var hashtags: [String]
+    var is_liked: Bool
+    var is_favourite: Bool
+    var event_attendees_count: Int
+    var like_count: Int
+    var user_name: String
+    var user_image: String?
+    var user_id: Int
+    var follower_count: Int
+    var can_join_event: Bool
+    var is_joined: Bool
+    var is_followed: Bool
 }
 
 

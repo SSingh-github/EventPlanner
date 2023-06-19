@@ -16,7 +16,7 @@ struct CalendarEventsList: View {
             ForEach(viewModel.joinedEvents.indices, id:\.self) {index in
                 
                 if viewModel.joinedEvents[index].start_date == Formatter.shared.formatSingleDate(date: dateSelected?.date ?? Date())  {
-                    SecondaryEventCard(event: $viewModel.joinedEvents[index])
+                    SecondaryEventCard(event: $viewModel.joinedEvents[index], eventType: .joined)
                 }
             }
         }

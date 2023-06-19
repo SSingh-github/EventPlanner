@@ -14,6 +14,8 @@ struct EventDetailsView: View {
     @State var showMap = false
     @Environment(\.colorScheme) var colorScheme
     var indexOfEvent: Int = 0
+    var eventType: EventType = .all
+    //id of current event = viewModel.events[indexOfEvent].id
 
     var body: some View {
     
@@ -91,38 +93,41 @@ struct EventDetailsView: View {
                             Text("attendees ")
                             Spacer()
                             HStack {
-                                if let liked = viewModel.detailedEventForExplore?.is_liked {
-                                    if liked {
-                                        Image(systemName: "heart.fill")
-                                            .foregroundColor(Constants.Colors.pinkColor)
-                                            .font(.system(size: 17))
-                                        Text("liked")
-                                    }
+                                if viewModel.detailedEventForExplore?.is_liked ?? true {
                                     
-                                    else {
-                                        Image(systemName: "heart")
-                                            .foregroundColor(.gray)
-                                            .font(.system(size: 17))
-                                        Text("Not liked")
-                                    }
+                                    Image(systemName: "heart.fill")
+                                        .foregroundColor(Constants.Colors.pinkColor)
+                                        .font(.system(size: 17))
+                                    Text("liked")
                                 }
+                                
+                                else {
+                                    Image(systemName: "heart")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 17))
+                                    Text("Not liked")
+                                }
+                    
+                            }
+                            .onTapGesture {
+                                print(viewModel.detailedEventForExplore!.is_liked)
                             }
                             Spacer()
                             HStack {
-                                if let fav = viewModel.detailedEventForExplore?.is_favourite {
-                                    if fav {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
-                                            .font(.system(size: 17))
-                                        Text("favourite")
-                                    }
-                                    else {
-                                        Image(systemName: "star")
-                                            .foregroundColor(.gray)
-                                            .font(.system(size: 17))
-                                        Text("Not favourite")
-                                    }
+                                if viewModel.detailedEventForExplore?.is_favourite ?? true {
+                                    
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.yellow)
+                                        .font(.system(size: 17))
+                                    Text("favourite")
                                 }
+                                else {
+                                    Image(systemName: "star")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 17))
+                                    Text("Not favourite")
+                                }
+                                
                             }
                             //Spacer()
                         }
@@ -248,41 +253,90 @@ struct EventDetailsView: View {
                     }
                         
                         VStack(alignment: .leading, spacing: 10) {
-                            Text(viewModel.detailedEventForExplore?.user_name ?? "user")
+                            Text(viewModel.detailedEventForExplore?.user_name ?? "name")
                                 .font(.title3)
                             Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) followers")
                                 .foregroundColor(.gray)
                         }
-                        .padding()
+                        //.padding()
+                        //.background(.white)
+                        
+                        Spacer()
                         
                         Button {
                             print("follow the user")
+                            viewModel.followUser(id: viewModel.detailedEventForExplore!.user_id)
+                            
+                            viewModel.detailedEventForExplore!.is_followed.toggle()
+                            print(viewModel.detailedEventForExplore!.is_followed)
+                            if viewModel.detailedEventForExplore!.is_followed {
+                                    viewModel.detailedEventForExplore!.follower_count += 1
+                                }
+                                else {
+                                    viewModel.detailedEventForExplore!.follower_count -= 1
+                                }
+                            
                         } label: {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                                    .frame(width: 80,height: 30)
-                                    .cornerRadius(14)
-                                Text("follow")
-                                    .foregroundColor(colorScheme == .light ? .white: .black)
-                                    .padding()
+                            if !(viewModel.detailedEventForExplore?.is_followed ?? true) {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                                        .frame(width: 80,height: 30)
+                                        .cornerRadius(14)
+                                    Text("follow")
+                                        .foregroundColor(colorScheme == .light ? .white: .black)
+                                        .padding()
+                                }
+                            }
+                            else {
+                                ZStack {
+                                    
+                                    Text("following")
+                                        .foregroundColor(colorScheme == .light ? .black: .white)
+                                        .padding()
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 14)
+                                                .stroke(Color.white.opacity(0.5), lineWidth: 2)
+                                                .frame(width: 80,height: 30)
+                                        )
+                                }
                             }
                         }
-                        Spacer()
                     }
                     .padding(.top, 20)
                     
                     Button {
-       
+                        print("join the event")
+                        viewModel.joinEvent(id: viewModel.events[indexOfEvent].id)
+                        viewModel.detailedEventForExplore!.is_joined.toggle()
+                        if viewModel.detailedEventForExplore!.is_joined {
+                            viewModel.detailedEventForExplore!.event_attendees_count += 1
+                        }
+                        else {
+                            viewModel.detailedEventForExplore!.event_attendees_count -= 1
+                        }
                     } label: {
-                        ZStack {
-                            Rectangle()
-                                .frame(height: 60)
-                                .foregroundColor(Constants.Colors.blueThemeColor)
-                                .cornerRadius(10)
-                            Text("Join event")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
+                        if !(viewModel.detailedEventForExplore?.is_joined ?? true) {
+                            ZStack {
+                                Rectangle()
+                                    .frame(height: 60)
+                                    .foregroundColor(Constants.Colors.blueThemeColor)
+                                    .cornerRadius(10)
+                                Text("Join event")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        else {
+                            ZStack {
+                                Rectangle()
+                                    .frame(height: 60)
+                                    .foregroundColor(.green)
+                                    .cornerRadius(10)
+                                Text("Joined")
+                                    .foregroundColor(.white)
+                                    .fontWeight(.semibold)
+                            }
                         }
                     }
                     .frame(height: 60)
@@ -298,8 +352,18 @@ struct EventDetailsView: View {
         }
         .onAppear {
             viewModel.showDetailedEventForExplore = true
-            NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.events[indexOfEvent].id)
-            print(viewModel.showDetailedEventForExplore, "is the value of boolean")
+            if eventType == .all {
+                NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.events[indexOfEvent].id)
+            }
+            else if eventType == .created {
+                NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.myEvents[indexOfEvent].id)
+            }
+            else if eventType == .favourite {
+                NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.favouriteEvents[indexOfEvent].id)
+            }
+            else if eventType == .joined {
+                NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.joinedEvents[indexOfEvent].id)
+            }
         }
     }
 }

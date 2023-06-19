@@ -518,7 +518,7 @@ class NetworkManager {
             Constants.Keys.firstName : viewModel.firstName,
             Constants.Keys.lastName : viewModel.lastName,
             Constants.Keys.dob : viewModel.dob,
-            Constants.Keys.phoneNumber : viewModel.phoneNumber,
+            Constants.Keys.phoneNumber : Int(viewModel.phoneNumber) ?? 9999999999,
             Constants.Keys.address : viewModel.address
         ]
         
@@ -541,7 +541,7 @@ class NetworkManager {
             else {
                 print("error in updating the profile")
             }
-            
+            print(httpResponse.statusCode)
             
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
@@ -795,7 +795,7 @@ class NetworkManager {
     }
     
     func eventDetails(viewModel: MainTabViewModel, eventId: Int) {
-        let urlComponents = URLComponents(string: Constants.API.URLs.postEvent + "\(eventId)")!
+        let urlComponents = URLComponents(string: Constants.API.URLs.postEvent + "\(eventId)/")!
         
         // Create a URL from the URLComponents
         guard let url = urlComponents.url else {
@@ -857,7 +857,7 @@ class NetworkManager {
 
         // Add query parameters
         let queryItems: [(String, String)] = [
-            ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory) ?? 0) + 1)"),
+            ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory ?? Constants.Labels.eventTypes[0]) ?? 0) + 1)"),
             ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate)),
             ("title"         , viewModel.filter.title),
             ("hashtag"       ,viewModel.filter.hashtag),
@@ -943,7 +943,7 @@ class NetworkManager {
         
         var fields: [String: Any] = [:]
         
-        fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption) ?? 0) + 1
+        fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption ?? Constants.Labels.eventTypes[0]) ?? 0) + 1
         fields[Constants.Keys.title]           = viewModel.title
         fields[Constants.Keys.description]     = viewModel.description
         fields[Constants.Keys.location]        = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? "")"
@@ -1169,7 +1169,7 @@ class NetworkManager {
         request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
-            Constants.Keys.eventId : eventId
+            "event_id" : eventId
         ]
         
         do {
@@ -1220,7 +1220,7 @@ class NetworkManager {
         request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
-            Constants.Keys.eventId : userId
+            "user_id" : userId
         ]
         
         do {
@@ -1240,10 +1240,10 @@ class NetworkManager {
             }
             
             if httpResponse.statusCode == 200 {
-                print("event was successfully joined")
+                print("user followed successfully")
             }
             else {
-                print("error in joining the event")
+                print("error in following the user")
             }
             
             do{

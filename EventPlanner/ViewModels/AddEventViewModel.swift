@@ -10,7 +10,7 @@ import CoreLocation
 
 
 class AddEventViewModel: ObservableObject {
-    @Published var selectedOption = ""
+    @Published var selectedOption: String? = ""
     @Published var title = ""
     @Published var description = ""
     @Published var hashtags: [String] = []
@@ -27,6 +27,7 @@ class AddEventViewModel: ObservableObject {
     @Published var showAlert = false
     @Published var alertMessage = ""
     @Published var selected = "Start"
+    @Published var selectionIndex = 0
     
     
     func printData() {

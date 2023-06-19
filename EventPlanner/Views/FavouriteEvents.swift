@@ -13,13 +13,13 @@ struct FavouriteEvents: View {
         List {
             ForEach(viewModel.favouriteEvents.indices, id:\.self) {index in
                 NavigationLink {
-                    EventDetailsView(viewModel: viewModel)
+                    EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .favourite)
                 } label: {
-                    SecondaryEventCard(event: $viewModel.favouriteEvents[index])
+                    SecondaryEventCard(event: $viewModel.favouriteEvents[index], eventType: .favourite)
                 }
             }
         }
-        .listStyle(PlainListStyle())
+        .listStyle(.plain)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
         .onAppear {

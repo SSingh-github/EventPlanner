@@ -14,9 +14,9 @@ struct JoinedEvents: View {
         List {
             ForEach(viewModel.joinedEvents.indices, id:\.self) {index in
                 NavigationLink {
-                    EventDetailsView(viewModel: viewModel)
+                    EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .joined)
                 } label: {
-                    SecondaryEventCard(event: $viewModel.joinedEvents[index])
+                    SecondaryEventCard(event: $viewModel.joinedEvents[index], eventType: .joined)
                 }
             }
         }
@@ -24,7 +24,7 @@ struct JoinedEvents: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
         .onAppear {
-            if viewModel.myEvents.isEmpty {
+            if viewModel.joinedEvents.isEmpty {
                 viewModel.getJoinedEvents()
             }
         }

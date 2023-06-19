@@ -16,19 +16,37 @@ struct CreatedEvents: View {
         List {
             ForEach(viewModel.myEvents.indices, id:\.self) {index in
                 NavigationLink {
-                    EventDetailsView(viewModel: viewModel)
+                    EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .created)
                 } label: {
-                    SecondaryEventCard(event: $viewModel.myEvents[index])
+                    SecondaryEventCard(event: $viewModel.myEvents[index], eventType: .created)
                 }
+                .listRowBackground(
+                    RoundedRectangle(cornerRadius: 20)
+                        .background(.secondary)
+                        .foregroundColor(.clear)
+                        .padding(
+                            EdgeInsets(
+                                top: 2,
+                                leading: 10,
+                                bottom: 2,
+                                trailing: 10
+                            )
+                        )
+                )
+                .listRowSeparator(.hidden)
             }
             .onDelete { indexPath in
                 index = indexPath.first!
                 showDeleteAlert.toggle()
             }
-            .alert(isPresented: $showDeleteAlert) {
-                Alert(title: Text(""),message: Text(Constants.Labels.Questions.delete), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
-                    viewModel.deleteEvent(id: viewModel.myEvents[index].id)
-                })
+            .actionSheet(isPresented: $showDeleteAlert) {
+                ActionSheet(title: Text("Do you want to delete the event?"), message: nil, buttons: [
+                    .destructive(Text("Delete").foregroundColor(.red), action: {
+                        viewModel.deleteEvent(id: viewModel.myEvents[index].id)
+                    }),
+                    .cancel()
+                ]
+                )
             }
         }
         .listStyle(PlainListStyle())

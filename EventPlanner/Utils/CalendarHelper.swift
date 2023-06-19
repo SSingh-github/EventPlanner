@@ -1,12 +1,12 @@
 //
-//  CalendarView.swift
+//  CalendarHelper.swift
 //  EventPlanner
 //
-//  Created by Chicmic on 13/06/23.
+//  Created by Chicmic on 19/06/23.
 //
 
+import Foundation
 import SwiftUI
-
 struct CalendarStruct: UIViewRepresentable {
    
     let interval: DateInterval
@@ -64,7 +64,7 @@ struct CalendarStruct: UIViewRepresentable {
             }
             
             if foundEvents.count > 1 {
-                return .image(UIImage(systemName: "doc.on.doc.fill"), color: .red, size: .large)
+                return .image(UIImage(systemName: "doc.on.doc.fill"), color: Constants.Colors.polylineColor, size: .large)
             }
             
             return .customView {
@@ -120,29 +120,5 @@ struct CalendarStruct: UIViewRepresentable {
         func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool{
             return true
         }
-    }
-}
-
-struct CalendarView: View {
-    
-    @ObservedObject var viewModel: MainTabViewModel
-    @State private var dateSelected: DateComponents?
-    @State private var displayEvents = false
-    
-    var body: some View {
-        ScrollView{
-            //give the starting and ending dates on the calendar.
-            CalendarStruct(interval: DateInterval(start: .distantPast, end: .distantFuture), viewModel: viewModel, dateSelected: $dateSelected, displayEvents: $displayEvents)
-                .accentColor(Constants.Colors.blueThemeColor)
-        }
-        .sheet(isPresented: $displayEvents) {
-            CalendarEventsList(viewModel: viewModel, dateSelected: $dateSelected)
-        }
-    }
-}
-
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView(viewModel: MainTabViewModel())
     }
 }

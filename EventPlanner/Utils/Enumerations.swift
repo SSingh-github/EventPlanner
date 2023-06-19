@@ -14,3 +14,10 @@ enum Tab {
     case myEvents
     case profile
 }
+
+enum EventType {
+    case all
+    case favourite
+    case joined
+    case created
+}

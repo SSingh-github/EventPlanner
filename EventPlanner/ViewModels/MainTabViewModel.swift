@@ -13,13 +13,14 @@ class MainTabViewModel: ObservableObject {
     @Published var userLogin = UserDefaults.standard.bool(forKey: Constants.Labels.userLoggedIn)
     @Published var showWelcomeViewModel = false
     @Published var showEditProfileView = false
+    @Published var selectionIndex = 0
     
     @Published var firstName = "first name"
     @Published var lastName = "last name"
     @Published var dob = ""
     @Published var dateOfBirth = Date()
     @Published var address = "mohali"
-    @Published var phoneNumber = "0000000000"
+    @Published var phoneNumber = "9999999999"
     @Published var imageUrl = ""
 
     @Published var userProfile: UserDataDetails = UserDataDetails(dob: "0000-00-00", phone_number: 0000000000, address: "", first_name: "first name", last_name: "last name", profile_image: "")
@@ -122,5 +123,13 @@ class MainTabViewModel: ObservableObject {
     func deleteEvent(id: Int) {
         NetworkManager.shared.deleteEvent(eventId: id)
         NetworkManager.shared.getMyEvents(viewModel: self)
+    }
+    
+    func followUser(id: Int) {
+        NetworkManager.shared.followUser(userId: id)
+    }
+    
+    func joinEvent(id: Int) {
+        NetworkManager.shared.joinEvent(eventId: id)
     }
 }

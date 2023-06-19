@@ -11,9 +11,6 @@ struct EventCard: View {
     
     @Binding var event: Event
     @Environment(\.colorScheme) var colorScheme
-    @State var liked = false
-    @State var markedFavorite = false
-    var myEvent: Bool
     
     var body: some View {
         
@@ -74,11 +71,11 @@ struct EventCard: View {
                         
                         Button {
                             withAnimation{
-                                markedFavorite.toggle()
+                                event.is_favourite.toggle()
                                 NetworkManager.shared.markEventAsFavourite(eventId: event.id)
                             }
                         } label: {
-                            if markedFavorite {
+                            if event.is_favourite {
                                 Image(systemName: "star.fill")
                                     .foregroundColor(.orange)
                                     .frame(width: 45, height: 45)
@@ -94,12 +91,19 @@ struct EventCard: View {
                         
                         Button {
                             withAnimation{
-                                liked.toggle()
+                               
                                 NetworkManager.shared.likeTheEvent(eventId: event.id)
+                                event.is_liked.toggle()
+                                if event.is_liked {
+                                    event.like_count += 1
+                                }
+                                else {
+                                    event.like_count -= 1
+                                }
                             }
                         } label: {
                             HStack{
-                                if liked {
+                                if event.is_liked {
                                     Image(systemName: "heart.fill")
                                         .foregroundColor(Constants.Colors.pinkColor)
                                 }
@@ -136,20 +140,6 @@ struct EventCard: View {
             }
             .padding(.leading)
             .padding(.bottom, 47)
-        }
-        .onAppear {
-            if event.is_favourite {
-                self.markedFavorite = true
-            }
-            else {
-                self.markedFavorite = false
-            }
-            if event.is_liked {
-                self.liked = true
-            }
-            else {
-                self.liked = false
-            }
         }
     }
 }

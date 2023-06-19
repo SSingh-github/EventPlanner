@@ -23,16 +23,18 @@ struct FilterView: View {
                         Text("Category")
                             .font(.title3)
                             .fontWeight(.semibold)
-                            .padding()
+                            .padding([.trailing, .top,.bottom])
                         Spacer()
                         
-                        Picker("Select an option", selection: $viewModel.filter.eventCategory) {
-                            ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
-                                Text(eventType)
-                                    .padding()
-                            }
-                        }
-                        .pickerStyle(WheelPickerStyle())
+//                        Picker("Select an option", selection: $viewModel.filter.eventCategory) {
+//                            ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
+//                                Text(eventType)
+//                                    .padding()
+//                            }
+//                        }
+//                        .pickerStyle(WheelPickerStyle())
+                        
+                        TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
                         //.frame(maxWidth: .infinity)
                         //.padding()
                         .fontWeight(.semibold)

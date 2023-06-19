@@ -13,23 +13,23 @@ struct EventData: Codable {
 }
 
 struct Event: Codable {
-    let id : Int
-    let event_category_id: Int
-    let is_approved: Bool
-    let title: String
-    let description: String
-    let location: String
-    let longitude: Double
-    let latitude: Double
-    let start_date: String
-    let start_time: String
-    let end_date: String
-    let end_time: String
-    let image: String?
-    let event_status: Int
-    let hashtags: [String]
-    let is_liked: Bool
-    let is_favourite: Bool
-    let event_attendees_count: Int
-    let like_count: Int
+    var id : Int
+    var event_category_id: Int
+    var is_approved: Bool
+    var title: String
+    var description: String
+    var location: String
+    var longitude: Double
+    var latitude: Double
+    var start_date: String
+    var start_time: String
+    var end_date: String
+    var end_time: String
+    var image: String?
+    var event_status: Int
+    var hashtags: [String]
+    var is_liked: Bool
+    var is_favourite: Bool
+    var event_attendees_count: Int
+    var like_count: Int
 }

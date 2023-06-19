@@ -171,12 +171,21 @@ struct ProfileView: View {
                                 dismissButton: .default(Text(Constants.Labels.ok)
                                     .foregroundColor(Constants.Colors.blueThemeColor)))
                         }
-                        .alert(isPresented: $viewModel.showSignoutAlert) {
-                            Alert(title: Text(Constants.Labels.Questions.logout), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
-                                viewModel.signOutCall()
-                            })
+//                        .alert(isPresented: $viewModel.showSignoutAlert) {
+//                            Alert(title: Text(Constants.Labels.Questions.logout), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
+//                                viewModel.signOutCall()
+//                            })
+//                        }
+                        .actionSheet(isPresented: $viewModel.showSignoutAlert) {
+                            ActionSheet(title: Text("Do you want to log out?"), message: nil, buttons: [ // 4
+                                .destructive(Text("Logout").foregroundColor(.red), action: { // 5
+                                    viewModel.signOutCall()
+                                }),
+                                .cancel() // 6
+                            ]
+                            )
                         }
-                     
+                        
                     }
                     .refreshable {
                         NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)

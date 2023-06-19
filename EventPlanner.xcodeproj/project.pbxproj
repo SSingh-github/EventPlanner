@@ -35,6 +35,9 @@
 		93ACA6C62A3B40C9000CDA22 /* FavouriteEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6C52A3B40C9000CDA22 /* FavouriteEvents.swift */; };
 		93ACA6C82A3B40D7000CDA22 /* JoinedEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6C72A3B40D7000CDA22 /* JoinedEvents.swift */; };
 		93ACA6CA2A3B40E6000CDA22 /* CreatedEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACA6C92A3B40E6000CDA22 /* CreatedEvents.swift */; };
+		93ADE6B32A401B1D00223E8D /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ADE6B22A401B1D00223E8D /* Experiment.swift */; };
+		93ADE6B52A40273900223E8D /* TextFieldPickerAsInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */; };
+		93ADE6B72A4083B100223E8D /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ADE6B62A4083B100223E8D /* CalendarHelper.swift */; };
 		93AE786E2A39934D00042CF6 /* SplashScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE786D2A39934D00042CF6 /* SplashScreenView.swift */; };
 		93B19F182A39C1F400CDE3EB /* DetailedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */; };
 		93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */; };
@@ -102,6 +105,9 @@
 		93ACA6C52A3B40C9000CDA22 /* FavouriteEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteEvents.swift; sourceTree = "<group>"; };
 		93ACA6C72A3B40D7000CDA22 /* JoinedEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedEvents.swift; sourceTree = "<group>"; };
 		93ACA6C92A3B40E6000CDA22 /* CreatedEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedEvents.swift; sourceTree = "<group>"; };
+		93ADE6B22A401B1D00223E8D /* Experiment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
+		93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldPickerAsInput.swift; sourceTree = "<group>"; };
+		93ADE6B62A4083B100223E8D /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		93AE786D2A39934D00042CF6 /* SplashScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenView.swift; sourceTree = "<group>"; };
 		93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedEvent.swift; sourceTree = "<group>"; };
 		93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
@@ -236,6 +242,7 @@
 				93ACA6C52A3B40C9000CDA22 /* FavouriteEvents.swift */,
 				93ACA6C72A3B40D7000CDA22 /* JoinedEvents.swift */,
 				93ACA6C92A3B40E6000CDA22 /* CreatedEvents.swift */,
+				93A91CC12A38420400773E80 /* CalendarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -250,6 +257,8 @@
 				93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */,
 				93B472CC2A3198DF0042C628 /* Formatting.swift */,
 				93ACA6322A3745BF00D6ACFC /* Extensions.swift */,
+				93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */,
+				93ADE6B62A4083B100223E8D /* CalendarHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -280,11 +289,11 @@
 				93A965C32A3350CB005B14BA /* DirectionsView.swift */,
 				93EE9A6B2A2EF28B00478DAA /* EventCard.swift */,
 				93B472CE2A31A8180042C628 /* SheetView.swift */,
-				93A91CC12A38420400773E80 /* CalendarView.swift */,
 				93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */,
 				93AE786D2A39934D00042CF6 /* SplashScreenView.swift */,
 				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
 				93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */,
+				93ADE6B22A401B1D00223E8D /* Experiment.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -385,6 +394,7 @@
 				93AC9B9D2A271E5C00E3A61A /* NewEventView.swift in Sources */,
 				93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */,
 				93ACA6312A37295C00D6ACFC /* FilterView.swift in Sources */,
+				93ADE6B32A401B1D00223E8D /* Experiment.swift in Sources */,
 				93EC5B632A24AE2A0065A286 /* WelcomeViewModel.swift in Sources */,
 				93AC9B972A27184700E3A61A /* MainTabView.swift in Sources */,
 				93EC5B5F2A24A6620065A286 /* SecondWelcomeView.swift in Sources */,
@@ -392,6 +402,7 @@
 				93A91CC22A38420400773E80 /* CalendarView.swift in Sources */,
 				93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */,
 				93EC5B532A24A09F0065A286 /* Validations.swift in Sources */,
+				93ADE6B72A4083B100223E8D /* CalendarHelper.swift in Sources */,
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
 				93ECDDAA2A3C331300BE3279 /* CalendarEventsList.swift in Sources */,
 				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
@@ -406,6 +417,7 @@
 				93AC9BA82A27784E00E3A61A /* ForgotPasswordView.swift in Sources */,
 				93EC5B4E2A249EB80065A286 /* Constants.swift in Sources */,
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,
+				93ADE6B52A40273900223E8D /* TextFieldPickerAsInput.swift in Sources */,
 				93ACA6C62A3B40C9000CDA22 /* FavouriteEvents.swift in Sources */,
 				93AC9B9B2A271E4800E3A61A /* SearchView.swift in Sources */,
 				93EC5B612A24A6750065A286 /* ThirdWelcomeView.swift in Sources */,
