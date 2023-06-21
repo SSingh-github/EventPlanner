@@ -12,8 +12,7 @@ struct MapViewSelection: View {
    
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var mainViewModel: MainTabViewModel
-    @ObservedObject    var viewModel: AddEventViewModel
+    @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
    
     var body: some View {
@@ -47,12 +46,20 @@ struct MapViewSelection: View {
                     .padding(.vertical, 10)
                     
                     Button {
-                        viewModel.pickedLocation = locationManager.pickedLocation
-                        viewModel.pickedMark = locationManager.pickedMark
-                        viewModel.printData()
-                        viewModel.postNewEvent(viewModel: mainViewModel, appState: appState)
+                        if viewModel.actionType == .createEvent {
+                            viewModel.newEvent.pickedLocation = locationManager.pickedLocation
+                            viewModel.newEvent.pickedMark = locationManager.pickedMark
+                            viewModel.printData()
+                            viewModel.postNewEvent(viewModel: viewModel, appState: appState)
+                        }
+                        else {
+                            viewModel.newEventForEdit.pickedLocation = locationManager.pickedLocation
+                            viewModel.newEventForEdit.pickedMark = locationManager.pickedMark
+                            // call the update event method 
+                            viewModel.showEditSheet.toggle()
+                        }
                     } label: {
-                        Text(Constants.Labels.confirmLocation)
+                        Text(viewModel.actionType == .createEvent ? Constants.Labels.confirmLocation : "Update event")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)

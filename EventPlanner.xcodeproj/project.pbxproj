@@ -74,6 +74,7 @@
 		93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */; };
 		93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A6212A2A12B600B10B71 /* UserProfile.swift */; };
 		93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */; };
+		93FB96CB2A42FBBB002F79C5 /* NewEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FB96CA2A42FBBB002F79C5 /* NewEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,6 +146,7 @@
 		93F0A61F2A29CC2700B10B71 /* SignoutResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignoutResponse.swift; sourceTree = "<group>"; };
 		93F0A6212A2A12B600B10B71 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		93FB96CA2A42FBBB002F79C5 /* NewEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,13 +287,13 @@
 				93EC5B602A24A6750065A286 /* ThirdWelcomeView.swift */,
 				93AC9BA42A27648500E3A61A /* LoadingView.swift */,
 				93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */,
+				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
 				93A8B9202A2DC937007593C0 /* practice.swift */,
 				93A965C32A3350CB005B14BA /* DirectionsView.swift */,
 				93EE9A6B2A2EF28B00478DAA /* EventCard.swift */,
 				93B472CE2A31A8180042C628 /* SheetView.swift */,
 				93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */,
 				93AE786D2A39934D00042CF6 /* SplashScreenView.swift */,
-				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
 				93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */,
 				93ADE6B22A401B1D00223E8D /* Experiment.swift */,
 			);
@@ -308,6 +310,7 @@
 				93ED89B92A3083C100856AA2 /* Event.swift */,
 				93B19F172A39C1F400CDE3EB /* DetailedEvent.swift */,
 				93ACA6342A374FAB00D6ACFC /* Filter.swift */,
+				93FB96CA2A42FBBB002F79C5 /* NewEvent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				93B472CD2A3198DF0042C628 /* Formatting.swift in Sources */,
 				93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */,
 				93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */,
+				93FB96CB2A42FBBB002F79C5 /* NewEvent.swift in Sources */,
 				93B19F182A39C1F400CDE3EB /* DetailedEvent.swift in Sources */,
 				93ACA6332A3745BF00D6ACFC /* Extensions.swift in Sources */,
 				93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */,

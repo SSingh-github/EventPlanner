@@ -15,6 +15,120 @@ class NetworkManager {
     
     var authorizationKey: String = ""
     
+    func getUrl(type: ApiType) -> URL? {
+        switch type {
+        case.signIn:
+            return URL(string: Constants.API.URLs.logIn)
+        case.signUp:
+            return URL(string: Constants.API.URLs.signUp)
+        case.forgotPassword:
+            return URL(string: Constants.API.URLs.forgotPassword)
+        case.verityOtp:
+            return URL(string: Constants.API.URLs.verifyOtp)
+        case.resetPassword:
+            return URL(string: Constants.API.URLs.resetPassword)
+        default:
+            return nil
+        }
+    }
+    
+    func loginSignUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel, type: ApiType) {
+        
+        let url: URL = getUrl(type: type)!
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        
+        let bodyData: [String: Any] = [
+            Constants.Keys.email : userCredentials.email,
+            Constants.Keys.password : userCredentials.password
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
+        } catch {
+            print("Unable to serialize request body")
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                switch type {
+                case .signUp:
+                    if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
+                        self.authorizationKey = authorizationKey
+                        UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                        print(self.authorizationKey)
+                    }
+                case .signIn:
+                    if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
+                        self.authorizationKey = authorizationKey
+                        UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                        print(self.authorizationKey)
+                    }
+                default:
+                    print("error in signup or login")
+                }
+            } else {
+                print("unable to sign up")
+                print("Error: Unexpected status code \(httpResponse.statusCode)")
+                if type == .signUp {
+                    DispatchQueue.main.async {
+                        viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                        viewModel.showAlert = true
+                    }
+                }
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(Response.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.code)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+            
+            if type == .signIn {
+                DispatchQueue.main.async {
+                    viewModel.isLoggedIn = false
+                    
+                    if httpResponse.statusCode == 200 {
+                        print(httpResponse.statusCode)
+                        viewModel.presentMainTabView.toggle()
+                        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                    }
+                    else {
+                        print("some error occured while logging in")
+                        viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                        viewModel.showAlert = true
+                    }
+                }
+            }
+        }
+        task.resume()
+        if type == .signUp {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                // Call your function here
+                self.createUserProfile(viewModel: viewModel)
+
+            }
+        }
+    }
+    
     func signUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
         
@@ -58,6 +172,7 @@ class NetworkManager {
             } else {
                 print("unable to sign up")
                 print("Error: Unexpected status code \(httpResponse.statusCode)")
+                
                 DispatchQueue.main.async {
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
@@ -928,7 +1043,81 @@ class NetworkManager {
         task.resume()
     }
     
-    func postNewEvent(viewModel: AddEventViewModel, appState: AppState) {
+    func updateEvent(viewModel: MainTabViewModel) {
+        guard let url = URL(string: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/") else {
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = Constants.API.HttpMethods.post
+        
+        let boundary = "Boundary-testpqr"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
+        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        
+        var fields: [String: Any] = [:]
+        
+        fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.newEventForEdit.selectedOption ?? Constants.Labels.eventTypes[0]) ?? 0) + 1
+        fields[Constants.Keys.title]           = viewModel.newEventForEdit.title
+        fields[Constants.Keys.description]     = viewModel.newEventForEdit.description
+        fields[Constants.Keys.location]        = "\(viewModel.newEventForEdit.pickedMark?.name ?? viewModel.eventForEdit!.location),  \(viewModel.newEventForEdit.pickedMark?.locality ?? "")"
+        fields[Constants.Keys.latitude]        = viewModel.newEventForEdit.pickedLocation?.coordinate.latitude ?? viewModel.eventForEdit!.latitude
+        fields[Constants.Keys.longitude]       = viewModel.newEventForEdit.pickedLocation?.coordinate.longitude ?? viewModel.eventForEdit!.longitude
+        fields[Constants.Keys.startDate]       = viewModel.newEventForEdit.formattedStartDate
+        fields[Constants.Keys.startTime]       = viewModel.newEventForEdit.formattedStartTime
+        fields[Constants.Keys.endDate]         = viewModel.newEventForEdit.formattedEndDate
+        fields[Constants.Keys.endTime]         = viewModel.newEventForEdit.formattedEndTime
+        fields[Constants.Keys.hashtags]        = viewModel.newEventForEdit.hashtags
+        
+        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.newEventForEdit.imagePicker2.image)
+        request.httpBody = httpBody
+        
+        
+        
+        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+            guard let data = data, error == nil else {
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            if httpResponse.statusCode == 200 {
+                print("New event is updated successfully")
+            }
+            else {
+                print("error in updating the event")
+            }
+            print(httpResponse.statusCode)
+            
+            do {
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print(response.message)
+            }
+            catch {
+                print("error decoding the response")
+            }
+            
+//            DispatchQueue.main.async {
+//                viewModel.postingNewEvent = false
+//
+//                if httpResponse.statusCode == 200 {
+//                    print("event was posted successfully")
+//                    //pop the navigation views
+//                    appState.rootViewId = UUID()
+//                }
+//                else {
+//                    print("some error occured")
+//                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+//                    viewModel.showAlert = true
+//                }
+//            }
+        }
+        task.resume()
+    }
+    
+    func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
         guard let url = URL(string: Constants.API.URLs.postEvent) else {
             return
         }
@@ -943,19 +1132,19 @@ class NetworkManager {
         
         var fields: [String: Any] = [:]
         
-        fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.selectedOption ?? Constants.Labels.eventTypes[0]) ?? 0) + 1
-        fields[Constants.Keys.title]           = viewModel.title
-        fields[Constants.Keys.description]     = viewModel.description
-        fields[Constants.Keys.location]        = "\(viewModel.pickedMark?.name ?? ""),  \(viewModel.pickedMark?.locality ?? "")"
-        fields[Constants.Keys.latitude]        = viewModel.pickedLocation?.coordinate.latitude ?? 0.0
-        fields[Constants.Keys.longitude]       = viewModel.pickedLocation?.coordinate.longitude ?? 0.0
-        fields[Constants.Keys.startDate]       = viewModel.formattedStartDate
-        fields[Constants.Keys.startTime]       = viewModel.formattedStartTime
-        fields[Constants.Keys.endDate]         = viewModel.formattedEndDate
-        fields[Constants.Keys.endTime]         = viewModel.formattedEndTime
-        fields[Constants.Keys.hashtags]        = viewModel.hashtags
+        fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.newEvent.selectedOption ?? Constants.Labels.eventTypes[0]) ?? 0) + 1
+        fields[Constants.Keys.title]           = viewModel.newEvent.title
+        fields[Constants.Keys.description]     = viewModel.newEvent.description
+        fields[Constants.Keys.location]        = "\(viewModel.newEvent.pickedMark?.name ?? ""),  \(viewModel.newEvent.pickedMark?.locality ?? "")"
+        fields[Constants.Keys.latitude]        = viewModel.newEvent.pickedLocation?.coordinate.latitude ?? 0.0
+        fields[Constants.Keys.longitude]       = viewModel.newEvent.pickedLocation?.coordinate.longitude ?? 0.0
+        fields[Constants.Keys.startDate]       = viewModel.newEvent.formattedStartDate
+        fields[Constants.Keys.startTime]       = viewModel.newEvent.formattedStartTime
+        fields[Constants.Keys.endDate]         = viewModel.newEvent.formattedEndDate
+        fields[Constants.Keys.endTime]         = viewModel.newEvent.formattedEndTime
+        fields[Constants.Keys.hashtags]        = viewModel.newEvent.hashtags
         
-        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.imagePicker.image)
+        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.newEvent.imagePicker2.image)
         request.httpBody = httpBody
         
         

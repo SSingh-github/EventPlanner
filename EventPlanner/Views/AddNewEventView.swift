@@ -5,42 +5,47 @@
 //  Created by Chicmic on 03/06/23.
 //
 //hashtags are not working
+//i am changing the field to the object
 
 import SwiftUI
 import _PhotosUI_SwiftUI
 
 struct AddNewEventView: View {
     
-    @StateObject var viewModel = AddEventViewModel()
+    //@StateObject var viewModel = MainTabViewModel()
+    @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         NavigationView {
             
             ScrollView(showsIndicators: false){
-            
+                
                 HStack {
                     Text("What's the title?")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding()
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding()
                     Spacer()
                 }
-                    TextFieldView(placeholder: "Title", text: $viewModel.title)
-                    
-                   
-                    
+                if viewModel.actionType == .createEvent {
+                    TextFieldView(placeholder: "Title", text: $viewModel.newEvent.title)
+                }
+                else {
+                    TextFieldView(placeholder: "Title", text: $viewModel.newEventForEdit.title)
+                }
+                
+                
+                
                 HStack {
                     Text("Give the description")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding()
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding()
                     Spacer()
                 }
-                   
-                       // .padding()
-                    
-                TextField("Description", text: $viewModel.description, axis: .vertical)
+                
+                TextField("Description", text:viewModel.actionType == .createEvent ? $viewModel.newEvent.description : $viewModel.newEventForEdit.description, axis: .vertical)
                     .disableAutocorrection(true)
                     .padding()
                     .frame(height: 60)
@@ -55,34 +60,24 @@ struct AddNewEventView: View {
                         .padding()
                     Spacer()
                     
-//                    Picker("Select an option", selection: $viewModel.selectedOption) {
-//                        ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
-//                            Text(eventType)
-//                                .padding()
-//                        }
-//                    }
-//                    .pickerStyle(.inline)
-//                    .fontWeight(.semibold)
+                    TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex2, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.selectedOption : $viewModel.newEventForEdit.selectedOption)
                     
-                    TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex, text: $viewModel.selectedOption)
-                    //.frame(maxWidth: .infinity)
-                    //.padding()
-                    .fontWeight(.semibold)
-                    .accentColor(Constants.Colors.blueThemeColor)
+                        .fontWeight(.semibold)
+                        .accentColor(Constants.Colors.blueThemeColor)
                 }
                 
                 
                 
                 ZStack {
                     
-                    if let image = viewModel.imagePicker.image {
+                    if let image = viewModel.newEvent.imagePicker2.image {
                         Image(uiImage:image)
-                             .resizable()
-                             .frame(height: 250)
-                             .scaledToFit()
-                             .cornerRadius(20)
+                            .resizable()
+                            .frame(height: 250)
+                            .scaledToFit()
+                            .cornerRadius(20)
                         
-                        PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
+                        PhotosPicker(selection: $viewModel.newEvent.imagePicker2.imageSelection, matching: .images) {
                             VStack {
                                 Spacer()
                                 HStack {
@@ -104,7 +99,7 @@ struct AddNewEventView: View {
                             .frame(height: 250)
                             .cornerRadius(20)
                             .foregroundColor(.secondary)
-                        PhotosPicker(selection: $viewModel.imagePicker.imageSelection, matching: .images) {
+                        PhotosPicker(selection: $viewModel.newEvent.imagePicker2.imageSelection, matching: .images) {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.largeTitle)
                                 .padding(15)
@@ -113,18 +108,16 @@ struct AddNewEventView: View {
                                 .clipShape(Circle())
                         }
                     }
-                    
-                   
-                    
                 }
-                    
-                    VStack(spacing: 10) {
-                        VStack {
-                            ForEach(viewModel.hashtags.indices, id: \.self) { index in
+                
+                VStack(spacing: 10) {
+                    VStack {
+                        if viewModel.actionType == .createEvent {
+                            ForEach(viewModel.newEvent.hashtags.indices, id: \.self) { index in
                                 HStack {
-                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.hashtags[index])
+                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.newEvent.hashtags[index])
                                     Button {
-                                        viewModel.hashtags.remove(at: index)
+                                        viewModel.newEvent.hashtags.remove(at: index)
                                     } label: {
                                         Image(systemName: Constants.Images.multiply)
                                             .font(.title3)
@@ -133,50 +126,70 @@ struct AddNewEventView: View {
                                 }
                             }
                         }
-                        HStack {
-                            Button {
-                                withAnimation {
-                                    viewModel.hashtags.append("")
+                        else {
+                            ForEach(viewModel.newEventForEdit.hashtags.indices, id: \.self) { index in
+                                HStack {
+                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.newEventForEdit.hashtags[index])
+                                    Button {
+                                        viewModel.newEventForEdit.hashtags.remove(at: index)
+                                    } label: {
+                                        Image(systemName: Constants.Images.multiply)
+                                            .font(.title3)
+                                            .foregroundColor(.red)
+                                    }
                                 }
-                                print(viewModel.hashtags.count)
-                            }label: {
-                                Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.green)
-                                    .font(.title3)
                             }
-                            Text("Add Hashtag")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .padding()
-                            Spacer()
                         }
-                        .padding()
-                        
                     }
-                    .padding(.top)
-                    Spacer()
-                    NavigationLink(destination: DateAndTimeView(viewModel: viewModel)) {
-                        ZStack {
-                            Rectangle()
-                                .frame(height: 60)
-                                .foregroundColor(Constants.Colors.blueThemeColor)
-                                .cornerRadius(10)
-                            Text("Continue")
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
+                    HStack {
+                        Button {
+                            withAnimation {
+                                if viewModel.actionType == .createEvent {
+                                    viewModel.newEvent.hashtags.append("")
+                                }
+                                else {
+                                    viewModel.newEventForEdit.hashtags.append("")
+                                }
+                            }
+                            print(viewModel.newEvent.hashtags.count)
+                        }label: {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.green)
+                                .font(.title3)
                         }
+                        Text("Add Hashtag")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .padding()
+                        Spacer()
+                    }
+                    .padding()
+                    
+                }
+                .padding(.top)
+                Spacer()
+                NavigationLink(destination: DateAndTimeView(viewModel: viewModel)) {
+                    ZStack {
+                        Rectangle()
+                            .frame(height: 60)
+                            .foregroundColor(Constants.Colors.blueThemeColor)
+                            .cornerRadius(10)
+                        Text("Continue")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
                     }
                 }
-                .padding()
-            .navigationTitle("Create Event")
             }
+            .padding()
+            .navigationTitle(viewModel.actionType == .createEvent ? "Create Event" : "Update Event")
+        }
     }
 }
 
 struct AddNewEventView_Previews: PreviewProvider {
     static var previews: some View {
        
-            AddNewEventView()
+            AddNewEventView(viewModel: MainTabViewModel())
 
     }
 }

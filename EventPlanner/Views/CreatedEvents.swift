@@ -13,45 +13,63 @@ struct CreatedEvents: View {
     @State var index: Int = 0
 
     var body: some View {
-        List {
-            ForEach(viewModel.myEvents.indices, id:\.self) {index in
-                NavigationLink {
-                    EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .created)
-                } label: {
-                    SecondaryEventCard(event: $viewModel.myEvents[index], eventType: .created)
-                }
-                .listRowBackground(
-                    RoundedRectangle(cornerRadius: 20)
-                        .background(.secondary)
-                        .foregroundColor(.clear)
-                        .padding(
-                            EdgeInsets(
-                                top: 2,
-                                leading: 10,
-                                bottom: 2,
-                                trailing: 10
-                            )
+        Group {
+            if viewModel.myEvents.isEmpty == false {
+                List {
+                    ForEach(viewModel.myEvents.indices, id:\.self) {index in
+                        NavigationLink {
+                            EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .created)
+                        } label: {
+                            SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.myEvents[index], eventType: .created)
+                        }
+                        .listRowBackground(
+                            RoundedRectangle(cornerRadius: 20)
+                                .background(.secondary)
+                                .foregroundColor(.clear)
+                                .padding(
+                                    EdgeInsets(
+                                        top: 2,
+                                        leading: 10,
+                                        bottom: 2,
+                                        trailing: 10
+                                    )
+                                )
                         )
-                )
-                .listRowSeparator(.hidden)
+                        .listRowSeparator(.hidden)
+                    }
+                    .onDelete { indexPath in
+                        index = indexPath.first!
+                        showDeleteAlert.toggle()
+                    }
+                    .actionSheet(isPresented: $showDeleteAlert) {
+                        ActionSheet(title: Text("Do you want to delete the event?"), message: nil, buttons: [
+                            .destructive(Text("Delete").foregroundColor(.red), action: {
+                                viewModel.deleteEvent(id: viewModel.myEvents[index].id)
+                            }),
+                            .cancel()
+                        ]
+                        )
+                    }
+                }
+                .listStyle(PlainListStyle())
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
+                
             }
-            .onDelete { indexPath in
-                index = indexPath.first!
-                showDeleteAlert.toggle()
-            }
-            .actionSheet(isPresented: $showDeleteAlert) {
-                ActionSheet(title: Text("Do you want to delete the event?"), message: nil, buttons: [
-                    .destructive(Text("Delete").foregroundColor(.red), action: {
-                        viewModel.deleteEvent(id: viewModel.myEvents[index].id)
-                    }),
-                    .cancel()
-                ]
-                )
+            else {
+                VStack {
+                    Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                        .font(.system(size: 100))
+                    Text("Events created by you will be visible here")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding()
+                        .multilineTextAlignment(.center)
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
             }
         }
-        .listStyle(PlainListStyle())
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("")
         .onAppear {
             if viewModel.myEvents.isEmpty {
                 viewModel.getMyEvents()

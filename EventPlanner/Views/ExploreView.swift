@@ -36,7 +36,6 @@ struct ExploreView: View {
                         .sheet(isPresented: $viewModel.showFilterView) {
                             FilterView(viewModel: viewModel)
                         }
-
                     }
                 }
                 .refreshable {
@@ -44,11 +43,14 @@ struct ExploreView: View {
                 }
             }
             else {
-                ScrollView {
-                    Text("Events meant for you will be shown here")
-                }
-                .refreshable {
-                    viewModel.getEventList()
+                VStack {
+                    Image(systemName: "list.bullet.clipboard.fill")
+                        .font(.system(size: 100))
+                    Text("Events near you will be visible here")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding()
+                        .multilineTextAlignment(.center)
                 }
             }
         }

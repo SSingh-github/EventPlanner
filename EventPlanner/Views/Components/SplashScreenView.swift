@@ -9,8 +9,17 @@ import SwiftUI
 
 struct SplashScreenView: View {
     var body: some View {
-        Text("splash screen")
-            .navigationBarBackButtonHidden(true)
+        VStack {
+            Spacer()
+            Image("eventplanner")
+                .resizable()
+                .frame(height: 300)
+            Text("Event Planner")
+                .font(.largeTitle)
+                .bold()
+            Spacer()
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

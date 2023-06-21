@@ -26,26 +26,13 @@ struct FilterView: View {
                             .padding([.trailing, .top,.bottom])
                         Spacer()
                         
-//                        Picker("Select an option", selection: $viewModel.filter.eventCategory) {
-//                            ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
-//                                Text(eventType)
-//                                    .padding()
-//                            }
-//                        }
-//                        .pickerStyle(WheelPickerStyle())
                         
                         TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
-                        //.frame(maxWidth: .infinity)
-                        //.padding()
-                        .fontWeight(.semibold)
-                        .accentColor(Constants.Colors.blueThemeColor)
+                        
+                            .fontWeight(.semibold)
+                            .accentColor(Constants.Colors.blueThemeColor)
                     }
-                    //.padding(.horizontal)
-//                    .overlay(
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .stroke(colorScheme == .light ? Color.black.opacity(1) : Color.white.opacity(1), lineWidth: 2)
-//                            .frame(height: CGFloat(60))
-//                    )
+
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[1])
 
@@ -59,7 +46,7 @@ struct FilterView: View {
                     
                     
                    
-                    DatePicker("", selection: $viewModel.filter.startDate, in: viewModel.startDate..., displayedComponents: .date)
+                    DatePicker("", selection: $viewModel.filter.startDate, in: viewModel.startDate2..., displayedComponents: .date)
                         .datePickerStyle(GraphicalDatePickerStyle())
                         .padding(.horizontal)
                         .accentColor(Constants.Colors.blueThemeColor)
@@ -123,7 +110,6 @@ struct FilterView: View {
                 }
                 Spacer()
                 Button {
-                    // when this button is clicked the search results must be loaded again
                     viewModel.getFilteredEvents()
                     presentationMode.wrappedValue.dismiss()
                 } label: {

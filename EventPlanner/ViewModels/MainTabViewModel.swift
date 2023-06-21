@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class MainTabViewModel: ObservableObject {
 
@@ -14,6 +15,9 @@ class MainTabViewModel: ObservableObject {
     @Published var showWelcomeViewModel = false
     @Published var showEditProfileView = false
     @Published var selectionIndex = 0
+    @Published var showEditEventSheet = false
+    @Published var eventForEdit: Event?
+
     
     @Published var firstName = "first name"
     @Published var lastName = "last name"
@@ -45,8 +49,20 @@ class MainTabViewModel: ObservableObject {
     @Published var filter: Filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 5.0, location: "")
 
     
-    let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
-    let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
+    @Published var newEvent: NewEvent = NewEvent()
+    @Published var newEventForEdit: NewEvent = NewEvent()
+    @Published var actionType: EventActionType = .createEvent
+    @Published var showEditSheet = false
+    
+    @Published var postingNewEvent = false
+//    @Published var showAlert = false
+//    @Published var alertMessage = ""
+    @Published var selected = "Start"
+    @Published var selectionIndex2 = 0
+
+    
+    let startDate2 = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
+    let endDate2 = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
 
     
     func getHashtagString()-> String {
@@ -131,5 +147,52 @@ class MainTabViewModel: ObservableObject {
     
     func joinEvent(id: Int) {
         NetworkManager.shared.joinEvent(eventId: id)
+    }
+    
+    func createNewEventForEdit(event: Event) {
+        self.newEventForEdit.selectedOption = Constants.Labels.eventTypes[event.event_category_id - 1]
+        self.newEventForEdit.title = event.title
+        self.newEventForEdit.description = event.description
+        self.newEventForEdit.hashtags = event.hashtags
+        self.newEventForEdit.startDate = Formatter.shared.createDateFromString(date: event.start_date)!
+        self.newEventForEdit.endDate = Formatter.shared.createDateFromString(date: event.end_date)!
+        //for location, if the user edits the location then the fields will not be nil
+        //if the user does not edits the location, then the fields will be nil and you can use the location and coordinates parameters of eventForEdit
+    }
+    
+    func printData() {
+        print("selected option is \(self.newEvent.selectedOption ?? "")")
+        print("title is \(self.newEvent.title)")
+        print("description is \(self.newEvent.description)")
+        print("hashtags \(self.newEvent.hashtags)")
+        print("dates are \(self.newEvent.formattedStartDate) and \(self.newEvent.formattedEndDate)")
+        print("times are \(self.newEvent.formattedStartTime) and \(self.newEvent.formattedEndTime)")
+        print("location is \(self.newEvent.pickedMark?.name ?? "") + \(self.newEvent.pickedMark?.locality ?? "") + \(self.newEvent.pickedMark?.subLocality ?? "")")
+        print("coordinates are \(self.newEvent.pickedLocation?.coordinate.latitude ?? 0.0), \(self.newEvent.pickedLocation?.coordinate.longitude ?? 0.0)")
+    }
+    
+    func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
+        let formattedDates = Formatter.shared.formatDate(dates: [self.newEvent.startDate, self.newEvent.endDate])
+        let formattedTimes = Formatter.shared.formatTime(times: [self.newEvent.startDate, self.newEvent.endDate])
+        self.newEvent.formattedStartDate = formattedDates[0]
+        self.newEvent.formattedEndDate = formattedDates[1]
+        self.newEvent.formattedStartTime = formattedTimes[0]
+        self.newEvent.formattedEndTime = formattedTimes[1]
+        self.postingNewEvent = true
+        NetworkManager.shared.postNewEvent(viewModel: self, appState: appState)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            viewModel.shiftTabToMyEvents()
+        }
+    }
+    
+    func updateEvent() {
+        let formattedDates = Formatter.shared.formatDate(dates: [self.newEventForEdit.startDate, self.newEventForEdit.endDate])
+        let formattedTimes = Formatter.shared.formatTime(times: [self.newEventForEdit.startDate, self.newEventForEdit.endDate])
+        self.newEventForEdit.formattedStartDate = formattedDates[0]
+        self.newEventForEdit.formattedEndDate = formattedDates[1]
+        self.newEventForEdit.formattedStartTime = formattedTimes[0]
+        self.newEventForEdit.formattedEndTime = formattedTimes[1]
+        
+        NetworkManager.shared.updateEvent(viewModel: self)
     }
 }

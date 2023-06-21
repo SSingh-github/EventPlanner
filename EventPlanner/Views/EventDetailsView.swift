@@ -12,6 +12,7 @@ import SwiftUI
 struct EventDetailsView: View {
     @ObservedObject var viewModel: MainTabViewModel
     @State var showMap = false
+    @State var navigate = false
     @Environment(\.colorScheme) var colorScheme
     var indexOfEvent: Int = 0
     var eventType: EventType = .all
@@ -363,6 +364,25 @@ struct EventDetailsView: View {
             }
             else if eventType == .joined {
                 NetworkManager.shared.eventDetails(viewModel: viewModel, eventId: viewModel.joinedEvents[indexOfEvent].id)
+            }
+        }
+        .toolbar {
+            if eventType == .created {
+                Button {
+                    viewModel.eventForEdit = viewModel.myEvents[indexOfEvent]
+                    viewModel.actionType = .updateEvent
+                    print(viewModel.eventForEdit!)
+                    //create a function in viewmodel that takes the event for edit and creates a new event of type newevent and call it here
+                    viewModel.createNewEventForEdit(event: viewModel.myEvents[indexOfEvent])
+                    viewModel.showEditSheet.toggle()
+                } label: {
+                    Text("Edit")
+                }.sheet(isPresented: $viewModel.showEditSheet, onDismiss: {
+                    viewModel.actionType = .createEvent
+                }) {
+                    //EditEventView(viewModel: viewModel, eventIndex: indexOfEvent)
+                    AddNewEventView(viewModel: viewModel)
+                }
             }
         }
     }

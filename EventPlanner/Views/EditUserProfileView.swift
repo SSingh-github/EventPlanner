@@ -41,7 +41,7 @@ struct EditUserProfileView: View {
                             .frame(width: 100, height: 100)
                             .clipShape(Circle())
                     }
-                    else if let imageUrl = viewModel.userProfile.profile_image , !imageUrl.isEmpty {
+                    else if let imageUrl = viewModel.imageUrl , !imageUrl.isEmpty {
                         // Show the image using the URL
                         AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                             switch phase {
@@ -94,13 +94,13 @@ struct EditUserProfileView: View {
                             .font(.title2)
                             .fontWeight(.semibold)
                             .padding(.top)
-                        TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.userProfile.first_name)
+                        TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
                         if viewModel.showFirstNameWarning() {
                             Text(Constants.Labels.Warnings.name)
                                 .fontWeight(.semibold)
                                 .foregroundColor(.red)
                         }
-                        TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.userProfile.last_name)
+                        TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.lastName)
                         if viewModel.showLastNameWarning() {
                             Text(Constants.Labels.Warnings.name)
                                 .fontWeight(.semibold)
@@ -123,14 +123,14 @@ struct EditUserProfileView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding(.top)
-                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate...viewModel.endDate, displayedComponents: .date)
+                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate2...viewModel.endDate2, displayedComponents: .date)
                         .padding(.bottom)
                     
                     Text(Constants.Labels.Questions.address)
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding(.top)
-                    TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.userProfile.address)
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.address)
                 }
                 .padding(.vertical)
                 

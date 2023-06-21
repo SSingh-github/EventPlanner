@@ -21,7 +21,7 @@ struct Constants {
         static let authorizationHeaderField             = "Authorization"
         
         struct URLs {
-            static let baseUrl                          = "http://192.180.1.206:5000/" //http://192.180.1.197:5000
+            static let baseUrl                          = "http://192.180.1.206:5000/"
             static let signUp                           = baseUrl + "users/sign_up"
             static let logIn                            = baseUrl + "users/sign_in"
             static let logOut                           = baseUrl + "users/sign_out"

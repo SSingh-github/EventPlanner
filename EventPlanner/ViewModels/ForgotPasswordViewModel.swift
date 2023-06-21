@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class ForgotPasswordViewModel: ObservableObject {
     @Published var email = ""
@@ -23,6 +24,10 @@ class ForgotPasswordViewModel: ObservableObject {
     @Published var resetPasswordSuccessful = false
     @Published var showAlert = false
     @Published var alertMessage = ""
+    
+    
+    
+    
    
     
     func showEmailWarning() -> Bool {

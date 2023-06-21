@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SecondaryEventCard: View {
+    @ObservedObject var viewModel: MainTabViewModel
+    var eventIndex: Int
     @Binding var event: Event
     var eventType: EventType
-    @State var showEditEventSheet = false
     var body: some View {
         VStack {
             HStack {
@@ -20,21 +21,8 @@ struct SecondaryEventCard: View {
                 .padding(.top, 4)
                 .padding(.bottom, 3)
                 Spacer()
-                if eventType == .created {
-                    Button {
-                        print("edit event")
-                        showEditEventSheet.toggle()
-                    } label: {
-                        Image(systemName: "pencil.circle.fill")
-                            .foregroundColor(Constants.Colors.blueThemeColor)
-                            .font(.title3)
-                    }
-                    .sheet(isPresented: $showEditEventSheet) {
-                        Text("Edit event view")
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
             }
+            
             HStack {
                 Image(systemName: "calendar")
                 Text(event.start_date)
@@ -65,8 +53,3 @@ struct SecondaryEventCard: View {
     }
 }
 
-//struct SecondaryEventCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SecondaryEventCard()
-//    }
-//}

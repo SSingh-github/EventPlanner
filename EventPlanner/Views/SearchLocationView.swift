@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct SearchLocationView: View {
-    @ObservedObject var viewModel: AddEventViewModel
+    @ObservedObject var viewModel: MainTabViewModel
     var body: some View {
        
             SearchView2(viewModel: viewModel)
@@ -22,7 +22,7 @@ struct SearchView2: View {
     
     @StateObject var locationManager: LocationManager = .init()
     @State var navigationTag: String?
-    @ObservedObject var viewModel: AddEventViewModel
+    @ObservedObject var viewModel: MainTabViewModel
     
     var body: some View {
         VStack {
@@ -102,6 +102,7 @@ struct SearchView2: View {
                     Spacer()
                 }
             }
+
         }
         .padding()
         .frame(maxHeight: .infinity, alignment: .top)
@@ -119,6 +120,6 @@ struct SearchView2: View {
 
 struct SearchLocationView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchLocationView(viewModel: AddEventViewModel())
+        SearchLocationView(viewModel: MainTabViewModel())
     }
 }
