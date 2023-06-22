@@ -24,8 +24,3 @@ struct CalendarEventsList: View {
     }
 }
 
-//struct CalendarEventsList_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CalendarEventsList(viewModel: MainTabViewModel())
-//    }
-//}

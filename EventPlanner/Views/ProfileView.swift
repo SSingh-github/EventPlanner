@@ -74,10 +74,7 @@ struct ProfileView: View {
                         Divider()
                         
                         VStack (alignment:.leading){
-//                            Text(Constants.Labels.phoneNumber)
-//                                .font(.title3)
-//                                .fontWeight(.semibold)
-//                                .padding(.bottom)
+
                             HStack {
                                 Image(systemName: Constants.Images.phone)
                                     .font(.title3)
@@ -90,10 +87,6 @@ struct ProfileView: View {
                         .padding(.bottom)
                         
                         VStack (alignment:.leading){
-//                            Text(Constants.Labels.dateOfBirth)
-//                                .font(.title3)
-//                                .fontWeight(.semibold)
-//                                .padding(.bottom)
                             HStack {
                                 Image(systemName: Constants.Images.calendar)
                                     .font(.title3)
@@ -105,15 +98,10 @@ struct ProfileView: View {
                         .padding(.bottom)
 
                         VStack (alignment:.leading){
-//                            Text(Constants.Labels.address)
-//                                .font(.title3)
-//                                .fontWeight(.semibold)
-//                                .padding(.bottom)
                             HStack {
                                 Image(Constants.Images.location)
                                     .font(.title)
                                 Text(viewModel.userProfile.address)
-                                    //.fontWeight(.semibold)
 
                                 Spacer()
                             }
@@ -171,11 +159,7 @@ struct ProfileView: View {
                                 dismissButton: .default(Text(Constants.Labels.ok)
                                     .foregroundColor(Constants.Colors.blueThemeColor)))
                         }
-//                        .alert(isPresented: $viewModel.showSignoutAlert) {
-//                            Alert(title: Text(Constants.Labels.Questions.logout), primaryButton: .cancel(Text(Constants.Labels.Alerts.cancel)), secondaryButton: .default(Text(Constants.Labels.ok)) {
-//                                viewModel.signOutCall()
-//                            })
-//                        }
+                      }
                         .actionSheet(isPresented: $viewModel.showSignoutAlert) {
                             ActionSheet(title: Text("Do you want to log out?"), message: nil, buttons: [ // 4
                                 .destructive(Text("Logout").foregroundColor(.red), action: { // 5
@@ -197,13 +181,13 @@ struct ProfileView: View {
                 }
                 .navigationTitle("Profile")
                 .onAppear {
-                    if viewModel.userProfile.first_name == "first name" {
+                    if viewModel.userProfile.first_name == "" {
                         NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
                     }
                 }
             }
         }
-    }
+    
 }
 
 struct ProfileView_Previews: PreviewProvider {

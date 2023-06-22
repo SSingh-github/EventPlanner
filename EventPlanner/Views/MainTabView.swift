@@ -63,6 +63,7 @@ struct MainTabView: View {
                 SplashScreenView()
             }
         }
+        
         .onAppear {
             
             // network calls to load the data before the app screen is visible to the user

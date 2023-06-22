@@ -495,7 +495,7 @@ class NetworkManager {
         task.resume()
     }
     
-    func resetPassword(viewModel: ForgotPasswordViewModel) {
+    func resetPassword(viewModel: ForgotPasswordViewModel, loginViewModel: LoginViewModel) {
         
         viewModel.resetPasswordSuccessful = false
         guard let url = URL(string: Constants.API.URLs.resetPassword) else {
@@ -546,8 +546,10 @@ class NetworkManager {
                 viewModel.resetPasswordLoading = false
                 
                 if httpResponse.statusCode == 200 {
-                    UserDefaults.standard.set(true, forKey: Constants.Labels.guestLoginKey)
-                    viewModel.resetPasswordSuccessful.toggle()
+                    print("password reset successful")
+//                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+//                    viewModel.resetPasswordSuccessful.toggle()
+                    loginViewModel.showForgotPasswordSheet.toggle()
                 }
                 else {
                     print("some error occured while resetting the password")
@@ -605,6 +607,7 @@ class NetworkManager {
                     viewModel.userProfile.last_name = response.data.last_name
                     viewModel.userProfile.dob = response.data.dob
                     viewModel.userProfile.profile_image = response.data.profile_image ?? ""
+                    viewModel.dateOfBirth = Formatter.shared.createDateFromString(date: response.data.dob)!
                 }
                
             }
@@ -629,12 +632,14 @@ class NetworkManager {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
         request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
+        viewModel.userProfile.dob = Formatter.shared.formatSingleDate(date: viewModel.dateOfBirth)
+        
         let fields: [String: Any] = [
-            Constants.Keys.firstName : viewModel.firstName,
-            Constants.Keys.lastName : viewModel.lastName,
-            Constants.Keys.dob : viewModel.dob,
-            Constants.Keys.phoneNumber : Int(viewModel.phoneNumber) ?? 9999999999,
-            Constants.Keys.address : viewModel.address
+            Constants.Keys.firstName : viewModel.userProfile.first_name,
+            Constants.Keys.lastName : viewModel.userProfile.last_name,
+            Constants.Keys.dob : viewModel.userProfile.dob,
+            Constants.Keys.phoneNumber : viewModel.userProfile.phone_number,
+            Constants.Keys.address : viewModel.userProfile.address
         ]
         
         let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
@@ -787,7 +792,7 @@ class NetworkManager {
                 
                 DispatchQueue.main.async {
                     viewModel.myEvents = response.data
-
+                    viewModel.createdEventsLoading = false
                 }
                 
                 for event in response.data {
@@ -840,7 +845,7 @@ class NetworkManager {
                 
                 DispatchQueue.main.async {
                     viewModel.joinedEvents = response.data
-
+                    viewModel.joinedEventsLoading = false
                 }
                 
                 for event in response.data {
@@ -893,7 +898,7 @@ class NetworkManager {
                 
                 DispatchQueue.main.async {
                     viewModel.favouriteEvents = response.data
-
+                    viewModel.favouriteEventsLoading = false
                 }
                 
                 for event in response.data {
@@ -1050,7 +1055,7 @@ class NetworkManager {
         
         var request = URLRequest(url: url)
         
-        request.httpMethod = Constants.API.HttpMethods.post
+        request.httpMethod = Constants.API.HttpMethods.put
         
         let boundary = "Boundary-testpqr"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
@@ -1097,6 +1102,12 @@ class NetworkManager {
             }
             catch {
                 print("error decoding the response")
+            }
+            
+            DispatchQueue.main.async {
+                if httpResponse.statusCode == 200 {
+                    viewModel.showEditSheet.toggle()
+                }
             }
             
 //            DispatchQueue.main.async {

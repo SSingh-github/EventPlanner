@@ -36,8 +36,4 @@ struct ThirdWelcomeView: View {
     }
 }
 
-//struct ThirdWelcomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ThirdWelcomeView()
-//    }
-//}
+

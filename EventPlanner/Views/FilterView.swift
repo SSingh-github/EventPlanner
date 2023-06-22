@@ -12,6 +12,14 @@ struct FilterView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: MainTabViewModel
+    
+    var filterButtonDisabled : Bool {
+        var bool: Bool = false
+        for check in viewModel.checks {
+            bool = bool || check
+        }
+        return !bool
+    }
 
     var body: some View {
         NavigationView {
@@ -20,14 +28,14 @@ struct FilterView: View {
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[0])
                             .padding(.leading)
-                        Text("Category")
+                        Text(Constants.Labels.category)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding([.trailing, .top,.bottom])
                         Spacer()
                         
                         
-                        TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
+                        TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: Constants.Labels.selectCategory, selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
                         
                             .fontWeight(.semibold)
                             .accentColor(Constants.Colors.blueThemeColor)
@@ -36,7 +44,7 @@ struct FilterView: View {
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[1])
 
-                        Text("Start Date:")
+                        Text(Constants.Labels.startDate)
                             .font(.title3)
                             .fontWeight(.semibold)
                             
@@ -54,7 +62,7 @@ struct FilterView: View {
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[2])
 
-                        Text("Title:")
+                        Text(Constants.Labels.title)
                             .font(.title3)
                             .fontWeight(.semibold)
                         Spacer()
@@ -62,12 +70,12 @@ struct FilterView: View {
                     .padding([.leading, .top])
 
                     
-                    TextFieldView(placeholder: "Event title", text: $viewModel.filter.title)
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.eventTitle, text: $viewModel.filter.title)
                     
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[3])
 
-                        Text("Hashtag:")
+                        Text(Constants.Labels.hashtag)
                             .font(.title3)
                             .fontWeight(.semibold)
                         Spacer()
@@ -75,12 +83,12 @@ struct FilterView: View {
                     .padding([.leading, .top])
 
                     
-                    TextFieldView(placeholder: "#tag", text: $viewModel.filter.hashtag)
+                    TextFieldView(placeholder: Constants.Labels.Placeholders.tag, text: $viewModel.filter.hashtag)
                     
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[4])
 
-                        Text("Radius: " + String(format: "%.1f", viewModel.filter.radius) + " Km")
+                        Text(Constants.Labels.radius + String(format: Constants.StringFormats.float, viewModel.filter.radius) + Constants.Labels.km)
                             .font(.title3)
                             .fontWeight(.semibold)
                         Spacer()
@@ -95,14 +103,14 @@ struct FilterView: View {
                         HStack {
                             CheckBoxView(checked: $viewModel.checks[5])
 
-                            Text("Location:")
+                            Text(Constants.Labels.location)
                                 .font(.title3)
                                 .fontWeight(.semibold)
                             Spacer()
                         }
                         .padding([.leading, .top])
 
-                        TextFieldView(placeholder: "Location", text: $viewModel.filter.location)
+                        TextFieldView(placeholder: Constants.Labels.Placeholders.location, text: $viewModel.filter.location)
                             .padding(.bottom)
 
                     }
@@ -116,14 +124,18 @@ struct FilterView: View {
                     ZStack {
                         Rectangle()
                             .frame(height: 60)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
+                            .foregroundColor(filterButtonDisabled ? .gray : Constants.Colors.blueThemeColor)
                             .cornerRadius(10)
                         Text("Show results")
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                 }
+                .disabled(filterButtonDisabled)
             }
+            .onTapGesture {
+                        UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
+                    }
             .padding()
             .navigationTitle("Filter")
             .navigationBarTitleDisplayMode(.inline)

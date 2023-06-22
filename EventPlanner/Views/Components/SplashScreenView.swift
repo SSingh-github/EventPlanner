@@ -11,10 +11,10 @@ struct SplashScreenView: View {
     var body: some View {
         VStack {
             Spacer()
-            Image("eventplanner")
+            Image(Constants.Images.eventPlanner)
                 .resizable()
                 .frame(height: 300)
-            Text("Event Planner")
+            Text(Constants.Labels.eventPlanner)
                 .font(.largeTitle)
                 .bold()
             Spacer()

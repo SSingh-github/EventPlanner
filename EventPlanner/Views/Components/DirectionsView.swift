@@ -13,7 +13,7 @@ struct DirectionsView: View {
     
     var body: some View {
         VStack {
-            Text("Directions")
+            Text(Constants.Labels.directions)
                 .font(.title)
                 .fontWeight(.semibold)
                 .padding(40)
@@ -29,8 +29,4 @@ struct DirectionsView: View {
     }
 }
 
-//struct DirectionsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DirectionsView()
-//    }
-//}
+

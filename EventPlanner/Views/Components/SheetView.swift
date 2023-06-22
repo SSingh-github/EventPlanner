@@ -13,12 +13,12 @@ struct SheetView: View {
     @State var selectedOption = ""
     var body: some View {
         VStack(alignment: .leading) {
-            Text("What's the title?")
+            Text(Constants.Labels.Questions.title)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.bottom, 10)
             
-            TextFieldView(placeholder: "Title", text: $title)
+            TextFieldView(placeholder: Constants.Labels.Placeholders.title, text: $title)
                 //.padding()
                 .font(.title3)
                 .accentColor(Constants.Colors.blueThemeColor)
@@ -26,12 +26,12 @@ struct SheetView: View {
             
             HStack {
                 Spacer()
-                Text("Category")
+                Text(Constants.Labels.category)
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.bottom, 10)
                 Spacer()
-                Picker("Select an option", selection: $selectedOption) {
+                Picker(Constants.Labels.selectOption, selection: $selectedOption) {
                     ForEach(Constants.Labels.eventTypes, id: \.self) { eventType in
                         Text(eventType)
                     }
@@ -43,7 +43,7 @@ struct SheetView: View {
             }
             
             
-            Text("Add some description")
+            Text(Constants.Labels.addDescription)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.bottom, 10)

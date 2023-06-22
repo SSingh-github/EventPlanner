@@ -20,6 +20,7 @@ struct OtpView: View {
                     .padding(.bottom, 40)
                 
                 TextFieldView(placeholder: Constants.Labels.Placeholders.otp, text: $viewModel.otp)
+                    .keyboardType(.numberPad)
                 
                 Text(Constants.Labels.otpMessage)
                     .fontWeight(.semibold)

@@ -14,6 +14,8 @@ struct MapViewSelection: View {
     @EnvironmentObject var locationManager: LocationManager
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
+
+    @State var showEditEventActionSheet = false
    
     var body: some View {
         ZStack {
@@ -56,7 +58,9 @@ struct MapViewSelection: View {
                             viewModel.newEventForEdit.pickedLocation = locationManager.pickedLocation
                             viewModel.newEventForEdit.pickedMark = locationManager.pickedMark
                             // call the update event method 
-                            viewModel.showEditSheet.toggle()
+                            //viewModel.showEditSheet.toggle()
+                            showEditEventActionSheet.toggle()
+                            print(showEditEventActionSheet)
                         }
                     } label: {
                         Text(viewModel.actionType == .createEvent ? Constants.Labels.confirmLocation : "Update event")
@@ -75,6 +79,16 @@ struct MapViewSelection: View {
                             .foregroundColor(.white)
                             .ignoresSafeArea()
                     }
+                    //action sheets here
+                    .actionSheet(isPresented: $showEditEventActionSheet) {
+                        ActionSheet(title: Text("Do you really want to update the event?"), message: nil, buttons: [
+                            .default(Text("Update event"),action: {
+                                viewModel.updateEvent()
+                            }),
+                            .cancel()
+                        ]
+                        )
+                    }
                     .alert(isPresented: $viewModel.showAlert) {
                         Alert(
                             title: Text(""), message: Text(viewModel.alertMessage),
@@ -92,11 +106,11 @@ struct MapViewSelection: View {
                     .navigationBarBackButtonHidden(true)
             }
         }
-        .onDisappear {
-            locationManager.pickedMark = nil
-            locationManager.pickedLocation = nil
-            locationManager.mapView.removeAnnotations(locationManager.mapView.annotations)
-        }
+//        .onDisappear {
+//            locationManager.pickedMark = nil
+//            locationManager.pickedLocation = nil
+//            locationManager.mapView.removeAnnotations(locationManager.mapView.annotations)
+//        }
         .alert(isPresented: $viewModel.showAlert) {
             Alert(
                 title: Text(""), message: Text(viewModel.alertMessage),

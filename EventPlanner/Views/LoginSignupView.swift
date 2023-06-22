@@ -62,6 +62,7 @@ struct LoginSignupView: View {
                                     .foregroundColor(Constants.Colors.blueThemeColor)
                                     .fullScreenCover(isPresented: $viewModel.showForgotPasswordSheet) {
                                         ForgotPasswordView()
+                                            .environmentObject(viewModel)
                                     }
                                 }
                                 .padding(.top)
@@ -98,24 +99,6 @@ struct LoginSignupView: View {
                                     dismissButton: .default(Text(Constants.Labels.ok)
                                         .foregroundColor(Constants.Colors.blueThemeColor)))
                             }
-
-                            
-                            if !UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) {
-                                Button {
-                                    viewModel.loginGuest()
-                                } label: {
-                                    Text(Constants.Labels.guestLogin)
-                                        .fontWeight(.semibold)
-                                        .padding()
-                                        .frame(width: 350, height: 60)
-                                        .foregroundColor(Constants.Colors.blueThemeColor)
-                                }
-                                .navigationDestination(isPresented: $viewModel.presentMainTabView, destination: {
-                                    MainTabView()
-                                       
-                                })
-                            
-                            }
                             
                             HStack {
                                 Text(viewModel.isLoginView ? Constants.Labels.notMember : Constants.Labels.alreadyMember)
@@ -145,8 +128,3 @@ struct LoginSignupView: View {
     }
 }
 
-//struct LoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginSignupView()
-//    }
-//}

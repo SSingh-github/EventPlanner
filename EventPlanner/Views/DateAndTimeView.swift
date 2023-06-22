@@ -54,7 +54,8 @@ struct DateAndTimeView: View {
                             .default(Text("Use same location"), action: {
                                 // update the event with same location
                                 // call the update event method here and pop the sheet
-                                viewModel.showEditSheet.toggle()
+                                viewModel.updateEvent()
+                                //viewModel.showEditSheet.toggle()
                             }),
                             .default(Text("Change location"), action: {
                                 //continue to the search location view

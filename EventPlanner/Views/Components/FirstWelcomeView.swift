@@ -32,8 +32,4 @@ struct FirstWelcomeView: View {
     }
 }
 
-//struct FirstWelcomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        FirstWelcomeView()
-//    }
-//}
+

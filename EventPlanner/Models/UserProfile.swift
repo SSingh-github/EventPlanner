@@ -15,11 +15,20 @@ struct UserData: Codable {
 
 struct UserDataDetails: Codable {
     var dob: String
-    var phone_number: Int
+    var phone_number: String
     var address: String
     var first_name: String
     var last_name: String
     var profile_image: String?
+    
+    init () {
+        dob = ""
+        phone_number = ""
+        address = ""
+        first_name = ""
+        last_name = ""
+        profile_image = nil
+    }
 }
 
 // this is the format for get profile request

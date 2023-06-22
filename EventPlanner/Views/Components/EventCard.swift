@@ -76,12 +76,12 @@ struct EventCard: View {
                             }
                         } label: {
                             if event.is_favourite {
-                                Image(systemName: "star.fill")
+                                Image(systemName: Constants.Images.starFill)
                                     .foregroundColor(.orange)
                                     .frame(width: 45, height: 45)
                             }
                             else {
-                                Image(systemName: "star")
+                                Image(systemName: Constants.Images.star)
                                     .foregroundColor(.gray)
                                     .bold()
                                     .frame(width: 45, height: 45)
@@ -104,11 +104,11 @@ struct EventCard: View {
                         } label: {
                             HStack{
                                 if event.is_liked {
-                                    Image(systemName: "heart.fill")
+                                    Image(systemName: Constants.Images.starFill)
                                         .foregroundColor(Constants.Colors.pinkColor)
                                 }
                                 else {
-                                    Image(systemName: "heart")
+                                    Image(systemName:Constants.Images.star)
                                         .foregroundColor(.gray)
                                         .bold()
                                 }
@@ -144,8 +144,3 @@ struct EventCard: View {
     }
 }
 
-//struct EventCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        EventCard()
-//    }
-//}

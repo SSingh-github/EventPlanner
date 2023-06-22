@@ -12,7 +12,7 @@ import SwiftUI
 struct SecureTextFieldView: View {
     var placeholder: String
     @Binding var text: String
-    @State private var isPasswordVisible = false // Track the visibility state of the password
+    @State private var isPasswordVisible = false
     
     var body: some View {
         HStack {
@@ -25,7 +25,7 @@ struct SecureTextFieldView: View {
             }
             
             Button(action: {
-                isPasswordVisible.toggle() // Toggle the visibility state
+                isPasswordVisible.toggle() 
             }) {
                 Image(systemName: isPasswordVisible ? Constants.Images.eye : Constants.Images.eyeSlash)
                     .foregroundColor(.secondary)

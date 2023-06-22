@@ -88,11 +88,8 @@ class ForgotPasswordViewModel: ObservableObject {
         NetworkManager.shared.verifyOtp(viewModel: self)
     }
     
-    func resetPassword() {
+    func resetPassword(viewModel: LoginViewModel) {
         self.resetPasswordLoading = true
-        NetworkManager.shared.resetPassword(viewModel: self)
-        if resetPasswordSuccessful {
-            // clear the navigationstack array
-        }
+        NetworkManager.shared.resetPassword(viewModel: self, loginViewModel: viewModel)
     }
 }

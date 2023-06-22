@@ -23,12 +23,15 @@ struct CalendarView: View {
                 .sheet(isPresented: $displayEvents) {
                     CalendarEventsList(viewModel: viewModel, dateSelected: $dateSelected)
                 }
+               
             }
             else {
                 //calendar.badge.exclamationmark
-                VStack {
+                ScrollView {
                     Image(systemName: "calendar.badge.exclamationmark")
                         .font(.system(size: 100))
+                        .padding(.top, 250)
+
                     Text("upcoming events for you will be visible here")
                         .font(.title3)
                         .fontWeight(.semibold)
@@ -38,6 +41,9 @@ struct CalendarView: View {
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle("")
+                .refreshable {
+                    viewModel.getJoinedEvents()
+                }
             }
         }
         .onAppear {

@@ -14,7 +14,7 @@ struct ExploreView: View {
     var body: some View {
         NavigationView {
            
-            if viewModel.events.isEmpty == false {
+            if viewModel.events.isEmpty == false{
                 List {
                     ForEach(viewModel.events.indices, id: \.self) {index in
                         NavigationLink(destination: EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .all)) {
@@ -29,7 +29,7 @@ struct ExploreView: View {
                         Button {
                             viewModel.showFilterView.toggle()
                         } label: {
-                            Image(systemName: "slider.horizontal.3")
+                            Image(systemName: Constants.Images.slider)
                                 .foregroundColor(.primary)
                                 .font(.title3)
                         }
@@ -43,14 +43,18 @@ struct ExploreView: View {
                 }
             }
             else {
-                VStack {
-                    Image(systemName: "list.bullet.clipboard.fill")
+                ScrollView {
+                    Image(systemName: Constants.Images.listFill)
                         .font(.system(size: 100))
-                    Text("Events near you will be visible here")
+                        .padding(.top, 250)
+                    Text(Constants.Labels.eventsNearYou)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding()
                         .multilineTextAlignment(.center)
+                }
+                .refreshable {
+                    viewModel.getEventList()
                 }
             }
         }

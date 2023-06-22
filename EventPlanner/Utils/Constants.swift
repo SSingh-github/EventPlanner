@@ -84,6 +84,16 @@ struct Constants {
     }
     
     struct Images {
+        static let slider                               = "slider.horizontal.3"
+        static let listFill                             = "list.bullet.clipboard.fill"
+        static let eventPlanner                         = "eventplanner"
+        static let hourGlass                            = "hourglass"
+        static let checkMark                            = "checkmark.circle.fill"
+        static let starFill                             = "star.fill"
+        static let star                                 = "star"
+        static let heartFill                            = "heart.fill"
+        static let heart                                = "heart"
+        static let directions                           = "arrow.triangle.turn.up.right.diamond.fill"
         static let multiply                             = "multiply.circle.fill"
         static let rightArrow                           = "arrow.right"
         static let northLocation                        = "location.north.circle.fill"
@@ -120,12 +130,29 @@ struct Constants {
     }
     
     struct Labels {
-        static let done                                 = "done"
+        static let hashtag                              = "Hashtag:"
+        static let km                                   = " Km"
+        static let radius                               = "Radius: "
+        static let location                             = "Location:"
+        static let title                                = "Title:"
+        static let startDate                            = "Start Date:"
+        static let eventsNearYou                        = "Events near you will be visible here"
+        static let eventPlanner                         = "Event Planner"
+        static let pending                              = "pending  "
+        static let approved                             = "approved"
+        static let addDescription                       = "Add some description"
+        static let selectOption                         = "Select an option"
+        static let category                             = "Category"
+        static let selectCategory                       = "Select Category"
+        static let directions                           = "Directions"
+        static let startingLocation                     = "Starting location"
+        static let destinationLocation                  = "Destination location"
+        static let done                                 = "Done"
         static let selectStartTime                      = "Select the Start time:"
         static let selectEndTime                        = "Select the End time:"
         static let dateAndTime                          = "Date and Time"
         static let currentLocation                      = "Current Location"
-        static let confirmLocation                      = "confirm location"
+        static let confirmLocation                      = "Confirm Location"
         static let useCurrentLocation                   = "  use current location"
         static let searchResults                        = "Your Search results will appear here"
         static let selectDob                            = "Select your date of birth"
@@ -182,9 +209,10 @@ struct Constants {
         static let phoneRule                            = "Enter 10-digit phone number"
         static let createAccount                        = "Let's create your account"
         static let ok                                   = "OK"
-        static let Continue                             = "continue"
+        static let Continue                             = "Continue"
         
         struct Questions {
+            static let title                            = "What's the title?"
             static let name                             = "What's your name?"
             static let emailPassword                    = "What's your email and password?"
             static let dob                              = "What's your date of birth?"
@@ -209,6 +237,9 @@ struct Constants {
         }
         
         struct Placeholders {
+            static let location                         = "Location"
+            static let tag                              = "#tag"
+            static let eventTitle                       = "Event title"
             static let title                            = "Title"
             static let phoneNumber                      = "Phone number"
             static let dob                              = "yyyy-mm-dd"
@@ -225,6 +256,7 @@ struct Constants {
     struct StringFormats {
         static let dateFormat                           = "yyyy-MM-dd"
         static let timeFormat                           = "HH:mm"
+        static let float                                = "%.1f"
     }
 
     

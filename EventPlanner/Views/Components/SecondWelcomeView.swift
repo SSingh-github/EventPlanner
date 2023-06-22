@@ -31,8 +31,3 @@ struct SecondWelcomeView: View {
     }
 }
 
-//struct SecondWelcomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SecondWelcomeView()
-//    }
-//}

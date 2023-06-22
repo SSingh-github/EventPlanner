@@ -72,6 +72,7 @@ struct CreateProfileView: View {
                         .fontWeight(.semibold)
                         .padding(.top)
                     TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.phoneNumber)
+                        .keyboardType(.numberPad)
                     if viewModel.showPhoneNumberWarning() {
                         Text(Constants.Labels.Warnings.phoneNumber)
                             .fontWeight(.semibold)

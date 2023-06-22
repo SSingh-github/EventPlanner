@@ -10,6 +10,7 @@ import SwiftUI
 struct ResetPasswordView: View {
     
     @ObservedObject var viewModel: ForgotPasswordViewModel
+    @EnvironmentObject var loginViewModel: LoginViewModel
 
     var body: some View {
         ZStack {
@@ -47,7 +48,7 @@ struct ResetPasswordView: View {
                 }
                 
                 Button {
-                    viewModel.resetPassword()
+                    viewModel.resetPassword(viewModel: loginViewModel)
                 } label: {
                     ZStack {
                         Rectangle()

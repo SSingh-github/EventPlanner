@@ -57,10 +57,6 @@ struct DateTimePickerView: View {
                         .accentColor(Constants.Colors.blueThemeColor)
                 }
             }
-//            if viewModel.newEvent.startDate == viewModel.newEvent.endDate {
-//                Text(Constants.Labels.durationMessage)
-//                    .font(.caption)
-//            }
         }
     }
 }

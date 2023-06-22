@@ -68,6 +68,7 @@
 		93ED89BA2A3083C100856AA2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89B92A3083C100856AA2 /* Event.swift */; };
 		93ED89BC2A309D3C00856AA2 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BB2A309D3C00856AA2 /* Enumerations.swift */; };
 		93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */; };
+		93EDF93E2A446F4C00CE4C02 /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */; };
 		93EE9A6C2A2EF28B00478DAA /* EventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE9A6B2A2EF28B00478DAA /* EventCard.swift */; };
 		93EE9A6E2A2F4C9000478DAA /* MapSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE9A6D2A2F4C9000478DAA /* MapSelectionView.swift */; };
 		93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61D2A29CC1600B10B71 /* Response.swift */; };
@@ -140,6 +141,7 @@
 		93ED89B92A3083C100856AA2 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		93ED89BB2A309D3C00856AA2 /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdClass.swift; sourceTree = "<group>"; };
+		93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
 		93EE9A6B2A2EF28B00478DAA /* EventCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCard.swift; sourceTree = "<group>"; };
 		93EE9A6D2A2F4C9000478DAA /* MapSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSelectionView.swift; sourceTree = "<group>"; };
 		93F0A61D2A29CC1600B10B71 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -254,13 +256,14 @@
 			children = (
 				93EC5B4D2A249EB80065A286 /* Constants.swift */,
 				93EC5B522A24A09F0065A286 /* Validations.swift */,
-				93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */,
-				93ED89BB2A309D3C00856AA2 /* Enumerations.swift */,
-				93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */,
 				93B472CC2A3198DF0042C628 /* Formatting.swift */,
 				93ACA6322A3745BF00D6ACFC /* Extensions.swift */,
-				93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */,
+				93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */,
+				93F0A6232A2A2A8D00B10B71 /* ImagePicker.swift */,
+				93ED89BB2A309D3C00856AA2 /* Enumerations.swift */,
 				93ADE6B62A4083B100223E8D /* CalendarHelper.swift */,
+				93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */,
+				93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -269,9 +272,9 @@
 			isa = PBXGroup;
 			children = (
 				93EC5B502A24A0500065A286 /* LoginViewModel.swift */,
-				93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */,
-				93AC9BA22A273F7600E3A61A /* MainTabViewModel.swift */,
 				93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */,
+				93AC9BA22A273F7600E3A61A /* MainTabViewModel.swift */,
+				93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */,
 				93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */,
 			);
 			path = ViewModels;
@@ -414,6 +417,7 @@
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
+				93EDF93E2A446F4C00CE4C02 /* KeyboardHandling.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
 				93AC56472A39A88E00B7DCD8 /* CheckBox.swift in Sources */,
 				93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */,

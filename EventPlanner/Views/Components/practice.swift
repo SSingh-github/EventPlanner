@@ -24,7 +24,7 @@ struct ContentView2: View {
             Button {
                 showDirectionsSheet.toggle()
             } label: {
-                Image(systemName: "arrow.triangle.turn.up.right.diamond.fill")
+                Image(systemName: Constants.Images.directions)
                     .font(.largeTitle)
                     .foregroundColor(Constants.Colors.blueThemeColor)
                     .background {
@@ -76,11 +76,11 @@ struct MapView: UIViewRepresentable {
         
         let annotation1 = MKPointAnnotation()
         annotation1.coordinate = CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276)
-        annotation1.title = "Starting location"
+        annotation1.title = Constants.Labels.startingLocation
         
         let annotation2 = MKPointAnnotation()
         annotation2.coordinate = CLLocationCoordinate2D(latitude: destination.0, longitude: destination.1)
-        annotation2.title = "Destination location"
+        annotation2.title = Constants.Labels.destinationLocation
         
         let request = MKDirections.Request()
         request.source = MKMapItem(placemark: p1)

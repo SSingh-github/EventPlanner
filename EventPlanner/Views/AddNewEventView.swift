@@ -16,6 +16,26 @@ struct AddNewEventView: View {
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
     
+    var buttonDisabled: Bool {
+        if viewModel.actionType == .createEvent {
+            var bool: Bool = false
+            bool = bool || viewModel.newEvent.title.isEmpty
+            bool = bool || viewModel.newEvent.hashtags.isEmpty
+            bool = bool || viewModel.newEvent.selectedOption == nil
+            bool = bool || viewModel.newEvent.imagePicker2.image == nil
+            return bool
+        }
+        else {
+            var bool: Bool = false
+            bool = bool || viewModel.newEventForEdit.title.isEmpty
+            bool = bool || viewModel.newEventForEdit.hashtags.isEmpty
+            bool = bool || viewModel.newEventForEdit.selectedOption == nil
+            bool = bool || viewModel.newEventForEdit.imagePicker2.image == nil
+            print("button is disabled \(bool)")
+            return bool
+        }
+    }
+    
     var body: some View {
         NavigationView {
             
@@ -70,14 +90,15 @@ struct AddNewEventView: View {
                 
                 ZStack {
                     
-                    if let image = viewModel.newEvent.imagePicker2.image {
+                    if let image = viewModel.actionType == .createEvent ? viewModel.newEvent.imagePicker2.image :
+                        viewModel.newEventForEdit.imagePicker2.image {
                         Image(uiImage:image)
                             .resizable()
                             .frame(height: 250)
                             .scaledToFit()
                             .cornerRadius(20)
                         
-                        PhotosPicker(selection: $viewModel.newEvent.imagePicker2.imageSelection, matching: .images) {
+                        PhotosPicker(selection:viewModel.actionType == .createEvent ? $viewModel.newEvent.imagePicker2.imageSelection : $viewModel.newEventForEdit.imagePicker2.imageSelection , matching: .images) {
                             VStack {
                                 Spacer()
                                 HStack {
@@ -99,7 +120,7 @@ struct AddNewEventView: View {
                             .frame(height: 250)
                             .cornerRadius(20)
                             .foregroundColor(.secondary)
-                        PhotosPicker(selection: $viewModel.newEvent.imagePicker2.imageSelection, matching: .images) {
+                        PhotosPicker(selection:viewModel.actionType == .createEvent ? $viewModel.newEvent.imagePicker2.imageSelection : $viewModel.newEventForEdit.imagePicker2.imageSelection, matching: .images) {
                             Image(systemName: "photo.on.rectangle")
                                 .font(.largeTitle)
                                 .padding(15)
@@ -172,17 +193,22 @@ struct AddNewEventView: View {
                     ZStack {
                         Rectangle()
                             .frame(height: 60)
-                            .foregroundColor(Constants.Colors.blueThemeColor)
+                            .foregroundColor(buttonDisabled ? .gray : Constants.Colors.blueThemeColor)
                             .cornerRadius(10)
                         Text("Continue")
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                 }
+                .disabled(buttonDisabled)
             }
             .padding()
             .navigationTitle(viewModel.actionType == .createEvent ? "Create Event" : "Update Event")
+            .onTapGesture {
+                        UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
+                    }
         }
+       
     }
 }
 

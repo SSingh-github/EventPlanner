@@ -24,27 +24,27 @@ struct SecondaryEventCard: View {
             }
             
             HStack {
-                Image(systemName: "calendar")
+                Image(systemName: Constants.Images.calendar)
                 Text(event.start_date)
                 Spacer()
             }
             HStack {
-                Image("Location")
+                Image(Constants.Images.location)
                 Text(event.location)
                 Spacer()
                 HStack {
                     if event.is_approved {
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemName: Constants.Images.checkMark)
                             .foregroundColor(.green)
                             .font(.subheadline)
-                        Text("approved")
+                        Text(Constants.Labels.approved)
                             .font(.subheadline)
                     }
                     else {
-                        Image(systemName: "hourglass")
+                        Image(systemName: Constants.Images.hourGlass)
                             .foregroundColor(.orange)
                             .font(.headline)
-                        Text("pending  ")
+                        Text(Constants.Labels.pending)
                             .font(.subheadline)
                     }
                 }

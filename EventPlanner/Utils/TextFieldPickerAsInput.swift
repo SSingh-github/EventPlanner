@@ -27,7 +27,6 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<TextFieldWithPickerAsInputView>) -> UITextField {
         picker.delegate = context.coordinator
         picker.dataSource = context.coordinator
-        //picker.backgroundColor = .yellow
         picker.tintColor = .black
         textField.placeholder = placeholder
         textField.inputView = picker

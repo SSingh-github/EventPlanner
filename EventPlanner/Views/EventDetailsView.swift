@@ -17,6 +17,20 @@ struct EventDetailsView: View {
     var indexOfEvent: Int = 0
     var eventType: EventType = .all
     //id of current event = viewModel.events[indexOfEvent].id
+    @State var showJoinEventActionSheet = false
+    
+    var id: Int {
+        switch eventType {
+        case .all:
+            return viewModel.events[indexOfEvent].id
+        case .favourite:
+            return viewModel.favouriteEvents[indexOfEvent].id
+        case .joined:
+            return viewModel.joinedEvents[indexOfEvent].id
+        case .created:
+            return viewModel.myEvents[indexOfEvent].id
+        }
+    }
 
     var body: some View {
     
@@ -211,111 +225,106 @@ struct EventDetailsView: View {
                     
                     Divider()
                     
+                
                     HStack {
 
-                        if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
-                            // Show the image using the URL
-                            AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
-                                switch phase {
-                                case .empty:
-                                    // Placeholder view while the image is being loaded
-                                    HStack {
-                                        Spacer()
-                                        ProgressView()
-                                            .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
-                                            .frame(width: 200, height: 150)
-                                            .scaleEffect(3)
-                                            
-                                        Spacer()
-                                    }
-                                case .success(let image):
-                                    // Display the loaded image
-                                    image
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 80, height: 80)
-                                        .clipShape(Circle())
-                                case .failure(_):
-                                    // Show an error placeholder if the image fails to load
-                                   Rectangle()
-                                        .scaledToFill()
-                                        .frame(width: 80, height: 80)
-                                        .clipShape(Circle())
-                                @unknown default:
-                                    // Handle any future cases if needed
-                                    EmptyView()
-                                }                            }
+                            if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
+                                // Show the image using the URL
+                                AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        // Placeholder view while the image is being loaded
+                                        HStack {
+                                            Spacer()
+                                            ProgressView()
+                                                .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
+                                                .frame(width: 200, height: 150)
+                                                .scaleEffect(3)
+                                                
+                                            Spacer()
+                                        }
+                                    case .success(let image):
+                                        // Display the loaded image
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                    case .failure(_):
+                                        // Show an error placeholder if the image fails to load
+                                       Rectangle()
+                                            .scaledToFill()
+                                            .frame(width: 80, height: 80)
+                                            .clipShape(Circle())
+                                    @unknown default:
+                                        // Handle any future cases if needed
+                                        EmptyView()
+                                    }                            }
+                            }
+                        else {
+                            Rectangle()
+                                .scaledToFill()
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
                         }
-                    else {
-                        Rectangle()
-                            .scaledToFill()
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                    }
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(viewModel.detailedEventForExplore?.user_name ?? "name")
-                                .font(.title3)
-                            Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) followers")
-                                .foregroundColor(.gray)
-                        }
-                        //.padding()
-                        //.background(.white)
-                        
-                        Spacer()
-                        
-                        Button {
-                            print("follow the user")
-                            viewModel.followUser(id: viewModel.detailedEventForExplore!.user_id)
                             
-                            viewModel.detailedEventForExplore!.is_followed.toggle()
-                            print(viewModel.detailedEventForExplore!.is_followed)
-                            if viewModel.detailedEventForExplore!.is_followed {
-                                    viewModel.detailedEventForExplore!.follower_count += 1
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(viewModel.detailedEventForExplore?.user_name ?? "name")
+                                    .font(.title3)
+                                Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) followers")
+                                    .foregroundColor(.gray)
+                            }
+                            //.padding()
+                            //.background(.white)
+                            
+                            Spacer()
+                            
+                            Button {
+                                print("follow the user")
+                                viewModel.followUser(id: viewModel.detailedEventForExplore!.user_id)
+                                
+                                viewModel.detailedEventForExplore!.is_followed.toggle()
+                                print(viewModel.detailedEventForExplore!.is_followed)
+                                if viewModel.detailedEventForExplore!.is_followed {
+                                        viewModel.detailedEventForExplore!.follower_count += 1
+                                    }
+                                    else {
+                                        viewModel.detailedEventForExplore!.follower_count -= 1
+                                    }
+                                
+                            } label: {
+                                if !(viewModel.detailedEventForExplore?.is_followed ?? true) {
+                                    ZStack {
+                                        Rectangle()
+                                            .foregroundColor(colorScheme == .dark ? .white : .black)
+                                            .frame(width: 80,height: 30)
+                                            .cornerRadius(14)
+                                        Text("follow")
+                                            .foregroundColor(colorScheme == .light ? .white: .black)
+                                            .padding()
+                                    }
                                 }
                                 else {
-                                    viewModel.detailedEventForExplore!.follower_count -= 1
-                                }
-                            
-                        } label: {
-                            if !(viewModel.detailedEventForExplore?.is_followed ?? true) {
-                                ZStack {
-                                    Rectangle()
-                                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                                        .frame(width: 80,height: 30)
-                                        .cornerRadius(14)
-                                    Text("follow")
-                                        .foregroundColor(colorScheme == .light ? .white: .black)
-                                        .padding()
-                                }
-                            }
-                            else {
-                                ZStack {
-                                    
-                                    Text("following")
-                                        .foregroundColor(colorScheme == .light ? .black: .white)
-                                        .padding()
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 14)
-                                                .stroke(Color.white.opacity(0.5), lineWidth: 2)
-                                                .frame(width: 80,height: 30)
-                                        )
+                                    ZStack {
+                                        
+                                        Text("following")
+                                            .foregroundColor(colorScheme == .light ? .black: .white)
+                                            .padding()
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 14)
+                                                    .stroke(colorScheme == .dark ? Color.white.opacity(0.5) : Color.black.opacity(0.5), lineWidth: 2)
+                                                    .frame(width: 80,height: 30)
+                                            )
+                                    }
                                 }
                             }
                         }
-                    }
                     .padding(.top, 20)
+                
                     
                     Button {
                         print("join the event")
-                        viewModel.joinEvent(id: viewModel.events[indexOfEvent].id)
-                        viewModel.detailedEventForExplore!.is_joined.toggle()
-                        if viewModel.detailedEventForExplore!.is_joined {
-                            viewModel.detailedEventForExplore!.event_attendees_count += 1
-                        }
-                        else {
-                            viewModel.detailedEventForExplore!.event_attendees_count -= 1
-                        }
+                        showJoinEventActionSheet.toggle()
                     } label: {
                         if !(viewModel.detailedEventForExplore?.is_joined ?? true) {
                             ZStack {
@@ -339,6 +348,22 @@ struct EventDetailsView: View {
                                     .fontWeight(.semibold)
                             }
                         }
+                    }
+                    .actionSheet(isPresented: $showJoinEventActionSheet) {
+                        ActionSheet(title:viewModel.detailedEventForExplore!.is_joined ? Text("Do you really want to leave the event?"): Text("Do you really want to join this event?"), message: nil, buttons: [
+                            .default(viewModel.detailedEventForExplore!.is_joined ? Text("Leave") : Text("Join"),action: {
+                                viewModel.joinEvent(id: id)
+                                viewModel.detailedEventForExplore!.is_joined.toggle()
+                                if viewModel.detailedEventForExplore!.is_joined {
+                                    viewModel.detailedEventForExplore!.event_attendees_count += 1
+                                }
+                                else {
+                                    viewModel.detailedEventForExplore!.event_attendees_count -= 1
+                                }
+                            }),
+                            .cancel()
+                        ]
+                        )
                     }
                     .frame(height: 60)
                     .padding(.top, 40)
@@ -379,6 +404,7 @@ struct EventDetailsView: View {
                     Text("Edit")
                 }.sheet(isPresented: $viewModel.showEditSheet, onDismiss: {
                     viewModel.actionType = .createEvent
+                    viewModel.newEventForEdit = NewEvent()
                 }) {
                     //EditEventView(viewModel: viewModel, eventIndex: indexOfEvent)
                     AddNewEventView(viewModel: viewModel)

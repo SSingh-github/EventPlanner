@@ -18,16 +18,9 @@ class MainTabViewModel: ObservableObject {
     @Published var showEditEventSheet = false
     @Published var eventForEdit: Event?
 
-    
-    @Published var firstName = "first name"
-    @Published var lastName = "last name"
-    @Published var dob = ""
+  
     @Published var dateOfBirth = Date()
-    @Published var address = "mohali"
-    @Published var phoneNumber = "9999999999"
-    @Published var imageUrl = ""
-
-    @Published var userProfile: UserDataDetails = UserDataDetails(dob: "0000-00-00", phone_number: 0000000000, address: "", first_name: "first name", last_name: "last name", profile_image: "")
+    @Published var userProfile: UserDataDetails = UserDataDetails()
     
     @Published var isLoggedOut = false
     @Published var showAlert = false
@@ -55,10 +48,13 @@ class MainTabViewModel: ObservableObject {
     @Published var showEditSheet = false
     
     @Published var postingNewEvent = false
-//    @Published var showAlert = false
-//    @Published var alertMessage = ""
+
     @Published var selected = "Start"
     @Published var selectionIndex2 = 0
+    
+    @Published var createdEventsLoading = false
+    @Published var favouriteEventsLoading = false
+    @Published var joinedEventsLoading = false
 
     
     let startDate2 = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
@@ -91,7 +87,7 @@ class MainTabViewModel: ObservableObject {
     }
     
     func showPhoneNumberWarning() -> Bool {
-        return !Validations.shared.isValidPhoneNumber(self.phoneNumber) && !self.phoneNumber.isEmpty
+        return !Validations.shared.isValidPhoneNumber(self.userProfile.phone_number) && !self.userProfile.phone_number.isEmpty
     }
     
     func showDobWarning() -> Bool {
@@ -103,7 +99,7 @@ class MainTabViewModel: ObservableObject {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.StringFormats.dateFormat
-        self.dob = dateFormatter.string(from: self.dateOfBirth)
+        self.userProfile.dob = dateFormatter.string(from: self.dateOfBirth)
         
         NetworkManager.shared.updateUserProfileDetails(viewModel: self)
     }
@@ -117,14 +113,17 @@ class MainTabViewModel: ObservableObject {
     }
     
     func getMyEvents() {
+        self.createdEventsLoading = true
         NetworkManager.shared.getMyEvents(viewModel: self)
     }
     
     func getJoinedEvents() {
+        self.joinedEventsLoading = true
         NetworkManager.shared.getJoinedEvents(viewModel: self)
     }
     
     func getFavouriteEvents() {
+        self.favouriteEventsLoading = true
         NetworkManager.shared.getFavouriteEvents(viewModel: self)
     }
     
