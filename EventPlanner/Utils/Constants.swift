@@ -84,6 +84,9 @@ struct Constants {
     }
     
     struct Images {
+        static let photoRectangle                       = "photo.on.rectangle"
+        static let clock                                = "clock"
+        static let locationSquare                       = "location.square.fill"
         static let slider                               = "slider.horizontal.3"
         static let listFill                             = "list.bullet.clipboard.fill"
         static let eventPlanner                         = "eventplanner"
@@ -120,6 +123,7 @@ struct Constants {
         static let rightArrowWithCircle                 = "arrow.right.circle.fill"
         static let home                                 = "house"
         static let addEvent                             = "plus.circle"
+        static let addHashtag                           = "plus.circle.fill"
         static let list                                 = "list.bullet"
         static let profile                              = "person"
         static let explore                              = "safari"
@@ -127,9 +131,50 @@ struct Constants {
         static let logout                               = "rectangle.portrait.and.arrow.right.fill"
         static let settings                             = "gearshape.fill"
         static let phone                                = "phone"
+        static let calendarExclamation                  = "calendar.badge.exclamationmark"
+        static let rectanglePencil                      = "rectangle.and.pencil.and.ellipsis"
+        static let person2                              = "person.2.fill"
+        static let checkmark                            = "checkmark.square.fill"
+        static let square                               = "square"
     }
     
     struct Labels {
+        static let eventCalendar                        = "Event Calendar"
+        static let cancel                               = "Cancel"
+        static let showResults                          = "Show results"
+        static let filter                               = "Filter"
+        static let reset                                = "Reset"
+        static let favouriteEvents                      = "Events marked favourite by you will be visible here"
+        static let joinedEvents                         = "Events joined by you will be visible here"
+        static let createdEvents                        = "Events created by you will be visible here"
+        static let delete                               = "Delete"
+        static let upcomingEvents                       = "upcoming events for you will be visible here"
+        static let navTag                               = "MAPVIEW"
+        static let useSameLocation                      = "Use same location"
+        static let changeLocation                       = "Change location"
+        static let createEvent                          = "Create Event"
+        static let updateEvent                          = "Update Event"
+        static let addHashtag                           = "Add Hashtag"
+        static let giveDescription                      = "Give the description"
+        static let description                          = "Description"
+        static let updateProfile                        = "Update profile"
+        static let approvedLable                        = "(Approved)"
+        static let notApprovedLable                     = "(Not Approved)"
+        static let attendees                            = "attendees "
+        static let liked                                = "Liked"
+        static let notLiked                             = "Not liked"
+        static let favourite                            = "favourite"
+        static let notFavourite                         = "Not favourite"
+        static let Commencement                         = "Commencement"
+        static let culmination                          = "Culmination"
+        static let followers                            = "followers"
+        static let follow                               = "follow"
+        static let following                            = "following"
+        static let joinEvent                            = "Join event"
+        static let joined                               = "Joined"
+        static let leave                                = "Leave"
+        static let join                                 = "Join"
+        static let edit                                 = "Edit"
         static let hashtag                              = "Hashtag:"
         static let km                                   = " Km"
         static let radius                               = "Radius: "
@@ -163,6 +208,7 @@ struct Constants {
         static let settings                             = " Settings"
         static let editProfileWithSpace                 = "  Edit profile"
         static let segments                             = ["Start", "End"]
+        static let options                              = ["Favourite events", "Joined Events", "Created Events", "Upcoming"]
         static let eventTypes                           = ["Social", "Corporate", "Cultural / Artistic", "Sports / recreation", "Edu. / Academic"]
         static let months                               = ["01":"Jan", "02":"Feb", "03":"Mar", "04":"Apr", "05":"May", "06":"Jun", "07":"Jul", "08":"Aug", "09":"Sep", "10":"Oct", "11":"Nov", "12":"Dec"]
         static let authToken                            = "token"
@@ -191,7 +237,7 @@ struct Constants {
         static let changePassword                       = "Reset Password"
         static let signUp                               = "Sign Up"
         static let skip                                 = "Skip"
-        static let logOut                               = "Log out"
+        static let logOut                               = "Logout"
         static let logIn                                = "Login"
         static let signUpQuery                          = "Sign Up with your email to get started."
         static let logInQuery                           = "Login with your email to get started."
@@ -212,6 +258,10 @@ struct Constants {
         static let Continue                             = "Continue"
         
         struct Questions {
+            static let updateEvent                      = "Do you really want to update the event?"
+            static let updateProfile                    = "Do you really want to update the profile?"
+            static let leaveEvent                       = "Do you really want to leave the event?"
+            static let joinEvent                        = "Do you really want to join the event?"
             static let title                            = "What's the title?"
             static let name                             = "What's your name?"
             static let emailPassword                    = "What's your email and password?"
@@ -220,6 +270,8 @@ struct Constants {
             static let address                          = "What's your address?"
             static let logout                           = "Do you really want to logout?"
             static let delete                           = "Do you really want to delete the event?"
+            static let location                         = "Do you want to use the same location?"
+            static let deleteEvent                      = "Do you want to delete the event?"
         }
         
         struct Warnings {
@@ -237,6 +289,8 @@ struct Constants {
         }
         
         struct Placeholders {
+            static let hashtag                          = "# hashtag"
+            static let selectCategory                   = "Select Category"
             static let location                         = "Location"
             static let tag                              = "#tag"
             static let eventTitle                       = "Event title"

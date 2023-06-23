@@ -15,7 +15,7 @@ struct MapViewSelection: View {
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
 
-    @State var showEditEventActionSheet = false
+    
    
     var body: some View {
         ZStack {
@@ -57,13 +57,11 @@ struct MapViewSelection: View {
                         else {
                             viewModel.newEventForEdit.pickedLocation = locationManager.pickedLocation
                             viewModel.newEventForEdit.pickedMark = locationManager.pickedMark
-                            // call the update event method 
-                            //viewModel.showEditSheet.toggle()
-                            showEditEventActionSheet.toggle()
-                            print(showEditEventActionSheet)
+                            viewModel.showEditEventActionSheet.toggle()
+                            print(viewModel.showEditEventActionSheet)
                         }
                     } label: {
-                        Text(viewModel.actionType == .createEvent ? Constants.Labels.confirmLocation : "Update event")
+                        Text(viewModel.actionType == .createEvent ? Constants.Labels.confirmLocation : Constants.Labels.updateEvent)
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
@@ -79,17 +77,17 @@ struct MapViewSelection: View {
                             .foregroundColor(.white)
                             .ignoresSafeArea()
                     }
-                    //action sheets here
-                    .actionSheet(isPresented: $showEditEventActionSheet) {
-                        ActionSheet(title: Text("Do you really want to update the event?"), message: nil, buttons: [
-                            .default(Text("Update event"),action: {
+                    
+                    .actionSheet(isPresented: $viewModel.showEditEventActionSheet) {
+                        ActionSheet(title: Text(Constants.Labels.Questions.updateEvent), message: nil, buttons: [
+                            .default(Text(Constants.Labels.updateEvent),action: {
                                 viewModel.updateEvent()
                             }),
                             .cancel()
                         ]
                         )
                     }
-                    .alert(isPresented: $viewModel.showAlert) {
+                    .alert(isPresented: $viewModel.showCreateEventAlert) {
                         Alert(
                             title: Text(""), message: Text(viewModel.alertMessage),
                             dismissButton: .default(Text(Constants.Labels.ok)
@@ -100,22 +98,12 @@ struct MapViewSelection: View {
                 .background(colorScheme == .dark ? .black : .white)
                 .frame(maxHeight: .infinity, alignment: .bottom)
             }
+                
             
             if viewModel.postingNewEvent {
                 LoadingView()
                     .navigationBarBackButtonHidden(true)
             }
-        }
-//        .onDisappear {
-//            locationManager.pickedMark = nil
-//            locationManager.pickedLocation = nil
-//            locationManager.mapView.removeAnnotations(locationManager.mapView.annotations)
-//        }
-        .alert(isPresented: $viewModel.showAlert) {
-            Alert(
-                title: Text(""), message: Text(viewModel.alertMessage),
-                dismissButton: .default(Text(Constants.Labels.ok)
-                    .foregroundColor(Constants.Colors.blueThemeColor)))
         }
     }
 }
@@ -133,8 +121,4 @@ struct MapViewHelper: UIViewRepresentable {
     }
 }
 
-//struct MapSelectionView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MapViewSelection(viewModel: AddEventViewModel())
-//    }
-//}
+

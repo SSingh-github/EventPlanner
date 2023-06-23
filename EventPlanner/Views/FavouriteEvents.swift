@@ -32,11 +32,11 @@ struct FavouriteEvents: View {
                 }
                 else {
                     ScrollView {
-                        Image(systemName: "star.fill")
+                        Image(systemName: Constants.Images.starFill)
                             .font(.system(size: 100))
                             .padding(.top, 250)
 
-                        Text("Events marked favourite by you will be visible here")
+                        Text(Constants.Labels.favouriteEvents)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()
@@ -57,6 +57,12 @@ struct FavouriteEvents: View {
             if viewModel.favouriteEventsLoading {
                 LoadingView()
             }
+        }
+        .alert(isPresented: $viewModel.showFavEventsAlert) {
+            Alert(
+                title: Text(""), message: Text(viewModel.alertMessage),
+                dismissButton: .default(Text(Constants.Labels.ok)
+                    .foregroundColor(Constants.Colors.blueThemeColor)))
         }
     }
 }

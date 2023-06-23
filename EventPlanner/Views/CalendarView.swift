@@ -17,22 +17,30 @@ struct CalendarView: View {
         Group {
             if viewModel.joinedEvents.isEmpty == false {
                 ScrollView{
+                    Text(Constants.Labels.eventCalendar)
+                        .font(.title)
+                        .bold()
+                        .padding(.top)
                     CalendarStruct(interval: DateInterval(start: .distantPast, end: .distantFuture), viewModel: viewModel, dateSelected: $dateSelected, displayEvents: $displayEvents)
                         .accentColor(Constants.Colors.blueThemeColor)
+                        .padding()
+                        .background(.secondary.opacity(0.2))
+                        .cornerRadius(20)
                 }
                 .sheet(isPresented: $displayEvents) {
                     CalendarEventsList(viewModel: viewModel, dateSelected: $dateSelected)
                 }
-               
+                .padding(.horizontal)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("")
             }
             else {
-                //calendar.badge.exclamationmark
                 ScrollView {
-                    Image(systemName: "calendar.badge.exclamationmark")
+                    Image(systemName: Constants.Images.calendarExclamation)
                         .font(.system(size: 100))
                         .padding(.top, 250)
 
-                    Text("upcoming events for you will be visible here")
+                    Text(Constants.Labels.upcomingEvents)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding()

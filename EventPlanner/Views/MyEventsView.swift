@@ -11,14 +11,12 @@ struct MyEventsView: View {
     
     @ObservedObject var viewModel: MainTabViewModel
     
-    var options = ["Favourite events", "Joined Events", "Created Events", "Upcoming"]
-    
     var body: some View {
         
         NavigationView {
             List {  
 
-                ForEach(options.indices, id:\.self) { index in
+                ForEach(Constants.Labels.options.indices, id:\.self) { index in
                     NavigationLink {
                         if index == 0 {
                             FavouriteEvents(viewModel: viewModel)
@@ -34,49 +32,33 @@ struct MyEventsView: View {
                         }
                     } label: {
                         HStack {
-                            Text(options[index])
+                            Text(Constants.Labels.options[index])
+                            Spacer()
+                            if index == 0 {
+                                Image(systemName: Constants.Images.starFill)
+                            } else if index == 1 {
+                                Image(systemName: Constants.Images.person2)
+                            }
+                            else if index == 2 {
+                                Image(systemName: Constants.Images.rectanglePencil)
+                            }
+                            else {
+                                Image(systemName: Constants.Images.calendar)
+                            }
                         }
                         .frame(height: 50)
                         .font(.title3)
                         .fontWeight(.semibold)
+                        
                     }
+                    .padding()
+                    .background(.secondary.opacity(0.2))
+                    .cornerRadius(10)
                 }
             }
             .listStyle(PlainListStyle())
-            .navigationTitle("My Events")
+            .navigationTitle(Constants.Labels.list)
         }
-
-//        if viewModel.guestLogin {
-//            LoginSignupView()
-//        }
-//        else if viewModel.userLogin {
-//
-//            NavigationView {
-//                //if events array is empty, show some other view
-//                if viewModel.myEvents.isEmpty == false {
-//                    List {
-//                        ForEach(viewModel.myEvents.indices, id: \.self) {index in
-//                            NavigationLink(destination: EventDetailsView(viewModel: viewModel)) {
-//                                EventCard(event: $viewModel.myEvents[index], myEvent: true)
-//                            }
-//                        }
-//                    }
-//                    .listStyle(.plain)
-//                    .navigationTitle("My events")
-//                    .refreshable {
-//                        viewModel.getMyEvents()
-//                    }
-//                }
-//                else {
-//                    ScrollView {
-//                        Text("Events posted by you will be shown here")
-//                    }
-//                    .refreshable {
-//                        viewModel.getMyEvents()
-//                    }
-//                }
-//            }
-//        }
     }
 }
 

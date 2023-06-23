@@ -11,14 +11,11 @@ import SwiftUI
 
 struct EventDetailsView: View {
     @ObservedObject var viewModel: MainTabViewModel
-    @State var showMap = false
-    @State var navigate = false
+    
     @Environment(\.colorScheme) var colorScheme
     var indexOfEvent: Int = 0
     var eventType: EventType = .all
-    //id of current event = viewModel.events[indexOfEvent].id
-    @State var showJoinEventActionSheet = false
-    
+
     var id: Int {
         switch eventType {
         case .all:
@@ -42,7 +39,7 @@ struct EventDetailsView: View {
                             .font(.title)
                             .fontWeight(.semibold)
                             .padding(.bottom, 4)
-                        Text(viewModel.detailedEventForExplore?.is_approved ?? true ? "(Approved)" : "(Not Approved)")
+                        Text(viewModel.detailedEventForExplore?.is_approved ?? true ? Constants.Labels.approvedLable : Constants.Labels.notApprovedLable)
                             .foregroundColor(viewModel.detailedEventForExplore?.is_approved ?? true ? .green : .red)
                     }
                     .padding(.bottom, 20)
@@ -105,22 +102,22 @@ struct EventDetailsView: View {
                             Text("\(viewModel.detailedEventForExplore?.event_attendees_count ?? 0)")
                                 .bold()
                                 .font(.system(size: 17))
-                            Text("attendees ")
+                            Text(Constants.Labels.attendees)
                             Spacer()
                             HStack {
                                 if viewModel.detailedEventForExplore?.is_liked ?? true {
                                     
-                                    Image(systemName: "heart.fill")
+                                    Image(systemName: Constants.Images.heartFill)
                                         .foregroundColor(Constants.Colors.pinkColor)
                                         .font(.system(size: 17))
-                                    Text("liked")
+                                    Text(Constants.Labels.liked)
                                 }
                                 
                                 else {
-                                    Image(systemName: "heart")
+                                    Image(systemName: Constants.Images.heart)
                                         .foregroundColor(.gray)
                                         .font(.system(size: 17))
-                                    Text("Not liked")
+                                    Text(Constants.Labels.notLiked)
                                 }
                     
                             }
@@ -131,16 +128,16 @@ struct EventDetailsView: View {
                             HStack {
                                 if viewModel.detailedEventForExplore?.is_favourite ?? true {
                                     
-                                    Image(systemName: "star.fill")
+                                    Image(systemName: Constants.Images.starFill)
                                         .foregroundColor(.yellow)
                                         .font(.system(size: 17))
-                                    Text("favourite")
+                                    Text(Constants.Labels.favourite)
                                 }
                                 else {
-                                    Image(systemName: "star")
+                                    Image(systemName: Constants.Images.star)
                                         .foregroundColor(.gray)
                                         .font(.system(size: 17))
-                                    Text("Not favourite")
+                                    Text(Constants.Labels.notFavourite)
                                 }
                                 
                             }
@@ -165,13 +162,13 @@ struct EventDetailsView: View {
                             
                             Button {
                                 print("move to map view")
-                                showMap.toggle()
+                                viewModel.showMap.toggle()
                             } label: {
-                                Image(systemName: "location.square.fill")
+                                Image(systemName: Constants.Images.locationSquare)
                                     .font(.title)
                                     .foregroundColor(Constants.Colors.blueThemeColor)
                             }
-                            NavigationLink(destination: ContentView2(destination: (viewModel.detailedEventForExplore?.latitude ?? 0, viewModel.detailedEventForExplore?.longitude ?? 0)), isActive: $showMap) {
+                            NavigationLink(destination: ContentView2(destination: (viewModel.detailedEventForExplore?.latitude ?? 0, viewModel.detailedEventForExplore?.longitude ?? 0)), isActive: $viewModel.showMap) {
                                 Text("")
                             }
                         }
@@ -179,7 +176,7 @@ struct EventDetailsView: View {
                         //Divider()
                     }
                     HStack {
-                        Text("Commencement")
+                        Text(Constants.Labels.Commencement)
                             .font(.title3)
                             .fontWeight(.semibold)
                         Spacer()
@@ -188,13 +185,13 @@ struct EventDetailsView: View {
                     
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "calendar")
+                            Image(systemName:Constants.Images.calendar)
                             Text(viewModel.detailedEventForExplore?.start_date ?? "00")
                             Spacer()
                         }
                         .padding(.bottom)
                         HStack {
-                            Image(systemName: "clock")
+                            Image(systemName: Constants.Images.clock)
                             Text(viewModel.detailedEventForExplore?.start_time ?? "00")
                             Spacer()
                         }
@@ -202,7 +199,7 @@ struct EventDetailsView: View {
                     .padding(.bottom)
                     
                     HStack {
-                        Text("Culmination")
+                        Text(Constants.Labels.culmination)
                             .font(.title3)
                             .fontWeight(.semibold)
                         Spacer()
@@ -211,13 +208,13 @@ struct EventDetailsView: View {
                     
                     VStack(alignment: .leading) {
                         HStack {
-                            Image(systemName: "calendar")
+                            Image(systemName: Constants.Images.calendar)
                             Text(viewModel.detailedEventForExplore?.end_date ?? "00")
                             Spacer()
                         }
                         .padding(.bottom)
                         HStack {
-                            Image(systemName: "clock")
+                            Image(systemName: Constants.Images.clock)
                             Text(viewModel.detailedEventForExplore?.end_time ?? "00")
                             Spacer()
                         }
@@ -299,7 +296,7 @@ struct EventDetailsView: View {
                                             .foregroundColor(colorScheme == .dark ? .white : .black)
                                             .frame(width: 80,height: 30)
                                             .cornerRadius(14)
-                                        Text("follow")
+                                        Text(Constants.Labels.follow)
                                             .foregroundColor(colorScheme == .light ? .white: .black)
                                             .padding()
                                     }
@@ -307,7 +304,7 @@ struct EventDetailsView: View {
                                 else {
                                     ZStack {
                                         
-                                        Text("following")
+                                        Text(Constants.Labels.following)
                                             .foregroundColor(colorScheme == .light ? .black: .white)
                                             .padding()
                                             .overlay(
@@ -324,7 +321,7 @@ struct EventDetailsView: View {
                     
                     Button {
                         print("join the event")
-                        showJoinEventActionSheet.toggle()
+                        viewModel.showJoinEventActionSheet.toggle()
                     } label: {
                         if !(viewModel.detailedEventForExplore?.is_joined ?? true) {
                             ZStack {
@@ -332,7 +329,7 @@ struct EventDetailsView: View {
                                     .frame(height: 60)
                                     .foregroundColor(Constants.Colors.blueThemeColor)
                                     .cornerRadius(10)
-                                Text("Join event")
+                                Text(Constants.Labels.joinEvent)
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                             }
@@ -343,15 +340,15 @@ struct EventDetailsView: View {
                                     .frame(height: 60)
                                     .foregroundColor(.green)
                                     .cornerRadius(10)
-                                Text("Joined")
+                                Text(Constants.Labels.joined)
                                     .foregroundColor(.white)
                                     .fontWeight(.semibold)
                             }
                         }
                     }
-                    .actionSheet(isPresented: $showJoinEventActionSheet) {
-                        ActionSheet(title:viewModel.detailedEventForExplore!.is_joined ? Text("Do you really want to leave the event?"): Text("Do you really want to join this event?"), message: nil, buttons: [
-                            .default(viewModel.detailedEventForExplore!.is_joined ? Text("Leave") : Text("Join"),action: {
+                    .actionSheet(isPresented: $viewModel.showJoinEventActionSheet) {
+                        ActionSheet(title:viewModel.detailedEventForExplore!.is_joined ? Text(Constants.Labels.Questions.leaveEvent): Text(Constants.Labels.Questions.joinEvent), message: nil, buttons: [
+                            .default(viewModel.detailedEventForExplore!.is_joined ? Text(Constants.Labels.leave) : Text(Constants.Labels.join),action: {
                                 viewModel.joinEvent(id: id)
                                 viewModel.detailedEventForExplore!.is_joined.toggle()
                                 if viewModel.detailedEventForExplore!.is_joined {

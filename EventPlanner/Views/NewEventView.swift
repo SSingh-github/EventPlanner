@@ -22,8 +22,4 @@ struct NewEventView: View {
     }
 }
 
-//struct NewEventView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NewEventView()
-//    }
-//}
+

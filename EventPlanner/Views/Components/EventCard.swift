@@ -104,11 +104,11 @@ struct EventCard: View {
                         } label: {
                             HStack{
                                 if event.is_liked {
-                                    Image(systemName: Constants.Images.starFill)
+                                    Image(systemName: Constants.Images.heartFill)
                                         .foregroundColor(Constants.Colors.pinkColor)
                                 }
                                 else {
-                                    Image(systemName:Constants.Images.star)
+                                    Image(systemName:Constants.Images.heart)
                                         .foregroundColor(.gray)
                                         .bold()
                                 }

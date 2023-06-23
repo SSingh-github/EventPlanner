@@ -10,7 +10,6 @@
 		93080F712A2DA5C00074978C /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93080F702A2DA5C00074978C /* LocationManager.swift */; };
 		93A8B91F2A2DBE1E007593C0 /* DateAndTimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */; };
 		93A8B9212A2DC937007593C0 /* practice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B9202A2DC937007593C0 /* practice.swift */; };
-		93A8B9232A2DDD54007593C0 /* AddEventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */; };
 		93A91CC22A38420400773E80 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A91CC12A38420400773E80 /* CalendarView.swift */; };
 		93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */; };
 		93A965C22A334CF0005B14BA /* MapViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */; };
@@ -22,7 +21,6 @@
 		93AC81B72A2B64E300A43131 /* SearchLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC81B62A2B64E300A43131 /* SearchLocationView.swift */; };
 		93AC9B972A27184700E3A61A /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B962A27184700E3A61A /* MainTabView.swift */; };
 		93AC9B992A271E3900E3A61A /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B982A271E3900E3A61A /* ExploreView.swift */; };
-		93AC9B9B2A271E4800E3A61A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B9A2A271E4800E3A61A /* SearchView.swift */; };
 		93AC9B9D2A271E5C00E3A61A /* NewEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B9C2A271E5C00E3A61A /* NewEventView.swift */; };
 		93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9B9E2A271E7100E3A61A /* MyEventsView.swift */; };
 		93AC9BA12A271E7D00E3A61A /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AC9BA02A271E7D00E3A61A /* ProfileView.swift */; };
@@ -68,7 +66,6 @@
 		93ED89BA2A3083C100856AA2 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89B92A3083C100856AA2 /* Event.swift */; };
 		93ED89BC2A309D3C00856AA2 /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BB2A309D3C00856AA2 /* Enumerations.swift */; };
 		93ED89BE2A30A28400856AA2 /* ViewIdClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */; };
-		93EDF93E2A446F4C00CE4C02 /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */; };
 		93EE9A6C2A2EF28B00478DAA /* EventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE9A6B2A2EF28B00478DAA /* EventCard.swift */; };
 		93EE9A6E2A2F4C9000478DAA /* MapSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE9A6D2A2F4C9000478DAA /* MapSelectionView.swift */; };
 		93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0A61D2A29CC1600B10B71 /* Response.swift */; };
@@ -82,7 +79,6 @@
 		93080F702A2DA5C00074978C /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateAndTimePickerView.swift; sourceTree = "<group>"; };
 		93A8B9202A2DC937007593C0 /* practice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = practice.swift; sourceTree = "<group>"; };
-		93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewModel.swift; sourceTree = "<group>"; };
 		93A91CC12A38420400773E80 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryEventCard.swift; sourceTree = "<group>"; };
 		93A965C12A334CF0005B14BA /* MapViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinator.swift; sourceTree = "<group>"; };
@@ -94,7 +90,6 @@
 		93AC81B62A2B64E300A43131 /* SearchLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationView.swift; sourceTree = "<group>"; };
 		93AC9B962A27184700E3A61A /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		93AC9B982A271E3900E3A61A /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
-		93AC9B9A2A271E4800E3A61A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		93AC9B9C2A271E5C00E3A61A /* NewEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEventView.swift; sourceTree = "<group>"; };
 		93AC9B9E2A271E7100E3A61A /* MyEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEventsView.swift; sourceTree = "<group>"; };
 		93AC9BA02A271E7D00E3A61A /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -141,7 +136,6 @@
 		93ED89B92A3083C100856AA2 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		93ED89BB2A309D3C00856AA2 /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		93ED89BD2A30A28400856AA2 /* ViewIdClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdClass.swift; sourceTree = "<group>"; };
-		93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
 		93EE9A6B2A2EF28B00478DAA /* EventCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCard.swift; sourceTree = "<group>"; };
 		93EE9A6D2A2F4C9000478DAA /* MapSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSelectionView.swift; sourceTree = "<group>"; };
 		93F0A61D2A29CC1600B10B71 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -231,7 +225,6 @@
 				93ACA6302A37295C00D6ACFC /* FilterView.swift */,
 				93AC9B962A27184700E3A61A /* MainTabView.swift */,
 				93B472D02A31ED5C0042C628 /* EventDetailsView.swift */,
-				93AC9B9A2A271E4800E3A61A /* SearchView.swift */,
 				93AC9B9C2A271E5C00E3A61A /* NewEventView.swift */,
 				93AC9B9E2A271E7100E3A61A /* MyEventsView.swift */,
 				93AC9BA72A27784E00E3A61A /* ForgotPasswordView.swift */,
@@ -263,7 +256,6 @@
 				93ED89BB2A309D3C00856AA2 /* Enumerations.swift */,
 				93ADE6B62A4083B100223E8D /* CalendarHelper.swift */,
 				93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */,
-				93EDF93D2A446F4C00CE4C02 /* KeyboardHandling.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -275,7 +267,6 @@
 				93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */,
 				93AC9BA22A273F7600E3A61A /* MainTabViewModel.swift */,
 				93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */,
-				93A8B9222A2DDD54007593C0 /* AddEventViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -417,7 +408,6 @@
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */,
 				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
-				93EDF93E2A446F4C00CE4C02 /* KeyboardHandling.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
 				93AC56472A39A88E00B7DCD8 /* CheckBox.swift in Sources */,
 				93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */,
@@ -426,11 +416,9 @@
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,
 				93ADE6B52A40273900223E8D /* TextFieldPickerAsInput.swift in Sources */,
 				93ACA6C62A3B40C9000CDA22 /* FavouriteEvents.swift in Sources */,
-				93AC9B9B2A271E4800E3A61A /* SearchView.swift in Sources */,
 				93EC5B612A24A6750065A286 /* ThirdWelcomeView.swift in Sources */,
 				93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */,
 				93ACA6C82A3B40D7000CDA22 /* JoinedEvents.swift in Sources */,
-				93A8B9232A2DDD54007593C0 /* AddEventViewModel.swift in Sources */,
 				93EC5B5D2A24A6550065A286 /* FirstWelcomeView.swift in Sources */,
 				93AC81AF2A2AFEEC00A43131 /* CreateProfileView.swift in Sources */,
 				93AC9B992A271E3900E3A61A /* ExploreView.swift in Sources */,

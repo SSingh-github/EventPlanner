@@ -33,11 +33,11 @@ struct JoinedEvents: View {
                 }
                 else {
                     ScrollView {
-                        Image(systemName: "person.2.fill")
+                        Image(systemName: Constants.Images.person2)
                             .font(.system(size: 100))
                             .padding(.top, 250)
 
-                        Text("Events joined by you will be visible here")
+                        Text(Constants.Labels.joinedEvents)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()
@@ -59,6 +59,12 @@ struct JoinedEvents: View {
             if viewModel.joinedEventsLoading {
                 LoadingView()
             }
+        }
+        .alert(isPresented: $viewModel.showJoinedEventsAlert) {
+            Alert(
+                title: Text(""), message: Text(viewModel.alertMessage),
+                dismissButton: .default(Text(Constants.Labels.ok)
+                    .foregroundColor(Constants.Colors.blueThemeColor)))
         }
     }
 }

@@ -228,6 +228,13 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while logging in")
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.isLoggedIn = false
+                        //also show the alert to the user
+                        viewModel.showAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -278,9 +285,6 @@ class NetworkManager {
     
     func signOutCall(viewModel: MainTabViewModel) {
         
-        UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
-        
-        
         guard let url = URL(string: Constants.API.URLs.logOut) else {
             return
         }
@@ -294,6 +298,12 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.isLoggedOut = false
+                        viewModel.showAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -406,6 +416,13 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.forgotPasswordLoading = false
+                        //also show the alert to the user
+                        viewModel.showAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -576,6 +593,12 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while logging in")
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.userProfileLoading = false
+                        viewModel.showAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -601,6 +624,7 @@ class NetworkManager {
                 print(response.data.profile_image ?? "")
                 
                 DispatchQueue.main.async {
+                    viewModel.userProfileLoading = false
                     viewModel.userProfile.phone_number = response.data.phone_number
                     viewModel.userProfile.address = response.data.address
                     viewModel.userProfile.first_name = response.data.first_name
@@ -649,6 +673,12 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.editProfileLoading = false
+                        viewModel.showAlert = true
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -771,6 +801,12 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching my events")
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.createdEventsLoading = false
+                        viewModel.showMyEventsAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -823,6 +859,12 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching joined events")
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.joinedEventsLoading = false
+                        viewModel.showJoinedEventsAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -876,6 +918,12 @@ class NetworkManager {
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching favourite events")
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.favouriteEventsLoading = false
+                        viewModel.showFavEventsAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -1162,6 +1210,12 @@ class NetworkManager {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
             guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.postingNewEvent = false
+                        viewModel.showCreateEventAlert.toggle()
+                    }
+                }
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -1190,6 +1244,7 @@ class NetworkManager {
                 if httpResponse.statusCode == 200 {
                     print("event was posted successfully")
                     //pop the navigation views
+                    viewModel.shiftTabToMyEvents()
                     appState.rootViewId = UUID()
                 }
                 else {

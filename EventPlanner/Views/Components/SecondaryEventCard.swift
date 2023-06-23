@@ -22,12 +22,14 @@ struct SecondaryEventCard: View {
                 .padding(.bottom, 3)
                 Spacer()
             }
+            .padding([.top, .leading])
             
             HStack {
                 Image(systemName: Constants.Images.calendar)
                 Text(event.start_date)
                 Spacer()
             }
+            .padding(.leading)
             HStack {
                 Image(Constants.Images.location)
                 Text(event.location)
@@ -49,7 +51,12 @@ struct SecondaryEventCard: View {
                     }
                 }
             }
+            .padding([.leading, .bottom, .trailing])
         }
+        .background(.secondary.opacity(0.2))
+        .cornerRadius(20)
+        .frame(height: 100)
+        .padding(.bottom)
     }
 }
 

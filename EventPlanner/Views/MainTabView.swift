@@ -12,8 +12,6 @@ struct MainTabView: View {
     
     @EnvironmentObject var appState: AppState
     @StateObject var viewModel: MainTabViewModel = MainTabViewModel()
-    @State var isActive: Bool = false
-
     
     init() {
         UITabBar.appearance().backgroundColor = .systemBackground
@@ -21,7 +19,7 @@ struct MainTabView: View {
     
     var body: some View {
         ZStack {
-            if isActive {
+            if viewModel.isActive {
                 TabView(selection: $viewModel.selection) {
                     ExploreView(viewModel: viewModel)
                         .tabItem {
@@ -65,20 +63,13 @@ struct MainTabView: View {
         }
         
         .onAppear {
-            
-            // network calls to load the data before the app screen is visible to the user
             viewModel.getEventList()
             DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                 withAnimation {
-                    self.isActive = true
+                    viewModel.isActive = true
                 }
             }
         }
     }
 }
 
-//struct MainTabView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainTabView()
-//    }
-//}

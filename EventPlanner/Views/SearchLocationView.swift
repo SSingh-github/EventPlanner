@@ -42,7 +42,7 @@ struct SearchView2: View {
                                 locationManager.mapView.region = .init(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
                                 locationManager.addDraggablePin(coordinate: coordinate)
                                 locationManager.updatePlacemark(location: .init(latitude: coordinate.latitude, longitude: coordinate.longitude))
-                                navigationTag = "MAPVIEW"
+                                navigationTag = Constants.Labels.navTag
                             }
                             
                             
@@ -76,7 +76,7 @@ struct SearchView2: View {
                             locationManager.addDraggablePin(coordinate: coordinate)
                             locationManager.updatePlacemark(location: .init(latitude: coordinate.latitude, longitude: coordinate.longitude))
                         }
-                        navigationTag = "MAPVIEW"
+                        navigationTag = Constants.Labels.navTag
                     } label: {
                         Label {
                             Text(Constants.Labels.useCurrentLocation)
@@ -107,7 +107,7 @@ struct SearchView2: View {
         .padding()
         .frame(maxHeight: .infinity, alignment: .top)
         .background {
-            NavigationLink(tag: "MAPVIEW", selection: $navigationTag) {
+            NavigationLink(tag: Constants.Labels.navTag, selection: $navigationTag) {
                 MapViewSelection(viewModel: viewModel)
                     .environmentObject(locationManager)
             } label: {

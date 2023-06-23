@@ -12,18 +12,6 @@ struct EditUserProfileView: View {
     
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.presentationMode) var presentationMode
-    @State var showEditProfileActionSheet = false
-    
-    
-    var buttonDisabled: Bool {
-        var bool: Bool = false
-        bool = bool || viewModel.userProfile.first_name.isEmpty
-        bool = bool || viewModel.userProfile.last_name.isEmpty
-        bool = bool || viewModel.userProfile.phone_number.isEmpty
-        bool = bool || viewModel.userProfile.address.isEmpty
-        
-        return bool
-    }
     
     var body: some View {
         ZStack {
@@ -149,20 +137,20 @@ struct EditUserProfileView: View {
                 
                 Button {
                     print("")
-                    showEditProfileActionSheet.toggle()
+                    viewModel.showEditProfileActionSheet.toggle()
                     
                 } label: {
                     ZStack {
                         Rectangle()
                             .frame(height: 60)
-                            .foregroundColor(buttonDisabled ? .gray : Constants.Colors.blueThemeColor)
+                            .foregroundColor(viewModel.buttonDisabled ? .gray : Constants.Colors.blueThemeColor)
                             .cornerRadius(10)
                         Text(Constants.Labels.done)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                 }
-                .disabled(buttonDisabled)
+                .disabled(viewModel.buttonDisabled)
                 .padding(.top, 30)
                 .alert(isPresented: $viewModel.showAlert) {
                     Alert(
@@ -170,9 +158,9 @@ struct EditUserProfileView: View {
                         dismissButton: .default(Text(Constants.Labels.ok)
                             .foregroundColor(Constants.Colors.blueThemeColor)))
                 }
-                .actionSheet(isPresented: $showEditProfileActionSheet) {
-                    ActionSheet(title: Text("Do you really want to update the profile?"), message: nil, buttons: [
-                        .default(Text("Update profile"),action: {
+                .actionSheet(isPresented: $viewModel.showEditProfileActionSheet) {
+                    ActionSheet(title: Text(Constants.Labels.Questions.updateProfile), message: nil, buttons: [
+                        .default(Text(Constants.Labels.updateProfile),action: {
                             viewModel.updateUserProfile()
                         }),
                         .cancel()

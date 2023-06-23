@@ -22,91 +22,93 @@ struct ProfileView: View {
             NavigationView {
                 ZStack {
                     ScrollView(showsIndicators: false) {
-                        
-                        HStack(alignment: .center) {
-                            HStack {
-                                Text(viewModel.userProfile.first_name)
-                                    .font(.title2)
-                                    .bold()
-                                Text(viewModel.userProfile.last_name)
-                                    .font(.title2)
-                                    .bold()
+                        VStack {
+                            HStack(alignment: .center) {
+                                HStack {
+                                    Text(viewModel.userProfile.first_name)
+                                        .font(.title2)
+                                        .bold()
+                                    Text(viewModel.userProfile.last_name)
+                                        .font(.title2)
+                                        .bold()
+                                }
+                                
+                                Spacer()
+                                if let imageUrl = viewModel.userProfile.profile_image, !imageUrl.isEmpty {
+                                    // Show the image using the URL
+                                    AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            // Placeholder view while the image is being loaded
+                                            ProgressView()
+                                        case .success(let image):
+                                            // Display the loaded image
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                                .frame(width: 100, height: 100)
+                                                .clipShape(Circle())
+                                        case .failure(_):
+                                            // Show an error placeholder if the image fails to load
+                                            Image(systemName: Constants.Images.personFill)
+                                                .font(.system(size: 100))
+                                                .frame(width: 100, height: 100)
+                                                .scaledToFit()
+                                                .clipShape(Circle())
+                                                .foregroundColor(.gray)
+                                        @unknown default:
+                                            // Handle any future cases if needed
+                                            EmptyView()
+                                        }                            }
+                                } else {
+                                    // Show a default image when the URL is empty or nil
+                                    Image(systemName: Constants.Images.personFill)
+                                        .font(.system(size: 100))
+                                        .frame(width: 100, height: 100)
+                                        .scaledToFit()
+                                        .clipShape(Circle())
+                                        .foregroundColor(.gray)
+                                }
                             }
                             
-                            Spacer()
-                            if let imageUrl = viewModel.userProfile.profile_image, !imageUrl.isEmpty {
-                                // Show the image using the URL
-                                AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        // Placeholder view while the image is being loaded
-                                        ProgressView()
-                                    case .success(let image):
-                                        // Display the loaded image
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(Circle())
-                                    case .failure(_):
-                                        // Show an error placeholder if the image fails to load
-                                        Image(systemName: Constants.Images.personFill)
-                                            .font(.system(size: 100))
-                                            .frame(width: 100, height: 100)
-                                            .scaledToFit()
-                                            .clipShape(Circle())
-                                            .foregroundColor(.gray)
-                                    @unknown default:
-                                        // Handle any future cases if needed
-                                        EmptyView()
-                                    }                            }
-                            } else {
-                                // Show a default image when the URL is empty or nil
-                                Image(systemName: Constants.Images.personFill)
-                                    .font(.system(size: 100))
-                                    .frame(width: 100, height: 100)
-                                    .scaledToFit()
-                                    .clipShape(Circle())
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                        
-                        Divider()
-                        
-                        VStack (alignment:.leading){
-
-                            HStack {
-                                Image(systemName: Constants.Images.phone)
-                                    .font(.title3)
-                                Text(String(viewModel.userProfile.phone_number))
+                            
+                            VStack (alignment:.leading){
+                                
+                                HStack {
+                                    Image(systemName: Constants.Images.phone)
+                                        .font(.title3)
+                                    Text(String(viewModel.userProfile.phone_number))
                                     //.fontWeight(.semibold)
-
-                                Spacer()
+                                    
+                                    Spacer()
+                                }
                             }
-                        }
-                        .padding(.bottom)
-                        
-                        VStack (alignment:.leading){
-                            HStack {
-                                Image(systemName: Constants.Images.calendar)
-                                    .font(.title3)
-                                Text(viewModel.userProfile.dob == "" ? "2000-02-02" : viewModel.userProfile.dob)
+                            .padding(.bottom)
+                            
+                            VStack (alignment:.leading){
+                                HStack {
+                                    Image(systemName: Constants.Images.calendar)
+                                        .font(.title3)
+                                    Text(viewModel.userProfile.dob == "" ? "" : viewModel.userProfile.dob)
                                     //.fontWeight(.semibold)
-                                Spacer()
+                                    Spacer()
+                                }
+                            }
+                            .padding(.bottom)
+                            
+                            VStack (alignment:.leading){
+                                HStack {
+                                    Image(Constants.Images.location)
+                                        .font(.title)
+                                    Text(viewModel.userProfile.address)
+                                    
+                                    Spacer()
+                                }
                             }
                         }
-                        .padding(.bottom)
-
-                        VStack (alignment:.leading){
-                            HStack {
-                                Image(Constants.Images.location)
-                                    .font(.title)
-                                Text(viewModel.userProfile.address)
-
-                                Spacer()
-                            }
-                        }
-                        
+                        .padding()
+                        .background(.secondary.opacity(0.2))
+                        .cornerRadius(20)
                         
                         Divider()
                             .padding(.vertical)
@@ -159,30 +161,34 @@ struct ProfileView: View {
                                 dismissButton: .default(Text(Constants.Labels.ok)
                                     .foregroundColor(Constants.Colors.blueThemeColor)))
                         }
-                      }
-                        .actionSheet(isPresented: $viewModel.showSignoutAlert) {
-                            ActionSheet(title: Text("Do you want to log out?"), message: nil, buttons: [ // 4
-                                .destructive(Text("Logout").foregroundColor(.red), action: { // 5
-                                    viewModel.signOutCall()
-                                }),
-                                .cancel() // 6
-                            ]
-                            )
-                        }
-                        
                     }
-                    .refreshable {
-                        NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
+                    .actionSheet(isPresented: $viewModel.showSignoutAlert) {
+                        ActionSheet(title: Text(Constants.Labels.Questions.logout), message: nil, buttons: [ // 4
+                            .destructive(Text(Constants.Labels.logOut).foregroundColor(.red), action: { // 5
+                                viewModel.signOutCall()
+                            }),
+                            .cancel() // 6
+                        ]
+                        )
                     }
-                    .padding()
                     if viewModel.isLoggedOut {
                         LoadingView()
                     }
+                    if viewModel.userProfileLoading {
+                        LoadingView()
+                    }
                 }
-                .navigationTitle("Profile")
+                .navigationTitle(Constants.Labels.profile)
+                    .refreshable {
+                        viewModel.getProfile()
+                    }
+                    .padding()
+                    
+                }
+                
                 .onAppear {
                     if viewModel.userProfile.first_name == "" {
-                        NetworkManager.shared.getUserProfileDetails(viewModel: viewModel)
+                        viewModel.getProfile()
                     }
                 }
             }

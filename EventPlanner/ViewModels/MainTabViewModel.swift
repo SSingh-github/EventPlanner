@@ -17,14 +17,20 @@ class MainTabViewModel: ObservableObject {
     @Published var selectionIndex = 0
     @Published var showEditEventSheet = false
     @Published var eventForEdit: Event?
+    @Published var isActive: Bool = false
+    @Published var showCreateEventAlert = false
+    @Published var showMyEventsAlert = false
+    @Published var showFavEventsAlert = false
+    @Published var showJoinedEventsAlert = false
 
-  
+    @Published var showEditEventActionSheet = false
     @Published var dateOfBirth = Date()
     @Published var userProfile: UserDataDetails = UserDataDetails()
     
+    @Published var userProfileLoading = false
     @Published var isLoggedOut = false
     @Published var showAlert = false
-    @Published var alertMessage = ""
+    @Published var alertMessage = Constants.Labels.Alerts.alertMessage
     @Published var showSignoutAlert = false
     @Published var imagePicker = ImagePicker()
     @Published var editProfileLoading = false
@@ -39,7 +45,7 @@ class MainTabViewModel: ObservableObject {
     @Published var favouriteEvents: [Event] = []
     @Published var joinedEvents: [Event] = []
     @Published var showFilterView = false
-    @Published var filter: Filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 5.0, location: "")
+    @Published var filter: Filter = Filter()
 
     
     @Published var newEvent: NewEvent = NewEvent()
@@ -55,11 +61,62 @@ class MainTabViewModel: ObservableObject {
     @Published var createdEventsLoading = false
     @Published var favouriteEventsLoading = false
     @Published var joinedEventsLoading = false
-
+    
+   
+    //id of current event = viewModel.events[indexOfEvent].id
+    @Published var showJoinEventActionSheet = false
+    
+    
+    @Published var showMap = false
+    @Published var navigate = false
+    
+    @Published var showEditProfileActionSheet = false
+    @Published var showDeleteAlert = false
+    @Published var index: Int = 0
+    
+    var buttonDisabled: Bool {
+        var bool: Bool = false
+        bool = bool || self.userProfile.first_name.isEmpty
+        bool = bool || self.userProfile.last_name.isEmpty
+        bool = bool || self.userProfile.phone_number.isEmpty
+        bool = bool || self.userProfile.address.isEmpty
+        
+        return bool
+    }
     
     let startDate2 = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
     let endDate2 = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
-
+    
+    var filterButtonDisabled : Bool {
+        var bool: Bool = false
+        for check in self.checks {
+            bool = bool || check
+        }
+        return !bool
+    }
+    
+    var buttonDisabled2: Bool {
+        if self.actionType == .createEvent {
+            var bool: Bool = false
+            bool = bool || self.newEvent.title.isEmpty
+            bool = bool || self.newEvent.hashtags.isEmpty
+            bool = bool || self.newEvent.selectedOption == nil
+            bool = bool || self.newEvent.imagePicker2.image == nil
+            return bool
+        }
+        else {
+            var bool: Bool = false
+            bool = bool || self.newEventForEdit.title.isEmpty
+            bool = bool || self.newEventForEdit.hashtags.isEmpty
+            bool = bool || self.newEventForEdit.selectedOption == nil
+            bool = bool || self.newEventForEdit.imagePicker2.image == nil
+            print("button is disabled \(bool)")
+            return bool
+        }
+    }
+    
+    @Published var showActionSheet = false
+    @Published var showLocationView = false
     
     func getHashtagString()-> String {
         if let detailedEvent = detailedEventForExplore{
@@ -70,6 +127,11 @@ class MainTabViewModel: ObservableObject {
             return string
         }
         return "no hashtags"
+    }
+    
+    func getProfile() {
+        self.userProfileLoading = true
+        NetworkManager.shared.getUserProfileDetails(viewModel: self)
     }
     
     func signOutCall() {
@@ -128,7 +190,7 @@ class MainTabViewModel: ObservableObject {
     }
     
     func resetFilter() {
-        self.filter = Filter(eventCategory: "", startDate: Date(), hashtag: "", title: "", radius: 0.0, location: "")
+        self.filter = Filter()
     }
     
     func getFilteredEvents() {
@@ -179,9 +241,9 @@ class MainTabViewModel: ObservableObject {
         self.newEvent.formattedEndTime = formattedTimes[1]
         self.postingNewEvent = true
         NetworkManager.shared.postNewEvent(viewModel: self, appState: appState)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            viewModel.shiftTabToMyEvents()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            viewModel.shiftTabToMyEvents()
+//        }
     }
     
     func updateEvent() {

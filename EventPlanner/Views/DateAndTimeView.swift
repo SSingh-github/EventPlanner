@@ -10,8 +10,7 @@ import SwiftUI
 struct DateAndTimeView: View {
     
     @ObservedObject var viewModel: MainTabViewModel
-    @State var showActionSheet = false
-    @State var showLocationView = false
+    
     var body: some View {
         
         ScrollView {
@@ -35,7 +34,7 @@ struct DateAndTimeView: View {
                 else {
                     Button {
                         // show action sheet
-                        showActionSheet.toggle()
+                        viewModel.showActionSheet.toggle()
                     } label: {
                         ZStack {
                             Rectangle()
@@ -48,24 +47,24 @@ struct DateAndTimeView: View {
                         }
                         .padding()
                     }
-                    .actionSheet(isPresented: $showActionSheet) {
-                        ActionSheet(title: Text("Do you want to use the same location?"), message: nil, buttons: [
+                    .actionSheet(isPresented: $viewModel.showActionSheet) {
+                        ActionSheet(title: Text(Constants.Labels.Questions.location), message: nil, buttons: [
                             .cancel(),
-                            .default(Text("Use same location"), action: {
+                            .default(Text(Constants.Labels.useSameLocation), action: {
                                 // update the event with same location
                                 // call the update event method here and pop the sheet
                                 viewModel.updateEvent()
                                 //viewModel.showEditSheet.toggle()
                             }),
-                            .default(Text("Change location"), action: {
+                            .default(Text(Constants.Labels.changeLocation), action: {
                                 //continue to the search location view
-                                showLocationView.toggle()
+                                viewModel.showLocationView.toggle()
                             })
                         ]
                         )
                     }
                     
-                    NavigationLink("", destination: SearchLocationView(viewModel: viewModel), isActive: $showLocationView)
+                    NavigationLink("", destination: SearchLocationView(viewModel: viewModel), isActive: $viewModel.showLocationView)
                 }
             }
         }

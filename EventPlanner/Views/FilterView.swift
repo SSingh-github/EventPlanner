@@ -13,13 +13,7 @@ struct FilterView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: MainTabViewModel
     
-    var filterButtonDisabled : Bool {
-        var bool: Bool = false
-        for check in viewModel.checks {
-            bool = bool || check
-        }
-        return !bool
-    }
+    
 
     var body: some View {
         NavigationView {
@@ -49,15 +43,17 @@ struct FilterView: View {
                             .fontWeight(.semibold)
                             
                         Spacer()
+                        
+                         DatePicker("", selection: $viewModel.filter.startDate, displayedComponents: .date)
+                            .datePickerStyle(.automatic)
+                             .padding(.horizontal)
+                             .accentColor(Constants.Colors.blueThemeColor)
+                             .cornerRadius(20)
                     }
                     .padding([.leading, .top])
                     
                     
                    
-                    DatePicker("", selection: $viewModel.filter.startDate, in: viewModel.startDate2..., displayedComponents: .date)
-                        .datePickerStyle(GraphicalDatePickerStyle())
-                        .padding(.horizontal)
-                        .accentColor(Constants.Colors.blueThemeColor)
                     
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[2])
@@ -124,31 +120,31 @@ struct FilterView: View {
                     ZStack {
                         Rectangle()
                             .frame(height: 60)
-                            .foregroundColor(filterButtonDisabled ? .gray : Constants.Colors.blueThemeColor)
+                            .foregroundColor(viewModel.filterButtonDisabled ? .gray : Constants.Colors.blueThemeColor)
                             .cornerRadius(10)
-                        Text("Show results")
+                        Text(Constants.Labels.showResults)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                 }
-                .disabled(filterButtonDisabled)
+                .disabled(viewModel.filterButtonDisabled)
             }
             .onTapGesture {
                         UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
                     }
             .padding()
-            .navigationTitle("Filter")
+            .navigationTitle(Constants.Labels.filter)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Reset") {
+                    Button(Constants.Labels.reset) {
                         viewModel.resetFilter()
                     }
                     .foregroundColor(Constants.Colors.blueThemeColor)
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(Constants.Labels.cancel) {
                         presentationMode.wrappedValue.dismiss()
                     }
                     .foregroundColor(Constants.Colors.blueThemeColor)

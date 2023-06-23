@@ -23,7 +23,7 @@ class ForgotPasswordViewModel: ObservableObject {
     @Published var showLoginView = false
     @Published var resetPasswordSuccessful = false
     @Published var showAlert = false
-    @Published var alertMessage = ""
+    @Published var alertMessage = Constants.Labels.Alerts.alertMessage
     
     
     

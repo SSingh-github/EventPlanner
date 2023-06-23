@@ -14,4 +14,13 @@ struct Filter {
     var title: String
     var radius: Double
     var location: String
+    
+    init () {
+        eventCategory = nil
+        startDate = Date()
+        hashtag = ""
+        title = ""
+        radius = 5.0
+        location = ""
+    }
 }

@@ -16,25 +16,7 @@ struct AddNewEventView: View {
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
     
-    var buttonDisabled: Bool {
-        if viewModel.actionType == .createEvent {
-            var bool: Bool = false
-            bool = bool || viewModel.newEvent.title.isEmpty
-            bool = bool || viewModel.newEvent.hashtags.isEmpty
-            bool = bool || viewModel.newEvent.selectedOption == nil
-            bool = bool || viewModel.newEvent.imagePicker2.image == nil
-            return bool
-        }
-        else {
-            var bool: Bool = false
-            bool = bool || viewModel.newEventForEdit.title.isEmpty
-            bool = bool || viewModel.newEventForEdit.hashtags.isEmpty
-            bool = bool || viewModel.newEventForEdit.selectedOption == nil
-            bool = bool || viewModel.newEventForEdit.imagePicker2.image == nil
-            print("button is disabled \(bool)")
-            return bool
-        }
-    }
+   
     
     var body: some View {
         NavigationView {
@@ -42,30 +24,30 @@ struct AddNewEventView: View {
             ScrollView(showsIndicators: false){
                 
                 HStack {
-                    Text("What's the title?")
+                    Text(Constants.Labels.Questions.title)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding()
                     Spacer()
                 }
                 if viewModel.actionType == .createEvent {
-                    TextFieldView(placeholder: "Title", text: $viewModel.newEvent.title)
+                    TextFieldView(placeholder: Constants.Labels.title, text: $viewModel.newEvent.title)
                 }
                 else {
-                    TextFieldView(placeholder: "Title", text: $viewModel.newEventForEdit.title)
+                    TextFieldView(placeholder: Constants.Labels.title, text: $viewModel.newEventForEdit.title)
                 }
                 
                 
                 
                 HStack {
-                    Text("Give the description")
+                    Text(Constants.Labels.giveDescription)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding()
                     Spacer()
                 }
                 
-                TextField("Description", text:viewModel.actionType == .createEvent ? $viewModel.newEvent.description : $viewModel.newEventForEdit.description, axis: .vertical)
+                TextField(Constants.Labels.description, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.description : $viewModel.newEventForEdit.description, axis: .vertical)
                     .disableAutocorrection(true)
                     .padding()
                     .frame(height: 60)
@@ -74,13 +56,13 @@ struct AddNewEventView: View {
                     .accentColor(Constants.Colors.blueThemeColor)
                 
                 HStack {
-                    Text("Category")
+                    Text(Constants.Labels.category)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .padding()
                     Spacer()
                     
-                    TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: "Select Category", selectionIndex: $viewModel.selectionIndex2, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.selectedOption : $viewModel.newEventForEdit.selectedOption)
+                    TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: Constants.Labels.Placeholders.selectCategory, selectionIndex: $viewModel.selectionIndex2, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.selectedOption : $viewModel.newEventForEdit.selectedOption)
                     
                         .fontWeight(.semibold)
                         .accentColor(Constants.Colors.blueThemeColor)
@@ -103,7 +85,7 @@ struct AddNewEventView: View {
                                 Spacer()
                                 HStack {
                                     Spacer()
-                                    Image(systemName: "photo.on.rectangle")
+                                    Image(systemName: Constants.Images.photoRectangle)
                                         .font(.subheadline)
                                         .padding(15)
                                         .foregroundColor(.black)
@@ -121,7 +103,7 @@ struct AddNewEventView: View {
                             .cornerRadius(20)
                             .foregroundColor(.secondary)
                         PhotosPicker(selection:viewModel.actionType == .createEvent ? $viewModel.newEvent.imagePicker2.imageSelection : $viewModel.newEventForEdit.imagePicker2.imageSelection, matching: .images) {
-                            Image(systemName: "photo.on.rectangle")
+                            Image(systemName: Constants.Images.photoRectangle)
                                 .font(.largeTitle)
                                 .padding(15)
                                 .foregroundColor(.black)
@@ -136,7 +118,7 @@ struct AddNewEventView: View {
                         if viewModel.actionType == .createEvent {
                             ForEach(viewModel.newEvent.hashtags.indices, id: \.self) { index in
                                 HStack {
-                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.newEvent.hashtags[index])
+                                    TextFieldView(placeholder: Constants.Labels.Placeholders.hashtag, text: $viewModel.newEvent.hashtags[index])
                                     Button {
                                         viewModel.newEvent.hashtags.remove(at: index)
                                     } label: {
@@ -150,7 +132,7 @@ struct AddNewEventView: View {
                         else {
                             ForEach(viewModel.newEventForEdit.hashtags.indices, id: \.self) { index in
                                 HStack {
-                                    TextFieldView(placeholder: "# hashtag", text: $viewModel.newEventForEdit.hashtags[index])
+                                    TextFieldView(placeholder: Constants.Labels.Placeholders.hashtag, text: $viewModel.newEventForEdit.hashtags[index])
                                     Button {
                                         viewModel.newEventForEdit.hashtags.remove(at: index)
                                     } label: {
@@ -174,11 +156,11 @@ struct AddNewEventView: View {
                             }
                             print(viewModel.newEvent.hashtags.count)
                         }label: {
-                            Image(systemName: "plus.circle.fill")
+                            Image(systemName: Constants.Images.addHashtag)
                                 .foregroundColor(.green)
                                 .font(.title3)
                         }
-                        Text("Add Hashtag")
+                        Text(Constants.Labels.addHashtag)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()
@@ -193,17 +175,17 @@ struct AddNewEventView: View {
                     ZStack {
                         Rectangle()
                             .frame(height: 60)
-                            .foregroundColor(buttonDisabled ? .gray : Constants.Colors.blueThemeColor)
+                            .foregroundColor(viewModel.buttonDisabled2 ? .gray : Constants.Colors.blueThemeColor)
                             .cornerRadius(10)
-                        Text("Continue")
+                        Text(Constants.Labels.Continue)
                             .foregroundColor(.white)
                             .fontWeight(.semibold)
                     }
                 }
-                .disabled(buttonDisabled)
+                .disabled(viewModel.buttonDisabled2)
             }
             .padding()
-            .navigationTitle(viewModel.actionType == .createEvent ? "Create Event" : "Update Event")
+            .navigationTitle(viewModel.actionType == .createEvent ? Constants.Labels.createEvent : Constants.Labels.updateEvent)
             .onTapGesture {
                         UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
                     }

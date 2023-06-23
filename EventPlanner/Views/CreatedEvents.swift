@@ -9,8 +9,6 @@ import SwiftUI
 
 struct CreatedEvents: View {
     @ObservedObject var viewModel: MainTabViewModel
-    @State var showDeleteAlert = false
-    @State var index: Int = 0
 
     var body: some View {
         ZStack {
@@ -39,19 +37,20 @@ struct CreatedEvents: View {
                             .listRowSeparator(.hidden)
                         }
                         .onDelete { indexPath in
-                            index = indexPath.first!
-                            showDeleteAlert.toggle()
+                            viewModel.index = indexPath.first!
+                            viewModel.showDeleteAlert.toggle()
                         }
-                        .actionSheet(isPresented: $showDeleteAlert) {
-                            ActionSheet(title: Text("Do you want to delete the event?"), message: nil, buttons: [
-                                .destructive(Text("Delete").foregroundColor(.red), action: {
-                                    viewModel.deleteEvent(id: viewModel.myEvents[index].id)
+                        .actionSheet(isPresented: $viewModel.showDeleteAlert) {
+                            ActionSheet(title: Text(Constants.Labels.Questions.deleteEvent), message: nil, buttons: [
+                                .destructive(Text(Constants.Labels.delete).foregroundColor(.red), action: {
+                                    viewModel.deleteEvent(id: viewModel.myEvents[viewModel.index].id)
                                 }),
                                 .cancel()
                             ]
                             )
                         }
                     }
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 50, trailing: 0))
                     .listStyle(PlainListStyle())
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("")
@@ -60,13 +59,13 @@ struct CreatedEvents: View {
                     }
                     
                 }
-                else {
+               else {
                     ScrollView {
-                        Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                        Image(systemName: Constants.Images.rectanglePencil)
                             .font(.system(size: 100))
                             .padding(.top, 250)
 
-                        Text("Events created by you will be visible here")
+                        Text(Constants.Labels.createdEvents)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding()
@@ -83,10 +82,16 @@ struct CreatedEvents: View {
                 if viewModel.myEvents.isEmpty {
                     viewModel.getMyEvents()
                 }
-        }
+            }
             if viewModel.createdEventsLoading {
                 LoadingView()
             }
+        }
+        .alert(isPresented: $viewModel.showMyEventsAlert) {
+            Alert(
+                title: Text(""), message: Text(viewModel.alertMessage),
+                dismissButton: .default(Text(Constants.Labels.ok)
+                    .foregroundColor(Constants.Colors.blueThemeColor)))
         }
     }
 }

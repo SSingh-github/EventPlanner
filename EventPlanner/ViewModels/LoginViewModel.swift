@@ -16,7 +16,7 @@ class LoginViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var showForgotPasswordSheet = false
     @Published var showAlert = false
-    @Published var alertMessage = ""
+    @Published var alertMessage = Constants.Labels.Alerts.alertMessage
     @Published var showCreateProfileView = false
     @Published var firstName = ""
     @Published var lastName = ""
