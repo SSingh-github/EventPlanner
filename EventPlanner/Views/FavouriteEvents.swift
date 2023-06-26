@@ -20,6 +20,7 @@ struct FavouriteEvents: View {
                             } label: {
                                 SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.favouriteEvents[index], eventType: .favourite)
                             }
+                            .listRowBackground(Color.clear)
                         }
                     }
                     .listStyle(.plain)

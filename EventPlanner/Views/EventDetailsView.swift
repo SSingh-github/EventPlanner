@@ -47,11 +47,11 @@ struct EventDetailsView: View {
                     VStack {
 
                         if let imageUrl = viewModel.detailedEventForExplore?.image, !imageUrl.isEmpty {
-                            // Show the image using the URL
+                            
                             AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                                 switch phase {
                                 case .empty:
-                                    // Placeholder view while the image is being loaded
+                                    
                                     HStack {
                                         Spacer()
                                         ProgressView()
@@ -62,21 +62,17 @@ struct EventDetailsView: View {
                                         Spacer()
                                     }
                                 case .success(let image):
-                                    // Display the loaded image
                                     image
                                         .resizable()
                                         .frame(height: 250)
                                         .scaledToFit()
                                         .cornerRadius(20)
                                 case .failure(_):
-                                    // Show an error placeholder if the image fails to load
                                    Rectangle()
-                                        //.resizable()
                                         .frame(height: 250)
                                         .scaledToFit()
                                         .cornerRadius(20)
                                 @unknown default:
-                                    // Handle any future cases if needed
                                     EmptyView()
                                 }                            }
                         }
@@ -98,7 +94,6 @@ struct EventDetailsView: View {
                         
                         
                         HStack {
-                           // Spacer()
                             Text("\(viewModel.detailedEventForExplore?.event_attendees_count ?? 0)")
                                 .bold()
                                 .font(.system(size: 17))
@@ -141,27 +136,21 @@ struct EventDetailsView: View {
                                 }
                                 
                             }
-                            //Spacer()
                         }
                         .foregroundColor(.gray)
                         .font(.caption)
                         .fontWeight(.bold)
                         .padding(.vertical)
-                        //Divider()
                         HStack {
                             Text(Constants.Labels.eventTypes[(viewModel.detailedEventForExplore?.event_category_id ?? 2) - 1])
-                                //.font(.title3)
                             Spacer()
                         }
-                        //Divider()
                         HStack {
-                            Image("Location")
+                            Image(Constants.Images.location)
                             Text(viewModel.detailedEventForExplore?.location ?? "no location")
-                                //.font(.title3)
                             Spacer()
                             
                             Button {
-                                print("move to map view")
                                 viewModel.showMap.toggle()
                             } label: {
                                 Image(systemName: Constants.Images.locationSquare)
@@ -173,7 +162,6 @@ struct EventDetailsView: View {
                             }
                         }
                         .padding(.vertical)
-                        //Divider()
                     }
                     HStack {
                         Text(Constants.Labels.Commencement)
@@ -226,11 +214,9 @@ struct EventDetailsView: View {
                     HStack {
 
                             if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
-                                // Show the image using the URL
                                 AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                                     switch phase {
                                     case .empty:
-                                        // Placeholder view while the image is being loaded
                                         HStack {
                                             Spacer()
                                             ProgressView()
@@ -241,20 +227,17 @@ struct EventDetailsView: View {
                                             Spacer()
                                         }
                                     case .success(let image):
-                                        // Display the loaded image
                                         image
                                             .resizable()
                                             .scaledToFill()
                                             .frame(width: 80, height: 80)
                                             .clipShape(Circle())
                                     case .failure(_):
-                                        // Show an error placeholder if the image fails to load
                                        Rectangle()
                                             .scaledToFill()
                                             .frame(width: 80, height: 80)
                                             .clipShape(Circle())
                                     @unknown default:
-                                        // Handle any future cases if needed
                                         EmptyView()
                                     }                            }
                             }
@@ -271,13 +254,11 @@ struct EventDetailsView: View {
                                 Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) followers")
                                     .foregroundColor(.gray)
                             }
-                            //.padding()
-                            //.background(.white)
+                            
                             
                             Spacer()
                             
                             Button {
-                                print("follow the user")
                                 viewModel.followUser(id: viewModel.detailedEventForExplore!.user_id)
                                 
                                 viewModel.detailedEventForExplore!.is_followed.toggle()
@@ -320,7 +301,7 @@ struct EventDetailsView: View {
                 
                     
                     Button {
-                        print("join the event")
+                        
                         viewModel.showJoinEventActionSheet.toggle()
                     } label: {
                         if !(viewModel.detailedEventForExplore?.is_joined ?? true) {
@@ -393,8 +374,6 @@ struct EventDetailsView: View {
                 Button {
                     viewModel.eventForEdit = viewModel.myEvents[indexOfEvent]
                     viewModel.actionType = .updateEvent
-                    print(viewModel.eventForEdit!)
-                    //create a function in viewmodel that takes the event for edit and creates a new event of type newevent and call it here
                     viewModel.createNewEventForEdit(event: viewModel.myEvents[indexOfEvent])
                     viewModel.showEditSheet.toggle()
                 } label: {
@@ -403,7 +382,6 @@ struct EventDetailsView: View {
                     viewModel.actionType = .createEvent
                     viewModel.newEventForEdit = NewEvent()
                 }) {
-                    //EditEventView(viewModel: viewModel, eventIndex: indexOfEvent)
                     AddNewEventView(viewModel: viewModel)
                 }
             }

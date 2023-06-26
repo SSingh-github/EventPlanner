@@ -58,13 +58,13 @@ struct MainTabView: View {
                 .navigationBarBackButtonHidden(true)
             }
             else {
-                SplashScreenView()
+                LoadingView()
             }
         }
         
         .onAppear {
             viewModel.getEventList()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 withAnimation {
                     viewModel.isActive = true
                 }

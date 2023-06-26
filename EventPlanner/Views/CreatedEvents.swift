@@ -21,20 +21,8 @@ struct CreatedEvents: View {
                             } label: {
                                 SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.myEvents[index], eventType: .created)
                             }
-                            .listRowBackground(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .background(.secondary)
-                                    .foregroundColor(.clear)
-                                    .padding(
-                                        EdgeInsets(
-                                            top: 2,
-                                            leading: 10,
-                                            bottom: 2,
-                                            trailing: 10
-                                        )
-                                    )
-                            )
-                            .listRowSeparator(.hidden)
+                            .listRowBackground(Color.clear)
+                            
                         }
                         .onDelete { indexPath in
                             viewModel.index = indexPath.first!

@@ -35,21 +35,17 @@ struct ProfileView: View {
                                 
                                 Spacer()
                                 if let imageUrl = viewModel.userProfile.profile_image, !imageUrl.isEmpty {
-                                    // Show the image using the URL
                                     AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                                         switch phase {
                                         case .empty:
-                                            // Placeholder view while the image is being loaded
                                             ProgressView()
                                         case .success(let image):
-                                            // Display the loaded image
                                             image
                                                 .resizable()
                                                 .scaledToFill()
                                                 .frame(width: 100, height: 100)
                                                 .clipShape(Circle())
                                         case .failure(_):
-                                            // Show an error placeholder if the image fails to load
                                             Image(systemName: Constants.Images.personFill)
                                                 .font(.system(size: 100))
                                                 .frame(width: 100, height: 100)
@@ -57,11 +53,9 @@ struct ProfileView: View {
                                                 .clipShape(Circle())
                                                 .foregroundColor(.gray)
                                         @unknown default:
-                                            // Handle any future cases if needed
                                             EmptyView()
                                         }                            }
                                 } else {
-                                    // Show a default image when the URL is empty or nil
                                     Image(systemName: Constants.Images.personFill)
                                         .font(.system(size: 100))
                                         .frame(width: 100, height: 100)
@@ -78,7 +72,6 @@ struct ProfileView: View {
                                     Image(systemName: Constants.Images.phone)
                                         .font(.title3)
                                     Text(String(viewModel.userProfile.phone_number))
-                                    //.fontWeight(.semibold)
                                     
                                     Spacer()
                                 }
@@ -90,7 +83,6 @@ struct ProfileView: View {
                                     Image(systemName: Constants.Images.calendar)
                                         .font(.title3)
                                     Text(viewModel.userProfile.dob == "" ? "" : viewModel.userProfile.dob)
-                                    //.fontWeight(.semibold)
                                     Spacer()
                                 }
                             }
@@ -163,11 +155,10 @@ struct ProfileView: View {
                         }
                     }
                     .actionSheet(isPresented: $viewModel.showSignoutAlert) {
-                        ActionSheet(title: Text(Constants.Labels.Questions.logout), message: nil, buttons: [ // 4
-                            .destructive(Text(Constants.Labels.logOut).foregroundColor(.red), action: { // 5
+                        ActionSheet(title: Text(Constants.Labels.Questions.logout), message: nil, buttons: [                             .destructive(Text(Constants.Labels.logOut).foregroundColor(.red), action: { 
                                 viewModel.signOutCall()
                             }),
-                            .cancel() // 6
+                            .cancel()
                         ]
                         )
                     }

@@ -42,21 +42,17 @@ struct EditUserProfileView: View {
                             .clipShape(Circle())
                     }
                     else if let imageUrl = viewModel.userProfile.profile_image , !imageUrl.isEmpty {
-                        // Show the image using the URL
                         AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
                             switch phase {
                             case .empty:
-                                // Placeholder view while the image is being loaded
                                 ProgressView()
                             case .success(let image):
-                                // Display the loaded image
                                 image
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 100, height: 100)
                                     .clipShape(Circle())
                             case .failure(_):
-                                // Show an error placeholder if the image fails to load
                                 Image(systemName: Constants.Images.personFill)
                                     .font(.system(size: 100))
                                     .frame(width: 100, height: 100)
@@ -64,7 +60,6 @@ struct EditUserProfileView: View {
                                     .clipShape(Circle())
                                     .foregroundColor(.gray)
                             @unknown default:
-                                // Handle any future cases if needed
                                 EmptyView()
                             }
                         }
@@ -124,9 +119,9 @@ struct EditUserProfileView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding(.top)
-                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate2...viewModel.endDate2, displayedComponents: .date)
-                        .padding(.bottom)
-                    
+//                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate2...viewModel.endDate2, displayedComponents: .date)
+//                        .padding(.bottom)
+                    DatePickerTextField(placeholder: "Select D.O.B", date: $viewModel.dateOfBirth, pickerType: .date)
                     Text(Constants.Labels.Questions.address)
                         .font(.title2)
                         .fontWeight(.semibold)

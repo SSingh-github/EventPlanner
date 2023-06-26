@@ -56,7 +56,7 @@ struct SecondaryEventCard: View {
         .background(.secondary.opacity(0.2))
         .cornerRadius(20)
         .frame(height: 100)
-        .padding(.bottom)
+        .padding(.vertical)
     }
 }
 

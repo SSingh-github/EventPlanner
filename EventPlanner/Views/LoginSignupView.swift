@@ -37,6 +37,7 @@ struct LoginSignupView: View {
                                 .fontWeight(.semibold)
                                 .padding(.bottom, 40)
                             TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
+                                .textCase(.lowercase)
                             if viewModel.showEmailWarning() {
                                 Text(Constants.Labels.Warnings.email)
                                     .fontWeight(.semibold)
@@ -44,6 +45,12 @@ struct LoginSignupView: View {
                             }
                             SecureTextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.password)
                                 .padding(.top)
+                            
+                            if !viewModel.isLoginView {
+                                SecureTextFieldView(placeholder: Constants.Labels.Placeholders.confirmPassword, text: $viewModel.confirmPassword)
+                                    .padding(.top)
+                            }
+                            
                             if viewModel.showPasswordWarning() {
                                 Text(Constants.Labels.Warnings.password)
                                     .fontWeight(.semibold)

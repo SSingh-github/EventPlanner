@@ -33,7 +33,7 @@ struct DateAndTimeView: View {
                 }
                 else {
                     Button {
-                        // show action sheet
+                        
                         viewModel.showActionSheet.toggle()
                     } label: {
                         ZStack {
@@ -51,13 +51,12 @@ struct DateAndTimeView: View {
                         ActionSheet(title: Text(Constants.Labels.Questions.location), message: nil, buttons: [
                             .cancel(),
                             .default(Text(Constants.Labels.useSameLocation), action: {
-                                // update the event with same location
-                                // call the update event method here and pop the sheet
+                                
                                 viewModel.updateEvent()
-                                //viewModel.showEditSheet.toggle()
+                               
                             }),
                             .default(Text(Constants.Labels.changeLocation), action: {
-                                //continue to the search location view
+                               
                                 viewModel.showLocationView.toggle()
                             })
                         ]

@@ -10,6 +10,7 @@ import Foundation
 class LoginViewModel: ObservableObject {
     
     @Published var password: String = ""
+    @Published var confirmPassword: String = ""
     @Published var email: String = ""
     @Published var isLoginView: Bool = false
     @Published var presentMainTabView: Bool = false
@@ -34,7 +35,13 @@ class LoginViewModel: ObservableObject {
     }
     
     func showPasswordWarning() -> Bool {
-        return !Validations.shared.isValidPassword(password) && !password.isEmpty
+        var bool = !Validations.shared.isValidPassword(password) && !password.isEmpty
+        if isLoginView {
+            return bool
+        }
+        else {
+            return bool  || !(password == confirmPassword)
+        }
     }
     
     func loginButtonDisabled() -> Bool {

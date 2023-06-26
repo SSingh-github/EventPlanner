@@ -9,7 +9,7 @@ import Foundation
 
 struct Filter {
     var eventCategory: String?
-    var startDate: Date
+    var startDate: Date?
     var hashtag: String
     var title: String
     var radius: Double
@@ -17,7 +17,7 @@ struct Filter {
     
     init () {
         eventCategory = nil
-        startDate = Date()
+        startDate = nil
         hashtag = ""
         title = ""
         radius = 5.0

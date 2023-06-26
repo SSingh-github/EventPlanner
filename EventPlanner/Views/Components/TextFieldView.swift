@@ -13,6 +13,7 @@ struct TextFieldView: View {
     
     var body: some View {
         TextField(placeholder, text: $text)
+            .autocapitalization(.words)
             .disableAutocorrection(true)
             .padding()
             .frame(height: 60)

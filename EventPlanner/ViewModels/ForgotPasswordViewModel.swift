@@ -27,9 +27,6 @@ class ForgotPasswordViewModel: ObservableObject {
     
     
     
-    
-   
-    
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
     }
@@ -77,13 +74,11 @@ class ForgotPasswordViewModel: ObservableObject {
     }
     
     func forgotPassword() {
-        // call the forgotpassword method in network manager
         self.forgotPasswordLoading = true
         NetworkManager.shared.forgotPassword(viewModel: self)
     }
     
     func verifyOtp() {
-        // call the verifyotp method in network manager
         self.verifyOtpLoading = true
         NetworkManager.shared.verifyOtp(viewModel: self)
     }

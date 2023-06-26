@@ -579,6 +579,7 @@ class NetworkManager {
     }
     
     func getUserProfileDetails(viewModel: MainTabViewModel) {
+        
         guard let url = URL(string: Constants.API.URLs.getProfile) else {
             print("unable to create url")
             return
@@ -656,7 +657,7 @@ class NetworkManager {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
         request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
-        viewModel.userProfile.dob = Formatter.shared.formatSingleDate(date: viewModel.dateOfBirth)
+        viewModel.userProfile.dob = Formatter.shared.formatSingleDate(date: viewModel.dateOfBirth!)
         
         let fields: [String: Any] = [
             Constants.Keys.firstName : viewModel.userProfile.first_name,
@@ -1026,7 +1027,7 @@ class NetworkManager {
         // Add query parameters
         let queryItems: [(String, String)] = [
             ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory ?? Constants.Labels.eventTypes[0]) ?? 0) + 1)"),
-            ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate)),
+            ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate!)),
             ("title"         , viewModel.filter.title),
             ("hashtag"       ,viewModel.filter.hashtag),
             ("radius"        ,"\(viewModel.filter.radius)"),
@@ -1155,23 +1156,9 @@ class NetworkManager {
             DispatchQueue.main.async {
                 if httpResponse.statusCode == 200 {
                     viewModel.showEditSheet.toggle()
+                    viewModel.newEventForEdit = NewEvent()
                 }
             }
-            
-//            DispatchQueue.main.async {
-//                viewModel.postingNewEvent = false
-//
-//                if httpResponse.statusCode == 200 {
-//                    print("event was posted successfully")
-//                    //pop the navigation views
-//                    appState.rootViewId = UUID()
-//                }
-//                else {
-//                    print("some error occured")
-//                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-//                    viewModel.showAlert = true
-//                }
-//            }
         }
         task.resume()
     }
@@ -1246,6 +1233,7 @@ class NetworkManager {
                     //pop the navigation views
                     viewModel.shiftTabToMyEvents()
                     appState.rootViewId = UUID()
+                    viewModel.newEvent = NewEvent()
                 }
                 else {
                     print("some error occured")

@@ -49,8 +49,8 @@ struct MyEventsView: View {
                         .frame(height: 50)
                         .font(.title3)
                         .fontWeight(.semibold)
-                        
                     }
+                    .listRowBackground(Color.clear)
                     .padding()
                     .background(.secondary.opacity(0.2))
                     .cornerRadius(10)

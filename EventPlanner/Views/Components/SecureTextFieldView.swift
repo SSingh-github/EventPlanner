@@ -19,9 +19,11 @@ struct SecureTextFieldView: View {
             if isPasswordVisible {
                 TextField(placeholder, text: $text)
                     .disableAutocorrection(true)
+                    .autocapitalization(.words)
             } else {
                 SecureField(placeholder, text: $text)
                     .disableAutocorrection(true)
+                    .autocapitalization(.words)
             }
             
             Button(action: {

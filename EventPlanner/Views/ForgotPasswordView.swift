@@ -36,6 +36,7 @@ struct ForgotPasswordView: View {
                     
                     Text(Constants.Labels.enterEmail)
                     TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
+                        .textCase(.lowercase)
                     
                     if viewModel.showEmailWarning() {
                         Text(Constants.Labels.Warnings.email)

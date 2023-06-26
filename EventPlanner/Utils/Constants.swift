@@ -297,6 +297,7 @@ struct Constants {
             static let title                            = "Title"
             static let phoneNumber                      = "Phone number"
             static let dob                              = "yyyy-mm-dd"
+            static let confirmPassword                  = "Confirm Password"
             static let password                         = "Password"
             static let email                            = "Email"
             static let firstName                        = "First name"

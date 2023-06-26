@@ -24,7 +24,7 @@ class MainTabViewModel: ObservableObject {
     @Published var showJoinedEventsAlert = false
 
     @Published var showEditEventActionSheet = false
-    @Published var dateOfBirth = Date()
+    @Published var dateOfBirth: Date? = Date()
     @Published var userProfile: UserDataDetails = UserDataDetails()
     
     @Published var userProfileLoading = false
@@ -62,8 +62,6 @@ class MainTabViewModel: ObservableObject {
     @Published var favouriteEventsLoading = false
     @Published var joinedEventsLoading = false
     
-   
-    //id of current event = viewModel.events[indexOfEvent].id
     @Published var showJoinEventActionSheet = false
     
     
@@ -92,6 +90,12 @@ class MainTabViewModel: ObservableObject {
         for check in self.checks {
             bool = bool || check
         }
+        if checks[0] && self.filter.eventCategory == nil {
+            return true
+        }
+        else if checks[2] && self.filter.title.isEmpty || checks[3] && self.filter.hashtag.isEmpty || checks[5] && self.filter.location.isEmpty {
+            return true
+        }
         return !bool
     }
     
@@ -110,7 +114,6 @@ class MainTabViewModel: ObservableObject {
             bool = bool || self.newEventForEdit.hashtags.isEmpty
             bool = bool || self.newEventForEdit.selectedOption == nil
             bool = bool || self.newEventForEdit.imagePicker2.image == nil
-            print("button is disabled \(bool)")
             return bool
         }
     }
@@ -161,7 +164,7 @@ class MainTabViewModel: ObservableObject {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.StringFormats.dateFormat
-        self.userProfile.dob = dateFormatter.string(from: self.dateOfBirth)
+        self.userProfile.dob = dateFormatter.string(from: self.dateOfBirth!)
         
         NetworkManager.shared.updateUserProfileDetails(viewModel: self)
     }
@@ -191,6 +194,7 @@ class MainTabViewModel: ObservableObject {
     
     func resetFilter() {
         self.filter = Filter()
+        self.checks = [false, false, false, false, false, false]
     }
     
     func getFilteredEvents() {
@@ -217,8 +221,6 @@ class MainTabViewModel: ObservableObject {
         self.newEventForEdit.hashtags = event.hashtags
         self.newEventForEdit.startDate = Formatter.shared.createDateFromString(date: event.start_date)!
         self.newEventForEdit.endDate = Formatter.shared.createDateFromString(date: event.end_date)!
-        //for location, if the user edits the location then the fields will not be nil
-        //if the user does not edits the location, then the fields will be nil and you can use the location and coordinates parameters of eventForEdit
     }
     
     func printData() {
@@ -241,9 +243,6 @@ class MainTabViewModel: ObservableObject {
         self.newEvent.formattedEndTime = formattedTimes[1]
         self.postingNewEvent = true
         NetworkManager.shared.postNewEvent(viewModel: self, appState: appState)
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            viewModel.shiftTabToMyEvents()
-//        }
     }
     
     func updateEvent() {

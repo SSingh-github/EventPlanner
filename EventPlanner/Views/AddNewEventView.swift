@@ -4,15 +4,12 @@
 //
 //  Created by Chicmic on 03/06/23.
 //
-//hashtags are not working
-//i am changing the field to the object
 
 import SwiftUI
 import _PhotosUI_SwiftUI
 
 struct AddNewEventView: View {
     
-    //@StateObject var viewModel = MainTabViewModel()
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
     
@@ -48,6 +45,7 @@ struct AddNewEventView: View {
                 }
                 
                 TextField(Constants.Labels.description, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.description : $viewModel.newEventForEdit.description, axis: .vertical)
+                    .autocapitalization(.words)
                     .disableAutocorrection(true)
                     .padding()
                     .frame(height: 60)

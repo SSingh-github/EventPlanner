@@ -57,3 +57,8 @@ enum EventActionType {
     case createEvent
     case updateEvent
 }
+
+enum PickerType {
+    case date
+    case time
+}

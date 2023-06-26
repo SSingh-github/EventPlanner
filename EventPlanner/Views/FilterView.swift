@@ -44,11 +44,14 @@ struct FilterView: View {
                             
                         Spacer()
                         
-                         DatePicker("", selection: $viewModel.filter.startDate, displayedComponents: .date)
-                            .datePickerStyle(.automatic)
-                             .padding(.horizontal)
-                             .accentColor(Constants.Colors.blueThemeColor)
-                             .cornerRadius(20)
+//                         DatePicker("", selection: $viewModel.filter.startDate, displayedComponents: .date)
+//                            .datePickerStyle(.automatic)
+//                             .padding(.horizontal)
+//                             .accentColor(Constants.Colors.blueThemeColor)
+//                             .cornerRadius(20)
+                        
+                        DatePickerTextField(placeholder: "Select Date", date: $viewModel.filter.startDate, pickerType: .date)
+                            .padding(.horizontal)
                     }
                     .padding([.leading, .top])
                     
@@ -116,6 +119,7 @@ struct FilterView: View {
                 Button {
                     viewModel.getFilteredEvents()
                     presentationMode.wrappedValue.dismiss()
+                    viewModel.resetFilter()
                 } label: {
                     ZStack {
                         Rectangle()
@@ -128,6 +132,9 @@ struct FilterView: View {
                     }
                 }
                 .disabled(viewModel.filterButtonDisabled)
+            }
+            .onDisappear {
+                viewModel.resetFilter()
             }
             .onTapGesture {
                         UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
@@ -146,6 +153,7 @@ struct FilterView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(Constants.Labels.cancel) {
                         presentationMode.wrappedValue.dismiss()
+                        viewModel.resetFilter()
                     }
                     .foregroundColor(Constants.Colors.blueThemeColor)
                 }
