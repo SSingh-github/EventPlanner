@@ -32,17 +32,7 @@ struct FavouriteEvents: View {
                     
                 }
                 else {
-                    ScrollView {
-                        Image(systemName: Constants.Images.starFill)
-                            .font(.system(size: 100))
-                            .padding(.top, 250)
-
-                        Text(Constants.Labels.favouriteEvents)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                    }
+                    PlaceholderView(imageName: Constants.Images.starFill, lable: Constants.Labels.favouriteEvents)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("")
                     .refreshable {

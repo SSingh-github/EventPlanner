@@ -42,27 +42,7 @@ struct EditUserProfileView: View {
                             .clipShape(Circle())
                     }
                     else if let imageUrl = viewModel.userProfile.profile_image , !imageUrl.isEmpty {
-                        AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(Circle())
-                            case .failure(_):
-                                Image(systemName: Constants.Images.personFill)
-                                    .font(.system(size: 100))
-                                    .frame(width: 100, height: 100)
-                                    .scaledToFit()
-                                    .clipShape(Circle())
-                                    .foregroundColor(.gray)
-                            @unknown default:
-                                EmptyView()
-                            }
-                        }
+                       AsyncImageCircularView(imageUrl: Constants.API.URLs.baseUrl + imageUrl)
                     }
                     else {
                         Image(systemName: Constants.Images.personFill)
@@ -82,53 +62,7 @@ struct EditUserProfileView: View {
                 }
                 .frame(width: 100, height: 100)
                 
-                VStack(alignment: .leading) {
-                    
-                    VStack(alignment: .leading) {
-                        Text(Constants.Labels.Questions.name)
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .padding(.top)
-                        TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.userProfile.first_name)
-                        if viewModel.showFirstNameWarning() {
-                            Text(Constants.Labels.Warnings.name)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.red)
-                        }
-                        TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.userProfile.last_name)
-                        if viewModel.showLastNameWarning() {
-                            Text(Constants.Labels.Warnings.name)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.red)
-                        }
-                    }
-                    
-                    Text(Constants.Labels.Questions.phone)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.top)
-                   TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.userProfile.phone_number)
-                        .keyboardType(.numberPad)
-                    if viewModel.showPhoneNumberWarning() {
-                        Text(Constants.Labels.Warnings.phoneNumber)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.red)
-                    }
-                    
-                    Text(Constants.Labels.Questions.dob)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.top)
-//                    DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate2...viewModel.endDate2, displayedComponents: .date)
-//                        .padding(.bottom)
-                    DatePickerTextField(placeholder: "Select D.O.B", date: $viewModel.dateOfBirth, pickerType: .date)
-                    Text(Constants.Labels.Questions.address)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .padding(.top)
-                    TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.userProfile.address)
-                }
-                .padding(.vertical)
+                ProfileFieldsView(viewModel: viewModel)
                 
                 Button {
                     print("")
@@ -174,6 +108,7 @@ struct EditUserProfileView: View {
                 }
     }
 }
+
 
 struct EditUserProfileView_Previews: PreviewProvider {
     static var previews: some View {

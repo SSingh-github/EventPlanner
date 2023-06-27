@@ -45,21 +45,28 @@
 		93B35F902A28781C006C7CA7 /* EditUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B35F8F2A28781C006C7CA7 /* EditUserProfileView.swift */; };
 		93B472CD2A3198DF0042C628 /* Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B472CC2A3198DF0042C628 /* Formatting.swift */; };
 		93B472D12A31ED5C0042C628 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B472D02A31ED5C0042C628 /* EventDetailsView.swift */; };
+		93B98E992A4AD555003DD9CB /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98E982A4AD555003DD9CB /* PlaceholderView.swift */; };
+		93B98E9B2A4ADAB9003DD9CB /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98E9A2A4ADAB9003DD9CB /* MapView.swift */; };
+		93B98E9D2A4ADD7D003DD9CB /* DatePickerTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98E9C2A4ADD7D003DD9CB /* DatePickerTextFieldView.swift */; };
+		93B98E9F2A4AE3AD003DD9CB /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98E9E2A4AE3AD003DD9CB /* AsyncImageView.swift */; };
+		93B98EA12A4AE3BA003DD9CB /* AsyncImageCircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EA02A4AE3BA003DD9CB /* AsyncImageCircularView.swift */; };
+		93B98EA32A4AE3C5003DD9CB /* AsyncImageProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EA22A4AE3C5003DD9CB /* AsyncImageProfileView.swift */; };
+		93B98EA52A4AE5C6003DD9CB /* Hashtags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EA42A4AE5C6003DD9CB /* Hashtags.swift */; };
+		93B98EA82A4AEDA1003DD9CB /* NavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EA72A4AEDA1003DD9CB /* NavLink.swift */; };
+		93B98EAA2A4AEFD4003DD9CB /* ProfileFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EA92A4AEFD4003DD9CB /* ProfileFieldsView.swift */; };
+		93B98EAC2A4AF1EC003DD9CB /* UpperEventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EAB2A4AF1EC003DD9CB /* UpperEventDetailsView.swift */; };
+		93B98EAE2A4AF313003DD9CB /* EventBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EAD2A4AF313003DD9CB /* EventBarView.swift */; };
+		93B98EB02A4B123F003DD9CB /* NetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B98EAF2A4B123F003DD9CB /* NetworkHelper.swift */; };
 		93EC5B382A2490B00065A286 /* EventPlannerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B372A2490B00065A286 /* EventPlannerApp.swift */; };
 		93EC5B3A2A2490B00065A286 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B392A2490B00065A286 /* ContentView.swift */; };
 		93EC5B3C2A2490B30065A286 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93EC5B3B2A2490B30065A286 /* Assets.xcassets */; };
 		93EC5B3F2A2490B30065A286 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93EC5B3E2A2490B30065A286 /* Preview Assets.xcassets */; };
-		93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B462A249C280065A286 /* WelcomeTabView.swift */; };
 		93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B482A249E330065A286 /* LoginSignupView.swift */; };
 		93EC5B4E2A249EB80065A286 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B4D2A249EB80065A286 /* Constants.swift */; };
 		93EC5B512A24A0500065A286 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B502A24A0500065A286 /* LoginViewModel.swift */; };
 		93EC5B532A24A09F0065A286 /* Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B522A24A09F0065A286 /* Validations.swift */; };
 		93EC5B552A24A1590065A286 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B542A24A1590065A286 /* TextFieldView.swift */; };
 		93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B562A24A1640065A286 /* SecureTextFieldView.swift */; };
-		93EC5B5D2A24A6550065A286 /* FirstWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B5C2A24A6550065A286 /* FirstWelcomeView.swift */; };
-		93EC5B5F2A24A6620065A286 /* SecondWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B5E2A24A6620065A286 /* SecondWelcomeView.swift */; };
-		93EC5B612A24A6750065A286 /* ThirdWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B602A24A6750065A286 /* ThirdWelcomeView.swift */; };
-		93EC5B632A24AE2A0065A286 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */; };
 		93EC5B652A24B91E0065A286 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B642A24B91E0065A286 /* NetworkManager.swift */; };
 		93EC5B682A24B9E90065A286 /* UserCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EC5B672A24B9E90065A286 /* UserCredentials.swift */; };
 		93ECDDAA2A3C331300BE3279 /* CalendarEventsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */; };
@@ -114,22 +121,29 @@
 		93B35F8F2A28781C006C7CA7 /* EditUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileView.swift; sourceTree = "<group>"; };
 		93B472CC2A3198DF0042C628 /* Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatting.swift; sourceTree = "<group>"; };
 		93B472D02A31ED5C0042C628 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
+		93B98E982A4AD555003DD9CB /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		93B98E9A2A4ADAB9003DD9CB /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		93B98E9C2A4ADD7D003DD9CB /* DatePickerTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTextFieldView.swift; sourceTree = "<group>"; };
+		93B98E9E2A4AE3AD003DD9CB /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
+		93B98EA02A4AE3BA003DD9CB /* AsyncImageCircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageCircularView.swift; sourceTree = "<group>"; };
+		93B98EA22A4AE3C5003DD9CB /* AsyncImageProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageProfileView.swift; sourceTree = "<group>"; };
+		93B98EA42A4AE5C6003DD9CB /* Hashtags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hashtags.swift; sourceTree = "<group>"; };
+		93B98EA72A4AEDA1003DD9CB /* NavLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavLink.swift; sourceTree = "<group>"; };
+		93B98EA92A4AEFD4003DD9CB /* ProfileFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFieldsView.swift; sourceTree = "<group>"; };
+		93B98EAB2A4AF1EC003DD9CB /* UpperEventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpperEventDetailsView.swift; sourceTree = "<group>"; };
+		93B98EAD2A4AF313003DD9CB /* EventBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBarView.swift; sourceTree = "<group>"; };
+		93B98EAF2A4B123F003DD9CB /* NetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHelper.swift; sourceTree = "<group>"; };
 		93EC5B342A2490B00065A286 /* EventPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EventPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EC5B372A2490B00065A286 /* EventPlannerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPlannerApp.swift; sourceTree = "<group>"; };
 		93EC5B392A2490B00065A286 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		93EC5B3B2A2490B30065A286 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93EC5B3E2A2490B30065A286 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		93EC5B462A249C280065A286 /* WelcomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeTabView.swift; sourceTree = "<group>"; };
 		93EC5B482A249E330065A286 /* LoginSignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupView.swift; sourceTree = "<group>"; };
 		93EC5B4D2A249EB80065A286 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		93EC5B502A24A0500065A286 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		93EC5B522A24A09F0065A286 /* Validations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validations.swift; sourceTree = "<group>"; };
 		93EC5B542A24A1590065A286 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		93EC5B562A24A1640065A286 /* SecureTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureTextFieldView.swift; sourceTree = "<group>"; };
-		93EC5B5C2A24A6550065A286 /* FirstWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstWelcomeView.swift; sourceTree = "<group>"; };
-		93EC5B5E2A24A6620065A286 /* SecondWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondWelcomeView.swift; sourceTree = "<group>"; };
-		93EC5B602A24A6750065A286 /* ThirdWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdWelcomeView.swift; sourceTree = "<group>"; };
-		93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		93EC5B642A24B91E0065A286 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		93EC5B672A24B9E90065A286 /* UserCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredentials.swift; sourceTree = "<group>"; };
 		93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEventsList.swift; sourceTree = "<group>"; };
@@ -169,8 +183,17 @@
 			isa = PBXGroup;
 			children = (
 				93EC5B642A24B91E0065A286 /* NetworkManager.swift */,
+				93B98EAF2A4B123F003DD9CB /* NetworkHelper.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		93B98EA62A4AED8F003DD9CB /* ViewBuilders */ = {
+			isa = PBXGroup;
+			children = (
+				93B98EA72A4AEDA1003DD9CB /* NavLink.swift */,
+			);
+			path = ViewBuilders;
 			sourceTree = "<group>";
 		};
 		93EC5B2B2A2490B00065A286 = {
@@ -220,11 +243,9 @@
 				93EC5B5A2A24A50D0065A286 /* Components */,
 				93EC5B482A249E330065A286 /* LoginSignupView.swift */,
 				93AC81AE2A2AFEEC00A43131 /* CreateProfileView.swift */,
-				93EC5B462A249C280065A286 /* WelcomeTabView.swift */,
 				93AC9B982A271E3900E3A61A /* ExploreView.swift */,
 				93ACA6302A37295C00D6ACFC /* FilterView.swift */,
 				93AC9B962A27184700E3A61A /* MainTabView.swift */,
-				93B472D02A31ED5C0042C628 /* EventDetailsView.swift */,
 				93AC9B9C2A271E5C00E3A61A /* NewEventView.swift */,
 				93AC9B9E2A271E7100E3A61A /* MyEventsView.swift */,
 				93AC9BA72A27784E00E3A61A /* ForgotPasswordView.swift */,
@@ -232,6 +253,9 @@
 				93B35F8D2A286B16006C7CA7 /* ResetPasswordView.swift */,
 				93AC9BA02A271E7D00E3A61A /* ProfileView.swift */,
 				93B35F8F2A28781C006C7CA7 /* EditUserProfileView.swift */,
+				93B98EA92A4AEFD4003DD9CB /* ProfileFieldsView.swift */,
+				93B472D02A31ED5C0042C628 /* EventDetailsView.swift */,
+				93B98EAB2A4AF1EC003DD9CB /* UpperEventDetailsView.swift */,
 				93AC81B02A2B47AA00A43131 /* AddNewEventView.swift */,
 				93AC81B22A2B487C00A43131 /* DateAndTimeView.swift */,
 				93AC81B62A2B64E300A43131 /* SearchLocationView.swift */,
@@ -240,6 +264,7 @@
 				93ACA6C72A3B40D7000CDA22 /* JoinedEvents.swift */,
 				93ACA6C92A3B40E6000CDA22 /* CreatedEvents.swift */,
 				93A91CC12A38420400773E80 /* CalendarView.swift */,
+				93B98EAD2A4AF313003DD9CB /* EventBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,6 +282,7 @@
 				93ADE6B62A4083B100223E8D /* CalendarHelper.swift */,
 				93ADE6B42A40273800223E8D /* TextFieldPickerAsInput.swift */,
 				93AE82682A49B7FA00E1B264 /* DatePickerTextField.swift */,
+				93B98E9A2A4ADAB9003DD9CB /* MapView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -267,7 +293,6 @@
 				93EC5B502A24A0500065A286 /* LoginViewModel.swift */,
 				93B35F892A285D2A006C7CA7 /* ForgotPasswordViewModel.swift */,
 				93AC9BA22A273F7600E3A61A /* MainTabViewModel.swift */,
-				93EC5B622A24AE2A0065A286 /* WelcomeViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -275,13 +300,12 @@
 		93EC5B5A2A24A50D0065A286 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				93B98EA62A4AED8F003DD9CB /* ViewBuilders */,
 				93EC5B562A24A1640065A286 /* SecureTextFieldView.swift */,
 				93EC5B542A24A1590065A286 /* TextFieldView.swift */,
-				93EC5B5C2A24A6550065A286 /* FirstWelcomeView.swift */,
-				93EC5B5E2A24A6620065A286 /* SecondWelcomeView.swift */,
-				93EC5B602A24A6750065A286 /* ThirdWelcomeView.swift */,
 				93AC9BA42A27648500E3A61A /* LoadingView.swift */,
 				93A8B91E2A2DBE1E007593C0 /* DateAndTimePickerView.swift */,
+				93B98E9C2A4ADD7D003DD9CB /* DatePickerTextFieldView.swift */,
 				93AC56462A39A88E00B7DCD8 /* CheckBox.swift */,
 				93A8B9202A2DC937007593C0 /* practice.swift */,
 				93A965C32A3350CB005B14BA /* DirectionsView.swift */,
@@ -289,7 +313,12 @@
 				93A91CC32A389CBC00773E80 /* SecondaryEventCard.swift */,
 				93AE786D2A39934D00042CF6 /* SplashScreenView.swift */,
 				93ECDDA92A3C331300BE3279 /* CalendarEventsList.swift */,
+				93B98E982A4AD555003DD9CB /* PlaceholderView.swift */,
 				93ADE6B22A401B1D00223E8D /* Experiment.swift */,
+				93B98E9E2A4AE3AD003DD9CB /* AsyncImageView.swift */,
+				93B98EA02A4AE3BA003DD9CB /* AsyncImageCircularView.swift */,
+				93B98EA22A4AE3C5003DD9CB /* AsyncImageProfileView.swift */,
+				93B98EA42A4AE5C6003DD9CB /* Hashtags.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -380,35 +409,39 @@
 			buildActionMask = 2147483647;
 			files = (
 				93EC5B3A2A2490B00065A286 /* ContentView.swift in Sources */,
+				93B98EAA2A4AEFD4003DD9CB /* ProfileFieldsView.swift in Sources */,
 				93B35F902A28781C006C7CA7 /* EditUserProfileView.swift in Sources */,
 				93EC5B382A2490B00065A286 /* EventPlannerApp.swift in Sources */,
 				93EE9A6C2A2EF28B00478DAA /* EventCard.swift in Sources */,
+				93B98EA52A4AE5C6003DD9CB /* Hashtags.swift in Sources */,
 				93B472D12A31ED5C0042C628 /* EventDetailsView.swift in Sources */,
 				93EE9A6E2A2F4C9000478DAA /* MapSelectionView.swift in Sources */,
 				93B35F8C2A286B04006C7CA7 /* OtpView.swift in Sources */,
 				93AE786E2A39934D00042CF6 /* SplashScreenView.swift in Sources */,
 				93B35F8E2A286B16006C7CA7 /* ResetPasswordView.swift in Sources */,
+				93B98EAC2A4AF1EC003DD9CB /* UpperEventDetailsView.swift in Sources */,
 				93AC9B9D2A271E5C00E3A61A /* NewEventView.swift in Sources */,
+				93B98EA82A4AEDA1003DD9CB /* NavLink.swift in Sources */,
 				93AC81B12A2B47AA00A43131 /* AddNewEventView.swift in Sources */,
 				93ACA6312A37295C00D6ACFC /* FilterView.swift in Sources */,
 				93ADE6B32A401B1D00223E8D /* Experiment.swift in Sources */,
-				93EC5B632A24AE2A0065A286 /* WelcomeViewModel.swift in Sources */,
 				93AC9B972A27184700E3A61A /* MainTabView.swift in Sources */,
-				93EC5B5F2A24A6620065A286 /* SecondWelcomeView.swift in Sources */,
 				93ACA6CA2A3B40E6000CDA22 /* CreatedEvents.swift in Sources */,
+				93B98EA32A4AE3C5003DD9CB /* AsyncImageProfileView.swift in Sources */,
 				93A91CC22A38420400773E80 /* CalendarView.swift in Sources */,
 				93B35F8A2A285D2A006C7CA7 /* ForgotPasswordViewModel.swift in Sources */,
 				93EC5B532A24A09F0065A286 /* Validations.swift in Sources */,
+				93B98E9D2A4ADD7D003DD9CB /* DatePickerTextFieldView.swift in Sources */,
 				93ADE6B72A4083B100223E8D /* CalendarHelper.swift in Sources */,
 				93EC5B572A24A1640065A286 /* SecureTextFieldView.swift in Sources */,
 				93ECDDAA2A3C331300BE3279 /* CalendarEventsList.swift in Sources */,
+				93B98EB02A4B123F003DD9CB /* NetworkHelper.swift in Sources */,
 				93F0A6202A29CC2700B10B71 /* SignoutResponse.swift in Sources */,
 				93A8B9212A2DC937007593C0 /* practice.swift in Sources */,
 				93AE82692A49B7FA00E1B264 /* DatePickerTextField.swift in Sources */,
 				93F0A6242A2A2A8D00B10B71 /* ImagePicker.swift in Sources */,
 				93EC5B492A249E330065A286 /* LoginSignupView.swift in Sources */,
 				93A91CC42A389CBC00773E80 /* SecondaryEventCard.swift in Sources */,
-				93EC5B472A249C280065A286 /* WelcomeTabView.swift in Sources */,
 				93F0A6222A2A12B600B10B71 /* UserProfile.swift in Sources */,
 				93AC56472A39A88E00B7DCD8 /* CheckBox.swift in Sources */,
 				93A965C42A3350CB005B14BA /* DirectionsView.swift in Sources */,
@@ -417,16 +450,19 @@
 				93AC9B9F2A271E7100E3A61A /* MyEventsView.swift in Sources */,
 				93ADE6B52A40273900223E8D /* TextFieldPickerAsInput.swift in Sources */,
 				93ACA6C62A3B40C9000CDA22 /* FavouriteEvents.swift in Sources */,
-				93EC5B612A24A6750065A286 /* ThirdWelcomeView.swift in Sources */,
+				93B98EAE2A4AF313003DD9CB /* EventBarView.swift in Sources */,
 				93F0A61E2A29CC1600B10B71 /* Response.swift in Sources */,
 				93ACA6C82A3B40D7000CDA22 /* JoinedEvents.swift in Sources */,
-				93EC5B5D2A24A6550065A286 /* FirstWelcomeView.swift in Sources */,
 				93AC81AF2A2AFEEC00A43131 /* CreateProfileView.swift in Sources */,
+				93B98E992A4AD555003DD9CB /* PlaceholderView.swift in Sources */,
+				93B98EA12A4AE3BA003DD9CB /* AsyncImageCircularView.swift in Sources */,
 				93AC9B992A271E3900E3A61A /* ExploreView.swift in Sources */,
+				93B98E9F2A4AE3AD003DD9CB /* AsyncImageView.swift in Sources */,
 				93EC5B512A24A0500065A286 /* LoginViewModel.swift in Sources */,
 				93EC5B652A24B91E0065A286 /* NetworkManager.swift in Sources */,
 				93AC81B32A2B487C00A43131 /* DateAndTimeView.swift in Sources */,
 				93AC81B72A2B64E300A43131 /* SearchLocationView.swift in Sources */,
+				93B98E9B2A4ADAB9003DD9CB /* MapView.swift in Sources */,
 				93EC5B552A24A1590065A286 /* TextFieldView.swift in Sources */,
 				93ED89BA2A3083C100856AA2 /* Event.swift in Sources */,
 				93AC9BA12A271E7D00E3A61A /* ProfileView.swift in Sources */,

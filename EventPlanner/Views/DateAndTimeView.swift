@@ -18,17 +18,8 @@ struct DateAndTimeView: View {
                 DateTimePickerView(viewModel: viewModel)
                 
                 if viewModel.actionType == .createEvent {
-                    NavigationLink(destination: SearchLocationView(viewModel: viewModel)) {
-                        ZStack {
-                            Rectangle()
-                                .frame(height: 50)
-                                .foregroundColor( Constants.Colors.blueThemeColor)
-                                .cornerRadius(10)
-                            Text( Constants.Labels.Continue)
-                                .foregroundColor(.white)
-                                .fontWeight(.semibold)
-                        }
-                        .padding()
+                    NavLink(buttonDisabled: viewModel.dateButtonDisabled) {
+                        SearchLocationView(viewModel: viewModel)
                     }
                 }
                 else {
@@ -38,8 +29,8 @@ struct DateAndTimeView: View {
                     } label: {
                         ZStack {
                             Rectangle()
-                                .frame(height: 50)
-                                .foregroundColor( Constants.Colors.blueThemeColor)
+                                .frame(height: 60)
+                                .foregroundColor(viewModel.dateButtonDisabled ? .gray : Constants.Colors.blueThemeColor)
                                 .cornerRadius(10)
                             Text( Constants.Labels.Continue)
                                 .foregroundColor(.white)
@@ -47,6 +38,7 @@ struct DateAndTimeView: View {
                         }
                         .padding()
                     }
+                    .disabled(viewModel.dateButtonDisabled)
                     .actionSheet(isPresented: $viewModel.showActionSheet) {
                         ActionSheet(title: Text(Constants.Labels.Questions.location), message: nil, buttons: [
                             .cancel(),

@@ -9,11 +9,14 @@ import Foundation
 import SwiftUI
 struct CalendarStruct: UIViewRepresentable {
    
+    //MARK: PROPERTIES
     let interval: DateInterval
     
     @ObservedObject var viewModel: MainTabViewModel
     @Binding var dateSelected: DateComponents?
     @Binding var displayEvents: Bool
+    
+    //MARK: METHODS
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         
@@ -33,23 +36,23 @@ struct CalendarStruct: UIViewRepresentable {
         return Coordinator(viewModel: _viewModel, parent: self)
     }
     
-    
+    //MARK: COORDINATOR CLASS
     class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
         
-        
+        //MARK: PROPERTIES
         @ObservedObject var viewModel: MainTabViewModel
         var parent: CalendarStruct
         
+        //MARK: INITIALIZER
         init(viewModel: ObservedObject<MainTabViewModel>, parent: CalendarStruct) {
             self._viewModel = viewModel
             self.parent = parent
         }
         
+        //MARK: METHODS
         @MainActor
         func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
-            
-//            let foundEvents = viewModel.events.filter { $0.date.startOfDay == dateComponents.date?.startOfDay }
-//
+        
             var foundEvents: [Event] = []
             
             for event in viewModel.joinedEvents {
@@ -64,11 +67,11 @@ struct CalendarStruct: UIViewRepresentable {
             }
             
             if foundEvents.count > 1 {
-                return .image(UIImage(systemName: "doc.on.doc.fill"), color: Constants.Colors.polylineColor, size: .large)
+                return .image(UIImage(systemName: Constants.Images.docFill), color: Constants.Colors.polylineColor, size: .large)
             }
             
             return .customView {
-                self.createBlueCircleView(withTitle: "Event")
+                self.createBlueCircleView(withTitle: Constants.Labels.event)
             }
         }
         

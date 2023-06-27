@@ -9,14 +9,11 @@ import SwiftUI
 import MapKit
 
 struct MapViewSelection: View {
-   
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var locationManager: LocationManager
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
 
-    
-   
     var body: some View {
         ZStack {
             MapViewHelper()
@@ -98,8 +95,6 @@ struct MapViewSelection: View {
                 .background(colorScheme == .dark ? .black : .white)
                 .frame(maxHeight: .infinity, alignment: .bottom)
             }
-                
-            
             if viewModel.postingNewEvent {
                 LoadingView()
                     .navigationBarBackButtonHidden(true)
@@ -107,7 +102,6 @@ struct MapViewSelection: View {
         }
     }
 }
-
 
 struct MapViewHelper: UIViewRepresentable {
     @EnvironmentObject var locationManager: LocationManager
@@ -117,7 +111,6 @@ struct MapViewHelper: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        
     }
 }
 

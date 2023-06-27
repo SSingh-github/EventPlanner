@@ -16,28 +16,21 @@ struct LoginSignupView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    if !UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) {
-                        HStack {
-                            Button {
-                                presentationMode.wrappedValue.dismiss()
-                            } label: {
-                                Image(systemName: Constants.Images.xmark)
-                                    .font(.title)
-                                    .foregroundColor(Constants.Colors.blueThemeColor)
-                                Spacer()
-                            }
-                        }
-                        .padding()
-                    }
-                    
                     HStack {
                         VStack(alignment: .leading) {
                             Text(!viewModel.isLoginView ? Constants.Labels.createAccount : Constants.Labels.Questions.emailPassword)
                                 .font(.title)
                                 .fontWeight(.semibold)
                                 .padding(.bottom, 40)
-                            TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
-                                .textCase(.lowercase)
+                            
+                            TextField(Constants.Labels.Placeholders.email, text: $viewModel.email)
+                                .disableAutocorrection(true)
+                                .padding()
+                                .frame(height: 60)
+                                .background(Color.gray.opacity(0.3))
+                                .cornerRadius(10)
+                                .accentColor(Constants.Colors.blueThemeColor)
+                            
                             if viewModel.showEmailWarning() {
                                 Text(Constants.Labels.Warnings.email)
                                     .fontWeight(.semibold)

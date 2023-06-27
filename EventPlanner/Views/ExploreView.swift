@@ -45,16 +45,7 @@ struct ExploreView: View {
                 }
             }
             else {
-                ScrollView {
-                    Image(systemName: Constants.Images.listFill)
-                        .font(.system(size: 100))
-                        .padding(.top, 250)
-                    Text(Constants.Labels.eventsNearYou)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                }
+                PlaceholderView(imageName: Constants.Images.listFill, lable: Constants.Labels.eventsNearYou)
                 .refreshable {
                     viewModel.getEventList()
                 }

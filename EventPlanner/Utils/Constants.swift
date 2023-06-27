@@ -8,18 +8,26 @@
 import Foundation
 import SwiftUI
 
+//MARK: Collection of all constants for the app
+
 struct Constants {
+    
+    //MARK: Constants for colors
+    
     struct Colors {
         static let blueThemeColor                       = Color(red: 0.04, green: 0.33, blue: 1.81)
         static let pinkColor                            = Color(red: 2.45, green: 0.05, blue: 0.77)
         static let polylineColor                        = UIColor(red: 0.04, green: 0.33, blue: 1.81, alpha: 1)
     }
     
+    //MARK: Constants for API
+    
     struct API {
         static let requestValueType                     = "application/json"
         static let contentTypeHeaderField               = "Content-type"
         static let authorizationHeaderField             = "Authorization"
         
+        //MARK: URLs
         struct URLs {
             static let baseUrl                          = "http://192.180.1.206:5000/"
             static let signUp                           = baseUrl + "users/sign_up"
@@ -41,6 +49,7 @@ struct Constants {
             static let joinedEvents                     = baseUrl + "user_joined_events"
         }
         
+        //MARK: Http Methods
         struct HttpMethods {
             static let post                             = "POST"
             static let put                              = "PUT"
@@ -48,6 +57,8 @@ struct Constants {
             static let delete                           = "DELETE"
         }
     }
+    
+    //MARK: Keys used in the app
     
     struct Keys {
         static let id                                   = "id"
@@ -73,8 +84,9 @@ struct Constants {
         static let hashtags                             = "hashtags"
     }
     
+    //MARK: Regular expressions
     struct Regex {
-        static let firstNameRegex                       = "^[a-zA-Z]+$"
+        static let firstNameRegex                       = "^[a-zA-Z]+( [a-zA-Z]+)?$"
         static let lastNameRegex                        = "^[a-zA-Z]+(-[a-zA-Z]+)*$"
         static let emailRegex                           = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         static let passwordRegex                        = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[$@$#!%*?&])[A-Za-z\\d$@$#!%*?&]{8,}$"
@@ -83,6 +95,7 @@ struct Constants {
         static let predicateFormat                      = "SELF MATCHES %@"
     }
     
+    //MARK: Image names
     struct Images {
         static let photoRectangle                       = "photo.on.rectangle"
         static let clock                                = "clock"
@@ -136,9 +149,12 @@ struct Constants {
         static let person2                              = "person.2.fill"
         static let checkmark                            = "checkmark.square.fill"
         static let square                               = "square"
+        static let docFill                              = "doc.on.doc.fill"
     }
     
+    //MARK: Labels for the app
     struct Labels {
+        static let event                                = "Event"
         static let eventCalendar                        = "Event Calendar"
         static let cancel                               = "Cancel"
         static let showResults                          = "Show results"
@@ -256,7 +272,14 @@ struct Constants {
         static let createAccount                        = "Let's create your account"
         static let ok                                   = "OK"
         static let Continue                             = "Continue"
+        static let noTitle                              = "no title"
+        static let noDescription                        = "no description"
+        static let noLocation                           = "no location"
+        static let selectDOB                           = "Select D.O.B "
+        static let eventLocation                        = "This will be the event location."
+        static let eventPin                             = "EVENTPIN"
         
+        //MARK: labels which are questions
         struct Questions {
             static let updateEvent                      = "Do you really want to update the event?"
             static let updateProfile                    = "Do you really want to update the profile?"
@@ -273,7 +296,8 @@ struct Constants {
             static let location                         = "Do you want to use the same location?"
             static let deleteEvent                      = "Do you want to delete the event?"
         }
-        
+       
+        //MARK: labels which are warnings
         struct Warnings {
             static let name                             = "Please enter valid name"
             static let password                         = "Please enter valid password"
@@ -283,11 +307,13 @@ struct Constants {
             static let confirmPassword                  = "Passwords do not match"
         }
         
+        //MARK: Labels for alerts
         struct Alerts {
             static let alertMessage                     = "Something went wrong"
             static let cancel                           = "Cancel"
         }
         
+        //MARK: lables as placeholders
         struct Placeholders {
             static let hashtag                          = "# hashtag"
             static let selectCategory                   = "Select Category"
@@ -305,9 +331,13 @@ struct Constants {
             static let otp                              = "Enter 4 digit OTP"
             static let address                          = "Address"
             static let findLocation                     = "Find location here"
+            static let startTime                        = "Start Time"
+            static let endTime                          = "End Time"
+            static let selectDate                       = "Select Date"
         }
     }
     
+    //MARK: String formats
     struct StringFormats {
         static let dateFormat                           = "yyyy-MM-dd"
         static let timeFormat                           = "HH:mm"

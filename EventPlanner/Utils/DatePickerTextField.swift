@@ -10,28 +10,38 @@ import SwiftUI
 
 struct DatePickerTextField: UIViewRepresentable {
     
+    //MARK: PROPERTIES
+    
     private let textField = UITextField()
     private let datePicker = UIDatePicker()
     private let helper = Helper()
     private let dateFormatterForDate: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat =  "yyyy-MM-dd"
+        dateFormatter.dateFormat =  Constants.StringFormats.dateFormat
         return dateFormatter
     }()
     
     private let dateFormatterForTime: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.dateFormat = Constants.StringFormats.timeFormat
         return dateFormatter
     }()
     
     public var placeholder: String
+    
     @Binding public var date: Date?
     var pickerType: PickerType
+    var minimumDate: Date?
+    var maximumDate: Date?
+    
+    //MARK: METHODS
     
     func makeUIView(context: Context) -> UITextField {
         self.datePicker.datePickerMode = self.pickerType == .date ? .date : .time
         self.datePicker.preferredDatePickerStyle = .wheels
+        if self.minimumDate != nil {
+            self.datePicker.minimumDate = self.minimumDate
+        }
         self.datePicker.addTarget(self.helper, action: #selector(self.helper.dateValueChanged), for: .valueChanged)
         self.textField.placeholder = self.placeholder
         self.textField.inputView = self.datePicker
@@ -40,7 +50,7 @@ struct DatePickerTextField: UIViewRepresentable {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
+        let doneButton = UIBarButtonItem(title: Constants.Labels.done, style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
         toolbar.setItems([flexibleSpace, doneButton], animated: true)
         self.textField.inputAccessoryView = toolbar
         
@@ -68,6 +78,7 @@ struct DatePickerTextField: UIViewRepresentable {
         Coordinator()
     }
     
+    //MARK: HELPER CLASS
     class Helper {
         public var dateChanged: (() -> Void)?
         public var doneButtonTapped: (() -> Void)?

@@ -10,10 +10,10 @@ import SwiftUI
 struct TextFieldView: View {
     var placeholder: String
     @Binding var text: String
+    var axis: Axis = .horizontal
     
     var body: some View {
-        TextField(placeholder, text: $text)
-            .autocapitalization(.words)
+        TextField(placeholder, text: $text, axis: axis)
             .disableAutocorrection(true)
             .padding()
             .frame(height: 60)

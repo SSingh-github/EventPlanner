@@ -27,11 +27,9 @@ struct DateTimePickerView: View {
                     .datePickerStyle(GraphicalDatePickerStyle())
                     .padding()
                     .accentColor(Constants.Colors.blueThemeColor)
-                
-                DatePicker(Constants.Labels.selectStartTime, selection: viewModel.actionType == .createEvent ? $viewModel.newEvent.startDate : $viewModel.newEventForEdit.startDate, displayedComponents: .hourAndMinute)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-                    .accentColor(Constants.Colors.blueThemeColor)
+
+                DatePickerTextFieldView(label: Constants.Labels.selectStartTime, placeholder: Constants.Labels.Placeholders.startTime, date: viewModel.actionType == .createEvent ? $viewModel.newEvent.startTime : $viewModel.newEventForEdit.startTime, minimumDate: nil, pickerType: .time)
+                    .padding(.horizontal)
             }
             else {
                 if viewModel.actionType == .createEvent {
@@ -40,10 +38,8 @@ struct DateTimePickerView: View {
                         .padding()
                         .accentColor(Constants.Colors.blueThemeColor)
                     
-                    DatePicker(Constants.Labels.selectEndTime, selection: $viewModel.newEvent.endDate,in: (viewModel.newEvent.startDate + (3600))..., displayedComponents: .hourAndMinute)
-                        .datePickerStyle(GraphicalDatePickerStyle())
-                        .padding()
-                        .accentColor(Constants.Colors.blueThemeColor)
+                    DatePickerTextFieldView(label: Constants.Labels.selectEndTime, placeholder: Constants.Labels.Placeholders.endTime, date: $viewModel.newEvent.endTime, minimumDate: (viewModel.newEvent.startDate) + 3600, pickerType: .time)
+                        .padding(.horizontal)
                 }
                 else {
                     DatePicker("", selection: $viewModel.newEventForEdit.endDate, in: viewModel.newEventForEdit.startDate..., displayedComponents: .date)
@@ -51,15 +47,15 @@ struct DateTimePickerView: View {
                         .padding()
                         .accentColor(Constants.Colors.blueThemeColor)
                     
-                    DatePicker(Constants.Labels.selectEndTime, selection: $viewModel.newEventForEdit.endDate,in: (viewModel.newEventForEdit.startDate + (3600))..., displayedComponents: .hourAndMinute)
-                        .datePickerStyle(GraphicalDatePickerStyle())
-                        .padding()
-                        .accentColor(Constants.Colors.blueThemeColor)
+                    DatePickerTextFieldView(label: Constants.Labels.selectEndTime, placeholder: Constants.Labels.Placeholders.endTime, date: $viewModel.newEventForEdit.endTime, minimumDate: (viewModel.newEventForEdit.startDate) + 3600, pickerType: .time)
+                        .padding(.horizontal)
+                    
                 }
             }
         }
     }
 }
+
 struct DateTimePickerView_Previews: PreviewProvider {
     static var previews: some View {
         DateTimePickerView(viewModel: MainTabViewModel())

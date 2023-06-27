@@ -30,9 +30,10 @@ struct FilterView: View {
                         
                         
                         TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: Constants.Labels.selectCategory, selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
-                        
-                            .fontWeight(.semibold)
-                            .accentColor(Constants.Colors.blueThemeColor)
+                            .padding()
+                            .background(Color.gray.opacity(0.3))
+                            .cornerRadius(10)
+                            .padding(.horizontal)
                     }
 
                     HStack {
@@ -43,20 +44,14 @@ struct FilterView: View {
                             .fontWeight(.semibold)
                             
                         Spacer()
-                        
-//                         DatePicker("", selection: $viewModel.filter.startDate, displayedComponents: .date)
-//                            .datePickerStyle(.automatic)
-//                             .padding(.horizontal)
-//                             .accentColor(Constants.Colors.blueThemeColor)
-//                             .cornerRadius(20)
-                        
-                        DatePickerTextField(placeholder: "Select Date", date: $viewModel.filter.startDate, pickerType: .date)
+
+                        DatePickerTextField(placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.filter.startDate, pickerType: .date)
+                            .padding()
+                            .background(Color.gray.opacity(0.3))
+                            .cornerRadius(10)
                             .padding(.horizontal)
                     }
                     .padding([.leading, .top])
-                    
-                    
-                   
                     
                     HStack {
                         CheckBoxView(checked: $viewModel.checks[2])
@@ -68,7 +63,6 @@ struct FilterView: View {
                     }
                     .padding([.leading, .top])
 
-                    
                     TextFieldView(placeholder: Constants.Labels.Placeholders.eventTitle, text: $viewModel.filter.title)
                     
                     HStack {
@@ -81,7 +75,6 @@ struct FilterView: View {
                     }
                     .padding([.leading, .top])
 
-                    
                     TextFieldView(placeholder: Constants.Labels.Placeholders.tag, text: $viewModel.filter.hashtag)
                     
                     HStack {
@@ -111,9 +104,7 @@ struct FilterView: View {
 
                         TextFieldView(placeholder: Constants.Labels.Placeholders.location, text: $viewModel.filter.location)
                             .padding(.bottom)
-
                     }
-                    
                 }
                 Spacer()
                 Button {

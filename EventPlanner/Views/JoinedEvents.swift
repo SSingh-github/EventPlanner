@@ -33,18 +33,7 @@ struct JoinedEvents: View {
                     
                 }
                 else {
-                    ScrollView {
-                        Image(systemName: Constants.Images.person2)
-                            .font(.system(size: 100))
-                            .padding(.top, 250)
-
-                        Text(Constants.Labels.joinedEvents)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                        
-                    }
+                    PlaceholderView(imageName: Constants.Images.person2, lable: Constants.Labels.joinedEvents)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("")
                     .refreshable {

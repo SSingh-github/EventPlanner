@@ -12,6 +12,8 @@ import UIKit
 
 
 class ImagePicker: ObservableObject {
+    //MARK: PROPERTIES
+    
     @Published var image: UIImage?
     @Published var imageSelection: PhotosPickerItem? {
         didSet {
@@ -23,6 +25,7 @@ class ImagePicker: ObservableObject {
         }
     }
     
+    //MARK: METHODS
     func loadTransferable(from imageSelection: PhotosPickerItem?) async throws {
         do {
             if let data = try await imageSelection?.loadTransferable(type: Data.self) {

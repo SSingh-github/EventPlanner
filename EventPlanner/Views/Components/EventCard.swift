@@ -13,52 +13,17 @@ struct EventCard: View {
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
-        
         HStack {
-            
             VStack(alignment: .leading) {
-
-                    if let imageUrl = event.image, !imageUrl.isEmpty {
-                        // Show the image using the URL
-                        AsyncImage(url: URL(string: Constants.API.URLs.baseUrl + imageUrl)) { phase in
-                            switch phase {
-                            case .empty:
-                                // Placeholder view while the image is being loaded
-                                HStack {
-                                    Spacer()
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
-                                        .frame(width: 200, height: 150)
-                                        .scaleEffect(3)
-                                        
-                                    Spacer()
-                                }
-                            case .success(let image):
-                                // Display the loaded image
-                                image
-                                    .resizable()
-                                    .frame(height: 150)
-                                    .scaledToFit()
-                                    .cornerRadius(20)
-                            case .failure(_):
-                                // Show an error placeholder if the image fails to load
-                               Rectangle()
-                                    .frame(height: 150)
-                                    .foregroundColor(.gray)
-                                    .cornerRadius(20)
-                            @unknown default:
-                                // Handle any future cases if needed
-                                EmptyView()
-                            }                            }
-                    }
+                if let imageUrl = event.image, !imageUrl.isEmpty {
+                    AsyncImageView(imageUrl: Constants.API.URLs.baseUrl + imageUrl, frameHeight: 150)
+                }
                 else {
                     Rectangle()
-                         .frame(height: 150)
-                         .foregroundColor(.gray)
-                         .cornerRadius(20)
+                        .frame(height: 150)
+                        .foregroundColor(.gray)
+                        .cornerRadius(20)
                 }
-                    
-                
                 VStack {
                     HStack {
                         Text(event.title)
@@ -91,15 +56,9 @@ struct EventCard: View {
                         
                         Button {
                             withAnimation{
-                               
                                 NetworkManager.shared.likeTheEvent(eventId: event.id)
                                 event.is_liked.toggle()
-                                if event.is_liked {
-                                    event.like_count += 1
-                                }
-                                else {
-                                    event.like_count -= 1
-                                }
+                                event.is_liked ? (event.like_count += 1) : (event.like_count -= 1)
                             }
                         } label: {
                             HStack{
@@ -123,7 +82,6 @@ struct EventCard: View {
                         Text(event.location)
                             .foregroundColor(colorScheme == .dark ? .gray : .black)
                             .bold(colorScheme == .dark)
-                        
                         Spacer()
                     }
                 }

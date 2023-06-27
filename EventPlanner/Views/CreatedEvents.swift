@@ -48,17 +48,7 @@ struct CreatedEvents: View {
                     
                 }
                else {
-                    ScrollView {
-                        Image(systemName: Constants.Images.rectanglePencil)
-                            .font(.system(size: 100))
-                            .padding(.top, 250)
-
-                        Text(Constants.Labels.createdEvents)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                    }
+                   PlaceholderView(imageName: Constants.Images.rectanglePencil, lable: Constants.Labels.createdEvents)
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("")
                     .refreshable {

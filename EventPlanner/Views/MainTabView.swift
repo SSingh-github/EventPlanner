@@ -53,12 +53,12 @@ struct MainTabView: View {
                 .accentColor(Constants.Colors.blueThemeColor)
                 .tabViewStyle(DefaultTabViewStyle())
                 .fullScreenCover(isPresented: $viewModel.showWelcomeViewModel) {
-                    WelcomeTabView()
+                    LoginSignupView()
                 }
                 .navigationBarBackButtonHidden(true)
             }
             else {
-                LoadingView()
+                SplashScreenView()
             }
         }
         

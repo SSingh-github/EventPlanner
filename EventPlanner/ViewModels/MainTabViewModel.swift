@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 class MainTabViewModel: ObservableObject {
-
+    //MARK: PROPERTIES
     @Published var guestLogin = UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey)
     @Published var userLogin = UserDefaults.standard.bool(forKey: Constants.Labels.userLoggedIn)
     @Published var showWelcomeViewModel = false
@@ -22,11 +22,9 @@ class MainTabViewModel: ObservableObject {
     @Published var showMyEventsAlert = false
     @Published var showFavEventsAlert = false
     @Published var showJoinedEventsAlert = false
-
     @Published var showEditEventActionSheet = false
-    @Published var dateOfBirth: Date? = Date()
+    @Published var dateOfBirth: Date? = nil
     @Published var userProfile: UserDataDetails = UserDataDetails()
-    
     @Published var userProfileLoading = false
     @Published var isLoggedOut = false
     @Published var showAlert = false
@@ -36,8 +34,8 @@ class MainTabViewModel: ObservableObject {
     @Published var editProfileLoading = false
     @Published var selection: Tab = .explore
     @Published var checks = [false, false, false, false, false, false]
-    @Published var detailedEventForExplore: DetailedEvent? // detailed event object for explore view
-    @Published var detailedEventForMyEvents: DetailedEvent? // detialed event object for my events view
+    @Published var detailedEventForExplore: DetailedEvent?
+    @Published var detailedEventForMyEvents: DetailedEvent?
     @Published var showDetailedEventForExplore = true
     @Published var showDetialedEventForMyEvents = false
     @Published var events: [Event] = []
@@ -46,31 +44,29 @@ class MainTabViewModel: ObservableObject {
     @Published var joinedEvents: [Event] = []
     @Published var showFilterView = false
     @Published var filter: Filter = Filter()
-
-    
+    @Published var showActionSheet = false
+    @Published var showLocationView = false
     @Published var newEvent: NewEvent = NewEvent()
     @Published var newEventForEdit: NewEvent = NewEvent()
     @Published var actionType: EventActionType = .createEvent
     @Published var showEditSheet = false
-    
     @Published var postingNewEvent = false
-
     @Published var selected = "Start"
     @Published var selectionIndex2 = 0
-    
     @Published var createdEventsLoading = false
     @Published var favouriteEventsLoading = false
     @Published var joinedEventsLoading = false
-    
     @Published var showJoinEventActionSheet = false
-    
-    
     @Published var showMap = false
     @Published var navigate = false
-    
     @Published var showEditProfileActionSheet = false
     @Published var showDeleteAlert = false
     @Published var index: Int = 0
+    
+    let startDate2 = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
+    let endDate2 = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
+    
+    //MARK: COMPUTED PROPERTIES
     
     var buttonDisabled: Bool {
         var bool: Bool = false
@@ -78,19 +74,27 @@ class MainTabViewModel: ObservableObject {
         bool = bool || self.userProfile.last_name.isEmpty
         bool = bool || self.userProfile.phone_number.isEmpty
         bool = bool || self.userProfile.address.isEmpty
-        
+        bool = bool || self.dateOfBirth == nil
         return bool
     }
     
-    let startDate2 = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
-    let endDate2 = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
+    var dateButtonDisabled: Bool {
+        if actionType == .createEvent {
+            return newEvent.startTime == nil || newEvent.endTime == nil
+        }
+        else {
+            return newEventForEdit.startTime == nil || newEventForEdit.endTime == nil
+        }
+    }
+    
+    
     
     var filterButtonDisabled : Bool {
         var bool: Bool = false
         for check in self.checks {
             bool = bool || check
         }
-        if checks[0] && self.filter.eventCategory == nil {
+        if checks[0] && self.filter.eventCategory == nil || checks[1] && self.filter.startDate == nil {
             return true
         }
         else if checks[2] && self.filter.title.isEmpty || checks[3] && self.filter.hashtag.isEmpty || checks[5] && self.filter.location.isEmpty {
@@ -118,8 +122,8 @@ class MainTabViewModel: ObservableObject {
         }
     }
     
-    @Published var showActionSheet = false
-    @Published var showLocationView = false
+   
+    //MARK: METHODS
     
     func getHashtagString()-> String {
         if let detailedEvent = detailedEventForExplore{
@@ -236,7 +240,7 @@ class MainTabViewModel: ObservableObject {
     
     func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
         let formattedDates = Formatter.shared.formatDate(dates: [self.newEvent.startDate, self.newEvent.endDate])
-        let formattedTimes = Formatter.shared.formatTime(times: [self.newEvent.startDate, self.newEvent.endDate])
+        let formattedTimes = Formatter.shared.formatTime(times: [self.newEvent.startTime!, self.newEvent.endTime!])
         self.newEvent.formattedStartDate = formattedDates[0]
         self.newEvent.formattedEndDate = formattedDates[1]
         self.newEvent.formattedStartTime = formattedTimes[0]
@@ -247,12 +251,28 @@ class MainTabViewModel: ObservableObject {
     
     func updateEvent() {
         let formattedDates = Formatter.shared.formatDate(dates: [self.newEventForEdit.startDate, self.newEventForEdit.endDate])
-        let formattedTimes = Formatter.shared.formatTime(times: [self.newEventForEdit.startDate, self.newEventForEdit.endDate])
+        let formattedTimes = Formatter.shared.formatTime(times: [self.newEventForEdit.startTime!, self.newEventForEdit.endTime!])
         self.newEventForEdit.formattedStartDate = formattedDates[0]
         self.newEventForEdit.formattedEndDate = formattedDates[1]
         self.newEventForEdit.formattedStartTime = formattedTimes[0]
         self.newEventForEdit.formattedEndTime = formattedTimes[1]
         
         NetworkManager.shared.updateEvent(viewModel: self)
+    }
+    
+    func getEventDetails(eventType: EventType, indexOfEvent: Int) {
+        self.showDetailedEventForExplore = true
+        if eventType == .all {
+            NetworkManager.shared.eventDetails(viewModel: self, eventId: self.events[indexOfEvent].id)
+        }
+        else if eventType == .created {
+            NetworkManager.shared.eventDetails(viewModel: self, eventId: self.myEvents[indexOfEvent].id)
+        }
+        else if eventType == .favourite {
+            NetworkManager.shared.eventDetails(viewModel: self, eventId: self.favouriteEvents[indexOfEvent].id)
+        }
+        else if eventType == .joined {
+            NetworkManager.shared.eventDetails(viewModel: self, eventId: self.joinedEvents[indexOfEvent].id)
+        }
     }
 }

@@ -35,18 +35,7 @@ struct CalendarView: View {
                 .navigationTitle("")
             }
             else {
-                ScrollView {
-                    Image(systemName: Constants.Images.calendarExclamation)
-                        .font(.system(size: 100))
-                        .padding(.top, 250)
-
-                    Text(Constants.Labels.upcomingEvents)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                    
-                }
+                PlaceholderView(imageName: Constants.Images.calendarExclamation, lable: Constants.Labels.upcomingEvents)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle("")
                 .refreshable {

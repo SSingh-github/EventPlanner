@@ -11,10 +11,8 @@ import MapKit
 struct SearchLocationView: View {
     @ObservedObject var viewModel: MainTabViewModel
     var body: some View {
-       
             SearchView2(viewModel: viewModel)
             .navigationBarTitleDisplayMode(.inline)
-        
     }
 }
 

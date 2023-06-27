@@ -17,7 +17,7 @@ struct ContentView: View {
                 .environmentObject(appState)
         }
         else {
-            WelcomeTabView()
+            LoginSignupView()
                 .environmentObject(appState)
         }
     }

@@ -15,6 +15,8 @@ struct NewEvent {
     var hashtags: [String]
     var startDate: Date
     var endDate:Date
+    var startTime: Date?
+    var endTime: Date?
     var formattedStartDate:String
     var formattedEndDate:String
     var formattedStartTime:String
@@ -30,6 +32,8 @@ struct NewEvent {
         hashtags = []
         startDate = Date()
         endDate = Date()
+        startTime = nil
+        endTime = nil
         formattedEndDate = ""
         formattedEndTime = ""
         formattedStartDate = ""

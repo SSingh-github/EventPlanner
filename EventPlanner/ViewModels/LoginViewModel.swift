@@ -9,10 +9,11 @@ import Foundation
 
 class LoginViewModel: ObservableObject {
     
+    //MARK: PROPERTIES
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var email: String = ""
-    @Published var isLoginView: Bool = false
+    @Published var isLoginView: Bool = true
     @Published var presentMainTabView: Bool = false
     @Published var isLoggedIn = false
     @Published var showForgotPasswordSheet = false
@@ -29,13 +30,16 @@ class LoginViewModel: ObservableObject {
     
     let startDate = Calendar.current.date(from: DateComponents(year: 1930, month: 1, day: 1))!
     let endDate = Calendar.current.date(from: DateComponents(year: 2005, month: 1, day: 1))!
+    
+    
+    //MARK: METHODS
    
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
     }
     
     func showPasswordWarning() -> Bool {
-        var bool = !Validations.shared.isValidPassword(password) && !password.isEmpty
+        let bool = !Validations.shared.isValidPassword(password) && !password.isEmpty
         if isLoginView {
             return bool
         }

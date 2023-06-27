@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TextFieldWithPickerAsInputView : UIViewRepresentable {
     
+    //MARK: PROPERTIES
     var data : [String]
     var placeholder : String
     
@@ -20,6 +21,8 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
     private let picker = UIPickerView()
     private let helper = Helper()
     
+    
+    //MARK: METHODS
     func makeCoordinator() -> TextFieldWithPickerAsInputView.Coordinator {
         Coordinator(textfield: self)
     }
@@ -37,7 +40,7 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
         toolbar.sizeToFit()
         
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
+        let doneButton = UIBarButtonItem(title: Constants.Labels.done, style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
         toolbar.setItems([flexibleSpace, doneButton], animated: true)
         self.textField.inputAccessoryView = toolbar
         
@@ -52,6 +55,7 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
         uiView.text = text
     }
     
+    //MARK: HELPER CLASS
     class Helper {
         public var doneButtonTapped: (() -> Void)?
         
@@ -60,14 +64,18 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
         }
     }
     
+    //MARK: COORDINATOR CLASS
     class Coordinator: NSObject, UIPickerViewDataSource, UIPickerViewDelegate , UITextFieldDelegate {
         
+        //MARK: PROPERTIES
         private let parent : TextFieldWithPickerAsInputView
         
+        //MARK: INITIALIZER
         init(textfield : TextFieldWithPickerAsInputView) {
             self.parent = textfield
         }
         
+        //MARK: METHODS
         func numberOfComponents(in pickerView: UIPickerView) -> Int {
             return 1
         }

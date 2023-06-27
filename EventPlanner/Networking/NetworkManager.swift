@@ -15,145 +15,20 @@ class NetworkManager {
     
     var authorizationKey: String = ""
     
-    func getUrl(type: ApiType) -> URL? {
-        switch type {
-        case.signIn:
-            return URL(string: Constants.API.URLs.logIn)
-        case.signUp:
-            return URL(string: Constants.API.URLs.signUp)
-        case.forgotPassword:
-            return URL(string: Constants.API.URLs.forgotPassword)
-        case.verityOtp:
-            return URL(string: Constants.API.URLs.verifyOtp)
-        case.resetPassword:
-            return URL(string: Constants.API.URLs.resetPassword)
-        default:
-            return nil
-        }
-    }
-    
-    func loginSignUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel, type: ApiType) {
-        
-        let url: URL = getUrl(type: type)!
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
-        let bodyData: [String: Any] = [
-            Constants.Keys.email : userCredentials.email,
-            Constants.Keys.password : userCredentials.password
-        ]
-        
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                switch type {
-                case .signUp:
-                    if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
-                        self.authorizationKey = authorizationKey
-                        UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
-                        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                        print(self.authorizationKey)
-                    }
-                case .signIn:
-                    if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
-                        self.authorizationKey = authorizationKey
-                        UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
-                        print(self.authorizationKey)
-                    }
-                default:
-                    print("error in signup or login")
-                }
-            } else {
-                print("unable to sign up")
-                print("Error: Unexpected status code \(httpResponse.statusCode)")
-                if type == .signUp {
-                    DispatchQueue.main.async {
-                        viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                        viewModel.showAlert = true
-                    }
-                }
-            }
-            
-            do{
-                let response = try JSONDecoder().decode(Response.self, from: data)
-                print("decode successful " + response.message)
-                print("code is \(response.code)")
-            }
-            catch {
-                print("unable to decode the response")
-                print(error.localizedDescription)
-            }
-            
-            if type == .signIn {
-                DispatchQueue.main.async {
-                    viewModel.isLoggedIn = false
-                    
-                    if httpResponse.statusCode == 200 {
-                        print(httpResponse.statusCode)
-                        viewModel.presentMainTabView.toggle()
-                        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                    }
-                    else {
-                        print("some error occured while logging in")
-                        viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                        viewModel.showAlert = true
-                    }
-                }
-            }
-        }
-        task.resume()
-        if type == .signUp {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                // Call your function here
-                self.createUserProfile(viewModel: viewModel)
-
-            }
-        }
-    }
-    
     func signUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
-        
-        guard let url = URL(string: Constants.API.URLs.signUp) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
         let bodyData: [String: Any] = [
-            Constants.Keys.email : userCredentials.email,
-            Constants.Keys.password : userCredentials.password
-        ]
+                    Constants.Keys.email : userCredentials.email,
+                    Constants.Keys.password : userCredentials.password
+                ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.signUp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -200,32 +75,18 @@ class NetworkManager {
     
     func logInCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
-        print("login button clicked")
-        
-        guard let url = URL(string: Constants.API.URLs.logIn) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
-        
         let bodyData: [String: Any] = [
-            Constants.Keys.email : userCredentials.email,
-            Constants.Keys.password : userCredentials.password
-        ]
+                    Constants.Keys.email : userCredentials.email,
+                    Constants.Keys.password : userCredentials.password
+                ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logIn, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while logging in")
                 DispatchQueue.main.async {
@@ -283,85 +144,19 @@ class NetworkManager {
         task.resume()
     }
     
-    func signOutCall(viewModel: MainTabViewModel) {
-        
-        guard let url = URL(string: Constants.API.URLs.logOut) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.setValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.isLoggedOut = false
-                        viewModel.showAlert.toggle()
-                    }
-                }
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            do{
-                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
-                print("decode successful " + response.message)
-                print("code is \(response.status)")
-            }
-            catch {
-                print("unable to decode the response")
-                print(error.localizedDescription)
-            }
-            
-            DispatchQueue.main.async {
-                viewModel.isLoggedOut = false
-                
-                if httpResponse.statusCode == 200 {
-                    viewModel.showWelcomeViewModel.toggle()
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                }
-                else {
-                    print("some error occured while logout")
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
-                }
-            }
-        }
-        task.resume()
-    }
-    
     func resendOtp(viewModel: ForgotPasswordViewModel) {
-        guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
         
         let bodyData: [String: Any] = [
             Constants.Keys.email : viewModel.email
         ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -392,29 +187,17 @@ class NetworkManager {
     }
     
     func forgotPassword(viewModel: ForgotPasswordViewModel) {
-        guard let url = URL(string: Constants.API.URLs.forgotPassword) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
-        
+    
         let bodyData: [String: Any] = [
             Constants.Keys.email : viewModel.email
         ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
-        
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
@@ -456,30 +239,18 @@ class NetworkManager {
     }
     
     func verifyOtp(viewModel: ForgotPasswordViewModel) {
-        guard let url = URL(string: Constants.API.URLs.verifyOtp) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
         
         let bodyData: [String: Any] = [
             Constants.Keys.email : viewModel.email,
             Constants.Keys.otp : viewModel.otp
         ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.verifyOtp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
-        
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -515,29 +286,18 @@ class NetworkManager {
     func resetPassword(viewModel: ForgotPasswordViewModel, loginViewModel: LoginViewModel) {
         
         viewModel.resetPasswordSuccessful = false
-        guard let url = URL(string: Constants.API.URLs.resetPassword) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.put
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        
-        
         let bodyData: [String: Any] = [
             Constants.Keys.email: viewModel.email,
             Constants.Keys.password : viewModel.newPassword
         ]
+      
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.resetPassword, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        if request == nil {
             return
         }
         
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -578,20 +338,65 @@ class NetworkManager {
         task.resume()
     }
     
-    func getUserProfileDetails(viewModel: MainTabViewModel) {
+    func signOutCall(viewModel: MainTabViewModel) {
         
-        guard let url = URL(string: Constants.API.URLs.getProfile) else {
-            print("unable to create url")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logOut, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        var request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                        viewModel.isLoggedOut = false
+                        viewModel.showAlert.toggle()
+                    }
+                }
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return
+            }
+            
+            do{
+                let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
+                print("decode successful " + response.message)
+                print("code is \(response.status)")
+            }
+            catch {
+                print("unable to decode the response")
+                print(error.localizedDescription)
+            }
+            
+            DispatchQueue.main.async {
+                viewModel.isLoggedOut = false
+                
+                if httpResponse.statusCode == 200 {
+                    viewModel.showWelcomeViewModel.toggle()
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
+                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                }
+                else {
+                    print("some error occured while logout")
+                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                    viewModel.showAlert = true
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    func getUserProfileDetails(viewModel: MainTabViewModel) {
         
-        request.httpMethod = Constants.API.HttpMethods.get
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.getProfile, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        if request == nil {
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while logging in")
                 DispatchQueue.main.async {
@@ -645,17 +450,6 @@ class NetworkManager {
     }
     
     func updateUserProfileDetails(viewModel: MainTabViewModel) {
-        guard let url = URL(string: Constants.API.URLs.updateProfile) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.put
-        
-        let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         viewModel.userProfile.dob = Formatter.shared.formatSingleDate(date: viewModel.dateOfBirth!)
         
@@ -667,12 +461,13 @@ class NetworkManager {
             Constants.Keys.address : viewModel.userProfile.address
         ]
         
-        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
-        request.httpBody = httpBody
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.updateProfile, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
         
+        if request == nil {
+            return
+        }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
@@ -719,6 +514,7 @@ class NetworkManager {
         task.resume()
     }
     
+    //exclude get events from creating request
     func getEvents(viewModel: MainTabViewModel) { 
         //you can create an object of location manager here to get the coordinates of the user
         // for trial purposes use static coordinates
@@ -788,18 +584,14 @@ class NetworkManager {
     }
     
     func getMyEvents(viewModel: MainTabViewModel) {
-        guard let url = URL(string: Constants.API.URLs.myEvents) else {
-            print("unable to create url")
+        
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.myEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.get
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching my events")
                 DispatchQueue.main.async {
@@ -846,18 +638,13 @@ class NetworkManager {
     }
     
     func getJoinedEvents(viewModel: MainTabViewModel) {
-        guard let url = URL(string: Constants.API.URLs.joinedEvents) else {
-            print("unable to create url")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinedEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.get
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching joined events")
                 DispatchQueue.main.async {
@@ -905,18 +692,13 @@ class NetworkManager {
     }
     
     func getFavouriteEvents(viewModel: MainTabViewModel) {
-        guard let url = URL(string: Constants.API.URLs.favouriteEvents) else {
-            print("unable to create url")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.favouriteEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.get
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error occured while fetching favourite events")
                 DispatchQueue.main.async {
@@ -964,23 +746,14 @@ class NetworkManager {
     }
     
     func eventDetails(viewModel: MainTabViewModel, eventId: Int) {
-        let urlComponents = URLComponents(string: Constants.API.URLs.postEvent + "\(eventId)/")!
         
-        // Create a URL from the URLComponents
-        guard let url = urlComponents.url else {
-            print("Invalid URL")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.get
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        if UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) == false {
-            request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        }
-
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 print("error while getting events")
                 return
@@ -1018,6 +791,7 @@ class NetworkManager {
         task.resume()
     }
     
+    // ignore this also
     func getFilteredEvents(viewModel: MainTabViewModel) {
         //you can create an object of location manager here to get the coordinates of the user
         // for trial purposes use static coordinates
@@ -1098,18 +872,6 @@ class NetworkManager {
     }
     
     func updateEvent(viewModel: MainTabViewModel) {
-        guard let url = URL(string: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/") else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.put
-        
-        let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
         var fields: [String: Any] = [:]
         
         fields[Constants.Keys.eventCategoryId] = (Constants.Labels.eventTypes.firstIndex(of: viewModel.newEventForEdit.selectedOption ?? Constants.Labels.eventTypes[0]) ?? 0) + 1
@@ -1124,12 +886,13 @@ class NetworkManager {
         fields[Constants.Keys.endTime]         = viewModel.newEventForEdit.formattedEndTime
         fields[Constants.Keys.hashtags]        = viewModel.newEventForEdit.hashtags
         
-        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.newEventForEdit.imagePicker2.image)
-        request.httpBody = httpBody
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/", httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEventForEdit.imagePicker2.image)
         
+        if request == nil {
+            return
+        }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1164,17 +927,6 @@ class NetworkManager {
     }
     
     func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
-        guard let url = URL(string: Constants.API.URLs.postEvent) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        
-        let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         var fields: [String: Any] = [:]
         
@@ -1190,12 +942,13 @@ class NetworkManager {
         fields[Constants.Keys.endTime]         = viewModel.newEvent.formattedEndTime
         fields[Constants.Keys.hashtags]        = viewModel.newEvent.hashtags
         
-        let httpBody = createHttpBodyForPostingEvent(from: fields, image: viewModel.newEvent.imagePicker2.image)
-        request.httpBody = httpBody
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEvent.imagePicker2.image)
         
+        if request == nil {
+            return
+        }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
@@ -1246,29 +999,18 @@ class NetworkManager {
     }
     
     func deleteEvent(eventId: Int) {
-        guard let url = URL(string: Constants.API.URLs.postEvent + "\(eventId)/") else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.delete
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
+       
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.delete, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1297,30 +1039,17 @@ class NetworkManager {
     }
     
     func markEventAsFavourite(eventId: Int) {
-        // this method will mark the event with the id equal to eventId as a favourite
-        guard let url = URL(string: Constants.API.URLs.markFavEvent) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.markFavEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1349,30 +1078,18 @@ class NetworkManager {
     }
     
     func likeTheEvent(eventId: Int) {
-        // this method will like the event with the id equal to eventId
-        guard let url = URL(string: Constants.API.URLs.likeEvent) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.likeEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1401,29 +1118,18 @@ class NetworkManager {
     }
     
     func joinEvent(eventId: Int) {
-        guard let url = URL(string: Constants.API.URLs.joinEvent) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         
         let bodyData: [String: Any] = [
             "event_id" : eventId
         ]
+    
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1452,29 +1158,17 @@ class NetworkManager {
     }
     
     func followUser(userId: Int) {
-        guard let url = URL(string: Constants.API.URLs.followUser) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
         let bodyData: [String: Any] = [
             "user_id" : userId
         ]
+    
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.followUser, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: bodyData)
-        } catch {
-            print("Unable to serialize request body")
+        if request == nil {
             return
         }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1503,19 +1197,7 @@ class NetworkManager {
     }
     
     private func createUserProfile(viewModel: LoginViewModel) {
-        guard let url = URL(string: Constants.API.URLs.setProfile) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = Constants.API.HttpMethods.post
-        
-        let boundary = "Boundary-testpqr"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-        request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
-        
-        
+    
         let fields: [String: Any] = [
             Constants.Keys.firstName : viewModel.firstName,
             Constants.Keys.lastName : viewModel.lastName,
@@ -1524,12 +1206,13 @@ class NetworkManager {
             Constants.Keys.address : viewModel.address
         ]
         
-        let httpBody = createHttpBodyForUpdatingProfile(from: fields, image: viewModel.imagePicker.image)
-        request.httpBody = httpBody
+        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.setProfile, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
         
+        if request == nil {
+            return
+        }
         
-        
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
+        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
             guard let data = data, error == nil else {
                 return
             }
@@ -1569,36 +1252,6 @@ class NetworkManager {
         }
         task.resume()
     }
-    
-    private func createHttpBodyForPostingEvent(from fields: [String: Any], image: UIImage?) -> Data? {
-        return createMultipartBody(from: fields, image: image)
-    }
-    
-    private func createHttpBodyForUpdatingProfile(from fields: [String: Any], image: UIImage?) -> Data? {
-        return createMultipartBody(from: fields, image: image)
-    }
-    
-    private func createMultipartBody(from fields: [String: Any], image: UIImage?) -> Data? {
-        let boundary = "Boundary-testpqr"
-        var body = Data()
-        
-        for (key, value) in fields {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
-            body.append("\(value)\r\n".data(using: .utf8)!)
-        }
-        
-        if let image = image {
-            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-            body.append(image.jpegData(compressionQuality: 0.3)!)
-            body.append("\r\n".data(using: .utf8)!)
-        }
-        
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        return body
-    }
+   
 }
 

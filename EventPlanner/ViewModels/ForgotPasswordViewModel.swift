@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 
 class ForgotPasswordViewModel: ObservableObject {
+    //MARK: PROPERTIES
     @Published var email = ""
     @Published var otp = ""
     @Published var presentOtpView = false
@@ -26,7 +27,7 @@ class ForgotPasswordViewModel: ObservableObject {
     @Published var alertMessage = Constants.Labels.Alerts.alertMessage
     
     
-    
+    //MARK: METHODS
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
     }

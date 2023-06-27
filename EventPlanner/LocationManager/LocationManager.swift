@@ -13,6 +13,7 @@ import Combine
 
 class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocationManagerDelegate {
     
+    //MARK: PROPERTIES
     @Published var mapView: MKMapView = .init()
     @Published var manager: CLLocationManager = .init()
     @Published var searchText: String = ""
@@ -23,6 +24,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
    
     var cancellable: AnyCancellable?
     
+    //MARK: INITIALIZER
     override init() {
         super.init()
         
@@ -43,6 +45,9 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
                 }
             })
     }
+    
+    
+    //MARK: METHODS
     
     func fetchPlaces(value: String) {
         Task {
@@ -98,12 +103,12 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
     func addDraggablePin(coordinate: CLLocationCoordinate2D) {
         let annotation = MKPointAnnotation()
         annotation.coordinate = coordinate
-        annotation.title = "This will be the event location."
+        annotation.title = Constants.Labels.eventLocation
         mapView.addAnnotation(annotation)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "EVENTPIN")
+        let marker = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: Constants.Labels.eventPin)
         marker.isDraggable = true
         marker.canShowCallout = false
         return marker

@@ -54,6 +54,7 @@ struct CreateProfileView: View {
                             .fontWeight(.semibold)
                         .padding(.top)
                         TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
+                            .autocapitalization(.words)
                         if viewModel.showFirstNameWarning() {
                             Text(Constants.Labels.Warnings.name)
                                 .fontWeight(.semibold)

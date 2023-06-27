@@ -18,31 +18,31 @@ struct MyEventsView: View {
 
                 ForEach(Constants.Labels.options.indices, id:\.self) { index in
                     NavigationLink {
-                        if index == 0 {
+                        
+                        switch index {
+                        case 0:
                             FavouriteEvents(viewModel: viewModel)
-                        }
-                        else if index == 1 {
+                        case 1:
                             JoinedEvents(viewModel: viewModel)
-                        }
-                        else if index == 2 {
+                        case 2:
                             CreatedEvents(viewModel: viewModel)
-                        }
-                        else {
+                        default:
                             CalendarView(viewModel: viewModel)
                         }
+                
                     } label: {
                         HStack {
                             Text(Constants.Labels.options[index])
                             Spacer()
-                            if index == 0 {
+                            
+                            switch index {
+                            case 0:
                                 Image(systemName: Constants.Images.starFill)
-                            } else if index == 1 {
+                            case 1:
                                 Image(systemName: Constants.Images.person2)
-                            }
-                            else if index == 2 {
+                            case 2:
                                 Image(systemName: Constants.Images.rectanglePencil)
-                            }
-                            else {
+                            default:
                                 Image(systemName: Constants.Images.calendar)
                             }
                         }
