@@ -14,6 +14,7 @@ struct UpperEventDetailsView: View {
     var body: some View {
         VStack {
 
+            //MARK: EVENT IMAGE
             if let imageUrl = viewModel.detailedEventForExplore?.image, !imageUrl.isEmpty {
                 
                 AsyncImageView(imageUrl: Constants.API.URLs.baseUrl + imageUrl, frameHeight: 250)
@@ -25,11 +26,12 @@ struct UpperEventDetailsView: View {
                 .scaledToFit()
                 .cornerRadius(20)
         }
-            
+            //MARK: DESCRIPTION
             Text(viewModel.detailedEventForExplore?.description ?? Constants.Labels.noDescription)
                 .multilineTextAlignment(.leading)
                 .padding(.vertical)
            
+            //MARK: HASHTAGS
             Text(viewModel.getHashtagString())
                 .padding(.vertical, 8)
                 .multilineTextAlignment(.leading)
@@ -92,6 +94,7 @@ struct UpperEventDetailsView: View {
                 Text(viewModel.detailedEventForExplore?.location ?? Constants.Labels.noLocation)
                 Spacer()
                 
+                //MARK: MAP VIEW BUTTON
                 Button {
                     viewModel.showMap.toggle()
                 } label: {

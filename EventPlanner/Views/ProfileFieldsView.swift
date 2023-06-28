@@ -19,6 +19,8 @@ struct ProfileFieldsView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
+                
+                //MARK: FIRST NAME
                 TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.userProfile.first_name)
                     .autocapitalization(.words)
                 if viewModel.showFirstNameWarning() {
@@ -26,6 +28,8 @@ struct ProfileFieldsView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.red)
                 }
+                
+                //MARK: LAST NAME
                 TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.userProfile.last_name)
                 if viewModel.showLastNameWarning() {
                     Text(Constants.Labels.Warnings.name)
@@ -38,6 +42,9 @@ struct ProfileFieldsView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.top)
+            
+            
+            //MARK: PHONE NUMBER
            TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.userProfile.phone_number)
                 .keyboardType(.numberPad)
             if viewModel.showPhoneNumberWarning() {
@@ -51,12 +58,15 @@ struct ProfileFieldsView: View {
                 .fontWeight(.semibold)
                 .padding(.top)
             
+            //MARK: DOB PICKER
             DatePickerTextFieldView(label: Constants.Labels.selectDOB, placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.dateOfBirth, minimumDate: nil, pickerType: .date)
                 .padding(.trailing)
             Text(Constants.Labels.Questions.address)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding(.top)
+            
+            //MARK: ADDRESS FIELD
             TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.userProfile.address)
         }
         .padding(.vertical)

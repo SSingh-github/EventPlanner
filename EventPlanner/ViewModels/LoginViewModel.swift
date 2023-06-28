@@ -34,10 +34,19 @@ class LoginViewModel: ObservableObject {
     
     //MARK: METHODS
    
+    
+    /// this method decides whether to show the email warning in the view or not by checking whether is email is empty or not and validating it using the validations singleton method.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user, and false otherwise.
+    ///
     func showEmailWarning() -> Bool {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
     }
     
+    /// this method decides whether or not to show the password warning to the user.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user and false otherwise.
+    ///
     func showPasswordWarning() -> Bool {
         let bool = !Validations.shared.isValidPassword(password) && !password.isEmpty
         if isLoginView {
@@ -48,27 +57,49 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    /// this method decides whether the login button is disabled or not.
+    ///
+    /// - Returns: true if the button is needed to be disabled and false otherwise.
+    ///
     func loginButtonDisabled() -> Bool {
         return showEmailWarning() || showPasswordWarning() || email.isEmpty || password.isEmpty
     }
     
+    /// this method decides whether or not to show the first name warning to the user.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user and false otherwise.
+    ///
     func showFirstNameWarning() -> Bool {
         return !Validations.shared.isValidFirstName(self.firstName) && !self.firstName.isEmpty
     }
     
+    /// this method decides whether or not to show the last name warning to the user.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user and false otherwise.
+    ///
     func showLastNameWarning() -> Bool {
         return !Validations.shared.isValidLastName(self.lastName) && !self.lastName.isEmpty
     }
     
+    /// this method decides whether or not to show the phone number warning to the user.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user and false otherwise.
+    ///
     func showPhoneNumberWarning() -> Bool {
         return !Validations.shared.isValidPhoneNumber(self.phoneNumber) && !self.phoneNumber.isEmpty
     }
     
+    /// this method decides whether or not to show the date of birth warning to the user.
+    ///
+    /// - Returns: true if the warning is needed to be shown to the user and false otherwise.
+    ///
     func showDobWarning() -> Bool {
         return !Validations.shared.isValidDob(self.dob) && !self.dob.isEmpty
     }
 
     
+    /// this method  calls the API method for login or signup depending upon the action performed by the user.
+    ///
     func buttonClicked() {
         
         isLoggedIn = true

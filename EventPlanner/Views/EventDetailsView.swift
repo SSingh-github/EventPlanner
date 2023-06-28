@@ -41,7 +41,9 @@ struct EventDetailsView: View {
                             .foregroundColor(viewModel.detailedEventForExplore?.is_approved ?? true ? .green : .red)
                     }
                     .padding(.bottom, 20)
+                
                     UpperEventDetailsView(viewModel: viewModel)
+                
                     HStack {
                         Text(Constants.Labels.Commencement)
                             .font(.title3)
@@ -91,6 +93,7 @@ struct EventDetailsView: View {
                     
                    EventBarView(viewModel: viewModel)
             
+                //MARK: JOIN EVENT BUTTON
                     Button {
                         viewModel.showJoinEventActionSheet.toggle()
                     } label: {

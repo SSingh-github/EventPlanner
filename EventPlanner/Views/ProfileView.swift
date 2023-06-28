@@ -27,6 +27,8 @@ struct ProfileView: View {
                             }
                             
                             Spacer()
+                            
+                            //MARK: PROFILE IMAGE
                             if let imageUrl = viewModel.userProfile.profile_image, !imageUrl.isEmpty {
                                 AsyncImageCircularView(imageUrl: Constants.API.URLs.baseUrl + imageUrl)
                             } else {
@@ -75,6 +77,8 @@ struct ProfileView: View {
                     
                     Divider()
                         .padding(.vertical)
+                    
+                    //MARK: EDIT PROFILE BUTTON
                     Button(action: {
                         viewModel.showEditProfileView.toggle()
                     }) {
@@ -91,6 +95,7 @@ struct ProfileView: View {
                         EditUserProfileView(viewModel: viewModel)
                     }
                     
+                    //MARK: LOGOUT BUTTON
                     Button(action: {
                         viewModel.showSignoutAlert.toggle()
                     }) {

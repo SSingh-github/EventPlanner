@@ -19,6 +19,7 @@ struct CreateProfileView: View {
                     .font(.title)
                     .fontWeight(.semibold)
                 
+                //MARK: PROFILE IMAGE PICKER
                 ZStack(alignment: .bottomTrailing) {
                     
                     if let image = viewModel.imagePicker.image {
@@ -53,6 +54,7 @@ struct CreateProfileView: View {
                             .font(.title2)
                             .fontWeight(.semibold)
                         .padding(.top)
+                        //MARK: FIRST NAME FIELD
                         TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.firstName)
                             .autocapitalization(.words)
                         if viewModel.showFirstNameWarning() {
@@ -60,6 +62,8 @@ struct CreateProfileView: View {
                                 .fontWeight(.semibold)
                                 .foregroundColor(.red)
                         }
+                        
+                        //MARK: LAST NAME FIELD
                         TextFieldView(placeholder: Constants.Labels.Placeholders.lastName, text: $viewModel.lastName)
                         if viewModel.showLastNameWarning() {
                             Text(Constants.Labels.Warnings.name)
@@ -72,6 +76,8 @@ struct CreateProfileView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding(.top)
+                    
+                    //MARK: PHONE NUMBER FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.phoneNumber, text: $viewModel.phoneNumber)
                         .keyboardType(.numberPad)
                     if viewModel.showPhoneNumberWarning() {
@@ -84,6 +90,8 @@ struct CreateProfileView: View {
                             .font(.title2)
                             .fontWeight(.semibold)
                         .padding(.top)
+                    
+                    //MARK: DOB PICKER
                     DatePicker(Constants.Labels.selectDob, selection: $viewModel.dateOfBirth,in:viewModel.startDate...viewModel.endDate, displayedComponents: .date)
                         .padding(.bottom)
 
@@ -91,10 +99,13 @@ struct CreateProfileView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                         .padding(.top)
+                    
+                    //MARK: ADDRESS FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.address)
                 }
                 .padding(.vertical)
                 
+                //MARK: SIGN UP BUTTON
                 Button {
                     print("")
                     viewModel.buttonClicked()

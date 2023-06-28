@@ -154,6 +154,8 @@ struct Constants {
     
     //MARK: Labels for the app
     struct Labels {
+        static let noHashtags                           = "no hashtags"
+        static let start                                = "Start"
         static let event                                = "Event"
         static let eventCalendar                        = "Event Calendar"
         static let cancel                               = "Cancel"

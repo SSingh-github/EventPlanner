@@ -18,6 +18,7 @@ struct ForgotPasswordView: View {
                 VStack(alignment: .leading) {
                     
                     HStack {
+                        //MARK: DISMISS BUTTON
                         Button {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
@@ -35,6 +36,7 @@ struct ForgotPasswordView: View {
                         .padding(.bottom, 40)
                     
                     Text(Constants.Labels.enterEmail)
+                    //MARK: EMAIL FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
                         .textCase(.lowercase)
                     
@@ -51,6 +53,7 @@ struct ForgotPasswordView: View {
                         .foregroundColor(.secondary)
                         .padding(.bottom)
                     
+                    //MARK: BUTTON
                     Button {
                         viewModel.forgotPassword()
                     } label: {

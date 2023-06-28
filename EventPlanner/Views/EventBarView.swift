@@ -13,6 +13,8 @@ struct EventBarView: View {
     
     var body: some View {
         HStack {
+            
+            //MARK: USER PROFILE IMAGE
             if let imageUrl = viewModel.detailedEventForExplore?.user_image, !imageUrl.isEmpty {
                 AsyncImageProfileView(imageUrl: Constants.API.URLs.baseUrl + imageUrl)
             }
@@ -32,6 +34,7 @@ struct EventBarView: View {
             
             Spacer()
             
+            //MARK: FOLLOW USER BUTTON
             Button {
                 viewModel.followUser(id: viewModel.detailedEventForExplore!.user_id)
                 

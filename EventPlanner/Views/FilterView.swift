@@ -12,8 +12,6 @@ struct FilterView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: MainTabViewModel
-    
-    
 
     var body: some View {
         NavigationView {
@@ -28,7 +26,7 @@ struct FilterView: View {
                             .padding([.trailing, .top,.bottom])
                         Spacer()
                         
-                        
+                        //MARK: CATEGORY PICKER
                         TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: Constants.Labels.selectCategory, selectionIndex: $viewModel.selectionIndex, text: $viewModel.filter.eventCategory)
                             .padding()
                             .background(Color.gray.opacity(0.3))
@@ -44,7 +42,8 @@ struct FilterView: View {
                             .fontWeight(.semibold)
                             
                         Spacer()
-
+                        
+                        // MARK: START DATE PICKER
                         DatePickerTextField(placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.filter.startDate, pickerType: .date)
                             .padding()
                             .background(Color.gray.opacity(0.3))
@@ -62,7 +61,8 @@ struct FilterView: View {
                         Spacer()
                     }
                     .padding([.leading, .top])
-
+                    
+                    //MARK: TITLE FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.eventTitle, text: $viewModel.filter.title)
                     
                     HStack {
@@ -75,6 +75,7 @@ struct FilterView: View {
                     }
                     .padding([.leading, .top])
 
+                    //MARK: HASHTAG FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.tag, text: $viewModel.filter.hashtag)
                     
                     HStack {
@@ -88,6 +89,8 @@ struct FilterView: View {
                     .padding([.leading, .top])
 
                     .padding(.top)
+                    
+                    //MARK: SLIDER FOR RADIUS
                     Slider(value: $viewModel.filter.radius, in: 5...100)
                         .accentColor(Constants.Colors.blueThemeColor)
                     
@@ -101,12 +104,15 @@ struct FilterView: View {
                             Spacer()
                         }
                         .padding([.leading, .top])
-
+                        
+                        //MARK: LOCATION FIELD
                         TextFieldView(placeholder: Constants.Labels.Placeholders.location, text: $viewModel.filter.location)
                             .padding(.bottom)
                     }
                 }
                 Spacer()
+                
+                //MARK: BUTTON
                 Button {
                     viewModel.getFilteredEvents()
                     presentationMode.wrappedValue.dismiss()

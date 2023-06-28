@@ -17,6 +17,7 @@ struct EditUserProfileView: View {
         ZStack {
             ScrollView(showsIndicators: false) {
                 HStack {
+                    //MARK: DISMISS BUTTON
                     Button {
                         presentationMode.wrappedValue.dismiss()
                     } label: {
@@ -34,6 +35,7 @@ struct EditUserProfileView: View {
                 
                 ZStack(alignment: .bottomTrailing) {
                     
+                    //MARK: PROFILE IMAGE
                     if let image = viewModel.imagePicker.image {
                         Image(uiImage:image)
                             .resizable()
@@ -64,6 +66,7 @@ struct EditUserProfileView: View {
                 
                 ProfileFieldsView(viewModel: viewModel)
                 
+                //MARK: UPDATE PROFILE BUTTON
                 Button {
                     print("")
                     viewModel.showEditProfileActionSheet.toggle()

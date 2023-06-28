@@ -32,7 +32,7 @@ struct MapView: UIViewRepresentable {
         mapView.delegate = context.coordinator
         
         //userLocation holds the coordinates of the current user location
-        let userLocation = CLLocationCoordinate2D(latitude: locationManger.userLocation?.coordinate.latitude ?? 0, longitude: locationManger.userLocation?.coordinate.longitude ?? 0)
+        let _ = CLLocationCoordinate2D(latitude: locationManger.userLocation?.coordinate.latitude ?? 0, longitude: locationManger.userLocation?.coordinate.longitude ?? 0)
         
         let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 30.711214, longitude: 76.690276), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
         mapView.setRegion(region, animated: true)

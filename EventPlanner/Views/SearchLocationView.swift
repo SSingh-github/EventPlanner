@@ -27,6 +27,8 @@ struct SearchView2: View {
             HStack(spacing: 10) {
                 Image(systemName: Constants.Images.search)
                     .foregroundColor(.gray)
+                
+                //MARK: SEARCH LOCATION FIELD
                 TextFieldView(placeholder: Constants.Labels.Placeholders.findLocation, text: $locationManager.searchText)
             }
             
@@ -34,6 +36,7 @@ struct SearchView2: View {
                 List {
                     ForEach(places, id:\.self) {place in
                         
+                        //MARK: PROCEED BUTTON
                         Button {
                             if let coordinate = place.location?.coordinate {
                                 locationManager.pickedLocation = .init(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -67,6 +70,8 @@ struct SearchView2: View {
             }
             else {
                 VStack {
+                    
+                    //MARK: USE CURRENT LOCATION BUTTON
                     Button {
                         
                         if let coordinate = locationManager.userLocation?.coordinate {

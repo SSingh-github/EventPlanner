@@ -11,50 +11,38 @@ import UIKit
 class NetworkManager {
     
     private init () {}
+    
+    //MARK: PROPERTIES
     static let shared = NetworkManager()
     
     var authorizationKey: String = ""
     
+    //MARK: METHODS FOR API CALLS
     func signUpCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
         let bodyData: [String: Any] = [
-                    Constants.Keys.email : userCredentials.email,
-                    Constants.Keys.password : userCredentials.password
-                ]
+            Constants.Keys.email : userCredentials.email,
+            Constants.Keys.password : userCredentials.password
+        ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.signUp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.signUp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
+        guard request != nil else {return}
         
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil) { httpResponse in
+            if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
+                self.authorizationKey = authorizationKey
+                UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                print(self.authorizationKey)
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
+        } failureCompletion: {
+            DispatchQueue.main.async {
+                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                viewModel.showAlert = true
             }
-            
-            if httpResponse.statusCode == 200 {
-                if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
-                    self.authorizationKey = authorizationKey
-                    UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
-                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                    print(self.authorizationKey)
-                }
-            } else {
-                print("unable to sign up")
-                print("Error: Unexpected status code \(httpResponse.statusCode)")
-                
-                DispatchQueue.main.async {
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
-                }
-                
-            }
-            
+        } completion: { data, response, error in
             do{
                 let response = try JSONDecoder().decode(Response.self, from: data)
                 print("decode successful " + response.message)
@@ -65,55 +53,38 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            // Call your function here
             self.createUserProfile(viewModel: viewModel)
-
         }
     }
     
     func logInCall(for userCredentials: UserCredentials, viewModel: LoginViewModel) {
         
         let bodyData: [String: Any] = [
-                    Constants.Keys.email : userCredentials.email,
-                    Constants.Keys.password : userCredentials.password
-                ]
+            Constants.Keys.email : userCredentials.email,
+            Constants.Keys.password : userCredentials.password
+        ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logIn, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logIn, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
+        guard request != nil else {return}
         
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error occured while logging in")
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.isLoggedIn = false
-                        //also show the alert to the user
-                        viewModel.showAlert.toggle()
-                    }
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.isLoggedIn = false
+                    viewModel.showAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
+        } successCompletion: { httpResponse in
+            if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
+                self.authorizationKey = authorizationKey
+                UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
+                print(self.authorizationKey)
             }
-            
-            if httpResponse.statusCode == 200 {
-                if let authorizationKey = httpResponse.allHeaderFields[Constants.API.authorizationHeaderField] as? String {
-                    self.authorizationKey = authorizationKey
-                    UserDefaults.standard.set(self.authorizationKey, forKey: Constants.Labels.authToken)
-                    print(self.authorizationKey)
-                }
-            } else {
-                print("unable to login")
-                print("Error: Unexpected status code \(httpResponse.statusCode)")
-            }
-            
+        } failureCompletion: {
+            print("Error: Unexpected status code ")
+        } completion: { data, response, error in
             do {
                 let response = try JSONDecoder().decode(Response.self, from: data)
                 print("decode successful " + response.message)
@@ -123,56 +94,40 @@ class NetworkManager {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-            
-            
             DispatchQueue.main.async {
                 viewModel.isLoggedIn = false
-                
-                if httpResponse.statusCode == 200 {
-                    print(httpResponse.statusCode)
-                    viewModel.presentMainTabView.toggle()
-                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-                    UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
-                }
-                else {
-                    print("some error occured while logging in")
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        print(httpResponse.statusCode)
+                        viewModel.presentMainTabView.toggle()
+                        UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
+                        UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                    }
+                    else {
+                        viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                        viewModel.showAlert = true
+                    }
                 }
             }
         }
-        task.resume()
     }
-    
+   
     func resendOtp(viewModel: ForgotPasswordViewModel) {
         
         let bodyData: [String: Any] = [
             Constants.Keys.email : viewModel.email
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        guard request != nil else {return}
         
-        if request == nil {
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil) {
+            DispatchQueue.main.async {
+                viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
+                viewModel.showAlert = true
+            }
             return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode != 200 {
-                DispatchQueue.main.async {
-                    viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
-                    viewModel.showAlert = true
-                }
-                
-                return
-            }
-            
+        } completion: { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -183,31 +138,30 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func forgotPassword(viewModel: ForgotPasswordViewModel) {
-    
+        
         let bodyData: [String: Any] = [
             Constants.Keys.email : viewModel.email
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.forgotPassword, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        guard request != nil else {return}
         
-        if request == nil {
-            return
-        }
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.forgotPasswordLoading = false
-                        //also show the alert to the user
-                        viewModel.showAlert.toggle()
-                    }
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.forgotPasswordLoading = false
+                    viewModel.showAlert.toggle()
                 }
-                return
             }
+            return
+        } successCompletion: { _ in
+            print("success")
+        } failureCompletion: {
+            print("failure")
+        } completion: { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
                 return
             }
@@ -235,7 +189,6 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func verifyOtp(viewModel: ForgotPasswordViewModel) {
@@ -245,15 +198,11 @@ class NetworkManager {
             Constants.Keys.otp : viewModel.otp
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.verifyOtp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.verifyOtp, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        guard request != nil else {return}
         
-        if request == nil {
-            return
-        }
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
+            
             guard let httpResponse = response as? HTTPURLResponse else {
                 return
             }
@@ -280,7 +229,6 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func resetPassword(viewModel: ForgotPasswordViewModel, loginViewModel: LoginViewModel) {
@@ -290,25 +238,16 @@ class NetworkManager {
             Constants.Keys.email: viewModel.email,
             Constants.Keys.password : viewModel.newPassword
         ]
-      
+        
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.resetPassword, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
+        guard request != nil else {return}
         
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
                 return
             }
-            
-            if httpResponse.statusCode == 200 {
-                print("password reset was successful")
-            }
-            
+
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -324,8 +263,6 @@ class NetworkManager {
                 
                 if httpResponse.statusCode == 200 {
                     print("password reset successful")
-//                    UserDefaults.standard.set(true, forKey: Constants.Labels.userLoggedIn)
-//                    viewModel.resetPasswordSuccessful.toggle()
                     loginViewModel.showForgotPasswordSheet.toggle()
                 }
                 else {
@@ -335,27 +272,26 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func signOutCall(viewModel: MainTabViewModel) {
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logOut, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.isLoggedOut = false
-                        viewModel.showAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.isLoggedOut = false
+                    viewModel.showAlert.toggle()
                 }
-                return
             }
+            return
+        } successCompletion: { _ in
+            print("success")
+        } failureCompletion: {
+            print("failure")
+        } completion: { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {
                 return
             }
@@ -385,50 +321,29 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func getUserProfileDetails(viewModel: MainTabViewModel) {
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.getProfile, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error occured while logging in")
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.userProfileLoading = false
-                        viewModel.showAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.userProfileLoading = false
+                    viewModel.showAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting user profile successful")
-            }
-            else {
-                print("some error in gettting the user profile")
-            }
-            
+            return
+        } successCompletion: { _ in
+            print("success")
+        } failureCompletion: {
+            print("failure")
+        } completion: { data, response, error in
             do {
                 print(data)
                 let response = try JSONDecoder().decode(UserData.self, from: data)
-                
-                print(response.message)
-                print(response.data.dob)
-                print(response.data.phone_number)
-                print(response.data.address)
-                print(response.data.profile_image ?? "")
-                
                 DispatchQueue.main.async {
                     viewModel.userProfileLoading = false
                     viewModel.userProfile.phone_number = response.data.phone_number
@@ -439,14 +354,13 @@ class NetworkManager {
                     viewModel.userProfile.profile_image = response.data.profile_image ?? ""
                     viewModel.dateOfBirth = Formatter.shared.createDateFromString(date: response.data.dob)!
                 }
-               
+                
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func updateUserProfileDetails(viewModel: MainTabViewModel) {
@@ -463,32 +377,20 @@ class NetworkManager {
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.updateProfile, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
         
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.editProfileLoading = false
-                        viewModel.showAlert = true
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.editProfileLoading = false
+                    viewModel.showAlert = true
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("user profile is updated successfully")
-            }
-            else {
-                print("error in updating the profile")
-            }
-            print(httpResponse.statusCode)
-            
+            return
+        } successCompletion: { _ in
+            print("success")
+        } failureCompletion: {
+            print("failure")
+        } completion: { data, response, error in
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print(response.message)
@@ -496,7 +398,7 @@ class NetworkManager {
             catch {
                 print("error decoding the response")
             }
-            
+            guard let httpResponse = response as? HTTPURLResponse else {return}
             DispatchQueue.main.async {
                 viewModel.editProfileLoading = false
                 
@@ -511,23 +413,21 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
-    
-    //exclude get events from creating request
-    func getEvents(viewModel: MainTabViewModel) { 
+   
+    func getEvents(viewModel: MainTabViewModel) {
         //you can create an object of location manager here to get the coordinates of the user
         // for trial purposes use static coordinates
         // Create a URLComponents object with your base URL
         var urlComponents = URLComponents(string: Constants.API.URLs.postEvent)!
-
+        
         // Add query parameters
         urlComponents.queryItems = [
             URLQueryItem(name: "user_latitude", value: "30.711214"),
             URLQueryItem(name: "user_longitude", value: "76.690276")
             // Add more query items as needed
         ]
-
+        
         // Create a URL from the URLComponents
         guard let url = urlComponents.url else {
             print("Invalid URL")
@@ -542,262 +442,149 @@ class NetworkManager {
         if UserDefaults.standard.bool(forKey: Constants.Labels.guestLoginKey) == false {
             request.addValue("\(UserDefaults.standard.string(forKey: Constants.Labels.authToken) ?? "")", forHTTPHeaderField: Constants.API.authorizationHeaderField)
         }
-
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error while getting events")
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting events successful")
-            }
-            else {
-                print(httpResponse.statusCode)
-                print("some error in gettting the events")
-            }
-            
+        NetworkHelper.shared.performRequest(request: request, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do {
-                print(data)
-        
                 let response = try JSONDecoder().decode(EventData.self, from: data)
-                
                 DispatchQueue.main.async {
                     viewModel.events = response.data
-
                 }
-                
-                for event in response.data {
-                    print(event.location)
-                }
+                for event in response.data {print(event.location)}
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func getMyEvents(viewModel: MainTabViewModel) {
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.myEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error occured while fetching my events")
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.createdEventsLoading = false
-                        viewModel.showMyEventsAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.createdEventsLoading = false
+                    viewModel.showMyEventsAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting user events successful")
-            }
-            else {
-                print("some error in gettting the user events")
-            }
-            
+            return
+        } successCompletion: { _ in
+            print("")
+        } failureCompletion: {
+            print("")
+        } completion: { data, response, error in
             do {
-                print(data)
-        
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
                 DispatchQueue.main.async {
                     viewModel.myEvents = response.data
                     viewModel.createdEventsLoading = false
                 }
-                
-                for event in response.data {
-                    print(event.location)
-                }
+                for event in response.data {print(event.location)}
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-           
         }
-        task.resume()
     }
     
     func getJoinedEvents(viewModel: MainTabViewModel) {
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinedEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error occured while fetching joined events")
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.joinedEventsLoading = false
-                        viewModel.showJoinedEventsAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.joinedEventsLoading = false
+                    viewModel.showJoinedEventsAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting joined events successful")
-            }
-            else {
-                print("some error in gettting the joined events")
-                print(httpResponse.statusCode)
-            }
-            
+            return
+        } successCompletion: { _ in
+            print("")
+        } failureCompletion: {
+            print("")
+        } completion: { data, response, error in
             do {
-                print(data)
-        
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
                 DispatchQueue.main.async {
                     viewModel.joinedEvents = response.data
                     viewModel.joinedEventsLoading = false
                 }
-                
-                for event in response.data {
-                    print(event.location)
-                }
+                for event in response.data {print(event.location)}
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-           
         }
-        task.resume()
     }
     
     func getFavouriteEvents(viewModel: MainTabViewModel) {
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.favouriteEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error occured while fetching favourite events")
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.favouriteEventsLoading = false
-                        viewModel.showFavEventsAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.favouriteEventsLoading = false
+                    viewModel.showFavEventsAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting favourite events successful")
-            }
-            else {
-                print("some error in gettting the favourite events")
-                print(httpResponse.statusCode)
-            }
-            
+            return
+        } successCompletion: { _ in
+            print("")
+        } failureCompletion: {
+            print("")
+        } completion: { data, response, error in
             do {
-                print(data)
-        
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 
                 DispatchQueue.main.async {
                     viewModel.favouriteEvents = response.data
                     viewModel.favouriteEventsLoading = false
                 }
-                
-                for event in response.data {
-                    print(event.location)
-                }
+                for event in response.data {print(event.location)}
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
-           
         }
-        task.resume()
     }
     
     func eventDetails(viewModel: MainTabViewModel, eventId: Int) {
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
-        if request == nil {
-            return
-        }
+        guard request != nil else { return }
         
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error while getting events")
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting events successful")
-            }
-            else {
-                print("some error in gettting the events")
-            }
-            
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do {
                 print(data)
-        
+                
                 let response = try JSONDecoder().decode(DetailedEventData.self, from: data)
                 
                 DispatchQueue.main.async {
                     viewModel.detailedEventForExplore = response.data
                     viewModel.showDetailedEventForExplore = false
                 }
-                
-                
-                print("fetched event by the user \(String(describing: viewModel.detailedEventForExplore?.user_name))")
             }
             catch {
                 print("unable to decode the response")
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
-    // ignore this also
     func getFilteredEvents(viewModel: MainTabViewModel) {
         //you can create an object of location manager here to get the coordinates of the user
         // for trial purposes use static coordinates
         // Create a URLComponents object with your base URL
         var urlComponents = URLComponents(string: Constants.API.URLs.postEvent)!
-
+        
         // Add query parameters
         let queryItems: [(String, String)] = [
             ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory ?? Constants.Labels.eventTypes[0]) ?? 0) + 1)"),
@@ -807,7 +594,7 @@ class NetworkManager {
             ("radius"        ,"\(viewModel.filter.radius)"),
             ("location"      ,viewModel.filter.location)
         ]
-       
+        
         urlComponents.queryItems = [
             URLQueryItem(name: "user_latitude", value: "30.711214"),
             URLQueryItem(name: "user_longitude", value: "76.690276"),
@@ -820,39 +607,19 @@ class NetworkManager {
             }
         }
         
-        
-
         // Create a URL from the URLComponents
         guard let url = urlComponents.url else {
             print("Invalid URL")
             return
         }
-        
         var request = URLRequest(url: url)
-        
         request.httpMethod = Constants.API.HttpMethods.get
         request.setValue(Constants.API.requestValueType, forHTTPHeaderField: Constants.API.contentTypeHeaderField)
-
-        let task = URLSession.shared.dataTask(with: request) {data, response, error in
-            guard let data = data, error == nil else {
-                print("error while getting events")
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                print("Invalid response")
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("getting events successful")
-            }
-            else {
-                print("some error in gettting the events")
-            }
-            
+        
+        NetworkHelper.shared.performRequest(request: request, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do {
                 print(data)
-        
+                
                 let response = try JSONDecoder().decode(EventData.self, from: data)
                 DispatchQueue.main.async {
                     viewModel.events = response.data
@@ -868,7 +635,6 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func updateEvent(viewModel: MainTabViewModel) {
@@ -888,26 +654,8 @@ class NetworkManager {
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/", httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEventForEdit.imagePicker2.image)
         
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("New event is updated successfully")
-            }
-            else {
-                print("error in updating the event")
-            }
-            print(httpResponse.statusCode)
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print(response.message)
@@ -915,7 +663,7 @@ class NetworkManager {
             catch {
                 print("error decoding the response")
             }
-            
+            guard let httpResponse = response as? HTTPURLResponse else {return}
             DispatchQueue.main.async {
                 if httpResponse.statusCode == 200 {
                     viewModel.showEditSheet.toggle()
@@ -923,7 +671,6 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func postNewEvent(viewModel: MainTabViewModel, appState: AppState) {
@@ -943,33 +690,21 @@ class NetworkManager {
         fields[Constants.Keys.hashtags]        = viewModel.newEvent.hashtags
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEvent.imagePicker2.image)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
-                        viewModel.postingNewEvent = false
-                        viewModel.showCreateEventAlert.toggle()
-                    }
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!) {
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+                    viewModel.postingNewEvent = false
+                    viewModel.showCreateEventAlert.toggle()
                 }
-                return
             }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("New event is posted successfully")
-            }
-            else {
-                print("error in posting the event")
-            }
-            print(httpResponse.statusCode)
-            
+            return
+        } successCompletion: { _ in
+            print("")
+        } failureCompletion: {
+            print("")
+        } completion: { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {return}
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print(response.message)
@@ -983,7 +718,6 @@ class NetworkManager {
                 
                 if httpResponse.statusCode == 200 {
                     print("event was posted successfully")
-                    //pop the navigation views
                     viewModel.shiftTabToMyEvents()
                     appState.rootViewId = UUID()
                     viewModel.newEvent = NewEvent()
@@ -995,7 +729,6 @@ class NetworkManager {
                 }
             }
         }
-        task.resume()
     }
     
     func deleteEvent(eventId: Int) {
@@ -1003,28 +736,10 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
-       
+        
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.delete, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("event was successfully deleted")
-            }
-            else {
-                print("error in deleting the event")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -1035,35 +750,15 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func markEventAsFavourite(eventId: Int) {
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
-        
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.markFavEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("event was successfully marked as favourite")
-            }
-            else {
-                print("error in marking the event as favourite")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -1074,7 +769,6 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func likeTheEvent(eventId: Int) {
@@ -1082,28 +776,9 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
-        
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.likeEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("event was successfully liked")
-            }
-            else {
-                print("error in liking the event")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -1114,7 +789,6 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func joinEvent(eventId: Int) {
@@ -1122,28 +796,9 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             "event_id" : eventId
         ]
-    
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("event was successfully joined")
-            }
-            else {
-                print("error in joining the event")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -1154,35 +809,16 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
     func followUser(userId: Int) {
         let bodyData: [String: Any] = [
             "user_id" : userId
         ]
-    
+        
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.followUser, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("user followed successfully")
-            }
-            else {
-                print("error in following the user")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
                 print("decode successful " + response.message)
@@ -1193,11 +829,10 @@ class NetworkManager {
                 print(error.localizedDescription)
             }
         }
-        task.resume()
     }
     
-    private func createUserProfile(viewModel: LoginViewModel) {
-    
+    func createUserProfile(viewModel: LoginViewModel) {
+        
         let fields: [String: Any] = [
             Constants.Keys.firstName : viewModel.firstName,
             Constants.Keys.lastName : viewModel.lastName,
@@ -1207,26 +842,9 @@ class NetworkManager {
         ]
         
         var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.setProfile, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
-        
-        if request == nil {
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: request!) {data, response, error in
-            guard let data = data, error == nil else {
-                return
-            }
-            guard let httpResponse = response as? HTTPURLResponse else {
-                return
-            }
-            
-            if httpResponse.statusCode == 200 {
-                print("user profile is updated successfully")
-            }
-            else {
-                print("error in creating the profile")
-            }
-            
+        guard request != nil else {return}
+        NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse else {return}
             
             do {
                 let response = try JSONDecoder().decode(SignoutResponse.self, from: data)
@@ -1238,20 +856,16 @@ class NetworkManager {
             
             DispatchQueue.main.async {
                 viewModel.isLoggedIn = false
-                
                 if httpResponse.statusCode == 200 {
                     viewModel.presentMainTabView.toggle()
                 }
                 else {
                     print("some error occured while signing up")
-                    
                     viewModel.alertMessage = Constants.Labels.Alerts.alertMessage
                     viewModel.showAlert = true
                 }
             }
         }
-        task.resume()
     }
-   
 }
 

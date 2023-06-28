@@ -24,6 +24,8 @@ struct AddNewEventView: View {
                         .padding()
                     Spacer()
                 }
+                
+                //MARK: TITLE FIELD
                 viewModel.actionType == .createEvent ? TextFieldView(placeholder: Constants.Labels.title, text: $viewModel.newEvent.title) : TextFieldView(placeholder: Constants.Labels.title, text: $viewModel.newEventForEdit.title)
 
                 HStack {
@@ -33,6 +35,8 @@ struct AddNewEventView: View {
                         .padding()
                     Spacer()
                 }
+                
+                //MARK: DESCRIPTION FIELD
                 TextFieldView(placeholder: Constants.Labels.description, text: viewModel.actionType == .createEvent ? $viewModel.newEvent.description : $viewModel.newEventForEdit.description, axis: .vertical)
                 
                 HStack {
@@ -42,13 +46,14 @@ struct AddNewEventView: View {
                         .padding()
                     Spacer()
                     
+                    //MARK: CATEGORY PICKER
                     TextFieldWithPickerAsInputView(data: Constants.Labels.eventTypes, placeholder: Constants.Labels.Placeholders.selectCategory, selectionIndex: $viewModel.selectionIndex2, text:viewModel.actionType == .createEvent ? $viewModel.newEvent.selectedOption : $viewModel.newEventForEdit.selectedOption)
                     
                         .fontWeight(.semibold)
                         .accentColor(Constants.Colors.blueThemeColor)
                 }
                 ZStack {
-                    
+                    //MARK: EVENT IMAGE
                     if let image = viewModel.actionType == .createEvent ? viewModel.newEvent.imagePicker2.image :
                         viewModel.newEventForEdit.imagePicker2.image {
                         Image(uiImage:image)
@@ -93,6 +98,8 @@ struct AddNewEventView: View {
                 VStack(spacing: 10) {
                     viewModel.actionType == .createEvent ? HashTags(hashtags: $viewModel.newEvent.hashtags) : HashTags(hashtags: $viewModel.newEventForEdit.hashtags)
                     HStack {
+                        
+                        //MARK: CREATE EVENT BUTTON
                         Button {
                             withAnimation {
                                 viewModel.actionType == .createEvent ? viewModel.newEvent.hashtags.append("") : viewModel.newEventForEdit.hashtags.append("")

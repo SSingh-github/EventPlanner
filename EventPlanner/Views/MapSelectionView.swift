@@ -44,6 +44,7 @@ struct MapViewSelection: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 10)
                     
+                    //MARK: CREATE EVENT BUTTON
                     Button {
                         if viewModel.actionType == .createEvent {
                             viewModel.newEvent.pickedLocation = locationManager.pickedLocation

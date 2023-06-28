@@ -15,6 +15,7 @@ struct EventCard: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
+                //MARK: EVENT IMAGE
                 if let imageUrl = event.image, !imageUrl.isEmpty {
                     AsyncImageView(imageUrl: Constants.API.URLs.baseUrl + imageUrl, frameHeight: 150)
                 }
@@ -26,6 +27,7 @@ struct EventCard: View {
                 }
                 VStack {
                     HStack {
+                        //MARK: EVENT TITLE
                         Text(event.title)
                             .font(.title3)
                             .fontWeight(.semibold)
@@ -34,6 +36,7 @@ struct EventCard: View {
                         Spacer()
                             .foregroundColor(Constants.Colors.blueThemeColor)
                         
+                        //MARK: FAVOURITE BUTTON
                         Button {
                             withAnimation{
                                 event.is_favourite.toggle()
@@ -54,6 +57,7 @@ struct EventCard: View {
                         }
                         .buttonStyle(PlainButtonStyle())
                         
+                        //MARK: LIKE BUTTON
                         Button {
                             withAnimation{
                                 NetworkManager.shared.likeTheEvent(eventId: event.id)

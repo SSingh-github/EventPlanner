@@ -21,6 +21,8 @@ struct ResetPasswordView: View {
                     .padding(.bottom, 40)
                 
                 Text(Constants.Labels.enterPassword)
+                
+                //MARK: NEW PASSWORD FIELD
                 SecureTextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.newPassword)
                 
                 if viewModel.showPasswordWarning() {
@@ -38,6 +40,8 @@ struct ResetPasswordView: View {
                 
                 
                 Text(Constants.Labels.confirmPassword)
+                
+                //MARK: CONFIRM PASSWORD FIELD
                 SecureTextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.confirmPassword)
                 
                 if viewModel.showConfirmPasswordWarning() {
@@ -47,6 +51,7 @@ struct ResetPasswordView: View {
                         .padding(.bottom)
                 }
                 
+                //MARK: RESET PASSWORD BUTTON
                 Button {
                     viewModel.resetPassword(viewModel: loginViewModel)
                 } label: {

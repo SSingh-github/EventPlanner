@@ -23,6 +23,7 @@ struct LoginSignupView: View {
                                 .fontWeight(.semibold)
                                 .padding(.bottom, 40)
                             
+                            //MARK: EMAIL FIELD
                             TextField(Constants.Labels.Placeholders.email, text: $viewModel.email)
                                 .disableAutocorrection(true)
                                 .padding()
@@ -36,10 +37,13 @@ struct LoginSignupView: View {
                                     .fontWeight(.semibold)
                                     .foregroundColor(.red)
                             }
+                            
+                            //MARK: PASSWORD FIELD
                             SecureTextFieldView(placeholder: Constants.Labels.Placeholders.password, text: $viewModel.password)
                                 .padding(.top)
                             
                             if !viewModel.isLoginView {
+                                //MARK: CONFIRM PASSWORD FIELD
                                 SecureTextFieldView(placeholder: Constants.Labels.Placeholders.confirmPassword, text: $viewModel.confirmPassword)
                                     .padding(.top)
                             }
@@ -55,6 +59,7 @@ struct LoginSignupView: View {
                                 .foregroundColor(.secondary)
                             
                             if viewModel.isLoginView {
+                                //MARK: FORGOT PASSWORD BUTTON
                                 HStack {
                                     Button(Constants.Labels.forgotPassword) {
                                         viewModel.showForgotPasswordSheet.toggle()
@@ -68,6 +73,7 @@ struct LoginSignupView: View {
                                 .padding(.top)
                             }
                             
+                            //MARK: LOGIN/SIGNUP BUTTON
                             Button {
                                 if viewModel.isLoginView {
                                     viewModel.buttonClicked()
@@ -100,6 +106,7 @@ struct LoginSignupView: View {
                                         .foregroundColor(Constants.Colors.blueThemeColor)))
                             }
                             
+                            //MARK: LINK TO SHIFT TO LOGIN VIEW OR VICE-VERSA
                             HStack {
                                 Text(viewModel.isLoginView ? Constants.Labels.notMember : Constants.Labels.alreadyMember)
                                 Button(!viewModel.isLoginView ? Constants.Labels.logIn : Constants.Labels.signUp) {

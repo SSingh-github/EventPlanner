@@ -88,11 +88,9 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
             self.parent.$selectionIndex.wrappedValue = row
             self.parent.text = self.parent.data[self.parent.selectionIndex]
-            //self.parent.textField.endEditing(true)
-            
         }
         func textFieldDidEndEditing(_ textField: UITextField) {
-            //self.parent.textField.resignFirstResponder()
+           
         }
     }
 }

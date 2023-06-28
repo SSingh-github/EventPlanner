@@ -19,6 +19,7 @@ struct OtpView: View {
                     .fontWeight(.semibold)
                     .padding(.bottom, 40)
                 
+                //MARK: OTP FIELD
                 TextFieldView(placeholder: Constants.Labels.Placeholders.otp, text: $viewModel.otp)
                     .keyboardType(.numberPad)
                 
@@ -33,6 +34,7 @@ struct OtpView: View {
                         Text("Resend OTP in: \(viewModel.secondsRemaining)s")
                     }
                     else {
+                        //MARK: RESEND OTP BUTTON
                         Button(Constants.Labels.resendOtp) {
                             viewModel.resendOtp()
                         }
@@ -40,6 +42,7 @@ struct OtpView: View {
                 }
                 .padding(.bottom)
                 
+                //MARK: VERIFY OTP BUTTON
                 Button {
                     viewModel.verifyOtp()
                 } label: {
