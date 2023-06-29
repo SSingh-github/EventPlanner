@@ -99,7 +99,7 @@ struct AddNewEventView: View {
                     viewModel.actionType == .createEvent ? HashTags(hashtags: $viewModel.newEvent.hashtags) : HashTags(hashtags: $viewModel.newEventForEdit.hashtags)
                     HStack {
                         
-                        //MARK: CREATE EVENT BUTTON
+                        //MARK: ADD HASHTAG BUTTON
                         Button {
                             withAnimation {
                                 viewModel.actionType == .createEvent ? viewModel.newEvent.hashtags.append("") : viewModel.newEventForEdit.hashtags.append("")

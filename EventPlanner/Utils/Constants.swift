@@ -343,6 +343,7 @@ struct Constants {
     struct StringFormats {
         static let dateFormat                           = "yyyy-MM-dd"
         static let timeFormat                           = "HH:mm"
+        static let timeFormat2                          = "hh:mm a"
         static let float                                = "%.1f"
     }
 

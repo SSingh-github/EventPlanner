@@ -22,7 +22,6 @@ struct CreatedEvents: View {
                                 SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.myEvents[index], eventType: .created)
                             }
                             .listRowBackground(Color.clear)
-                            
                         }
                         .onDelete { indexPath in
                             viewModel.index = indexPath.first!
@@ -44,6 +43,9 @@ struct CreatedEvents: View {
                     .navigationTitle("")
                     .refreshable {
                         viewModel.getMyEvents()
+                    }
+                    .toolbar{
+                        EditButton()
                     }
                     
                 }

@@ -59,7 +59,7 @@ struct ProfileFieldsView: View {
                 .padding(.top)
             
             //MARK: DOB PICKER
-            DatePickerTextFieldView(label: Constants.Labels.selectDOB, placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.dateOfBirth, minimumDate: nil, pickerType: .date)
+            DatePickerTextFieldView(label: Constants.Labels.selectDOB, placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.dateOfBirth, minimumDate: viewModel.startDate2, pickerType: .date)
                 .padding(.trailing)
             Text(Constants.Labels.Questions.address)
                 .font(.title2)

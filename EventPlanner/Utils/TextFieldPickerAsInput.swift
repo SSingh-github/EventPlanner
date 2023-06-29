@@ -37,10 +37,12 @@ struct TextFieldWithPickerAsInputView : UIViewRepresentable {
         textField.tintColor = UIColor.clear
         
         let toolbar = UIToolbar()
+        toolbar.backgroundColor = .secondarySystemBackground
         toolbar.sizeToFit()
         
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(title: Constants.Labels.done, style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
+        doneButton.tintColor = Constants.Colors.polylineColor
         toolbar.setItems([flexibleSpace, doneButton], animated: true)
         self.textField.inputAccessoryView = toolbar
         

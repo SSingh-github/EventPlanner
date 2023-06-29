@@ -23,7 +23,7 @@ struct DatePickerTextField: UIViewRepresentable {
     
     private let dateFormatterForTime: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = Constants.StringFormats.timeFormat
+        dateFormatter.dateFormat = Constants.StringFormats.timeFormat2
         return dateFormatter
     }()
     
@@ -37,8 +37,10 @@ struct DatePickerTextField: UIViewRepresentable {
     //MARK: METHODS
     
     func makeUIView(context: Context) -> UITextField {
+        
         self.datePicker.datePickerMode = self.pickerType == .date ? .date : .time
         self.datePicker.preferredDatePickerStyle = .wheels
+        
         if self.minimumDate != nil {
             self.datePicker.minimumDate = self.minimumDate
         }
@@ -49,9 +51,14 @@ struct DatePickerTextField: UIViewRepresentable {
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
+        toolbar.backgroundColor = .secondarySystemBackground
+        
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
         let doneButton = UIBarButtonItem(title: Constants.Labels.done, style: .plain, target: self.helper, action: #selector(self.helper.doneButtonAction))
+        
         toolbar.setItems([flexibleSpace, doneButton], animated: true)
+        doneButton.tintColor = Constants.Colors.polylineColor
         self.textField.inputAccessoryView = toolbar
         
         self.helper.dateChanged = {

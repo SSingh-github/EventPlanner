@@ -75,6 +75,7 @@ class NetworkHelper {
     ///     - completion: escaping closure that takes Data, URLResponse and Error object as its paramters and get executed after the URLSession is started.
     ///
     ///  - Returns: Returns nothing.
+    ///
     func performRequest(request: URLRequest, dataCompletion: (() -> Void)?, successCompletion: ((HTTPURLResponse) -> Void)?, failureCompletion: (() -> Void)?, completion: @escaping (Data, URLResponse?, Error?) -> Void) {
         
         let task = URLSession.shared.dataTask(with: request) {data, response, error in
@@ -110,7 +111,7 @@ class NetworkHelper {
     ///     - image: contains the optional image for creating the body for the multipart request.
     ///
     ///  - Returns: the optional data object for performing the multipart request.
-    
+    ///
     private func createMultipartBody(from fields: [String: Any], image: UIImage?) -> Data? {
         let boundary = "Boundary-testpqr"
         var body = Data()
