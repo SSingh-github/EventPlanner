@@ -154,6 +154,7 @@ struct Constants {
     
     //MARK: Labels for the app
     struct Labels {
+        static let invalid                              = "invalid"
         static let noHashtags                           = "no hashtags"
         static let start                                = "Start"
         static let event                                = "Event"
@@ -185,7 +186,7 @@ struct Constants {
         static let notFavourite                         = "Not favourite"
         static let Commencement                         = "Commencement"
         static let culmination                          = "Culmination"
-        static let followers                            = "followers"
+        static let followers                            = "followers "
         static let follow                               = "follow"
         static let following                            = "following"
         static let joinEvent                            = "Join event"
@@ -301,12 +302,12 @@ struct Constants {
        
         //MARK: labels which are warnings
         struct Warnings {
-            static let name                             = "Please enter valid name"
-            static let password                         = "Please enter valid password"
-            static let dob                              = "Please enter valid date of birth"
-            static let email                            = "Please enter valid email"
-            static let phoneNumber                      = "Please enter valid phone number"
-            static let confirmPassword                  = "Passwords do not match"
+            static let name                             = "* please enter valid name"
+            static let password                         = "* please enter valid password"
+            static let dob                              = "* please enter valid date of birth"
+            static let email                            = "* please enter valid email"
+            static let phoneNumber                      = "* please enter valid phone number"
+            static let confirmPassword                  = "* passwords do not match"
         }
         
         //MARK: Labels for alerts
@@ -344,6 +345,7 @@ struct Constants {
         static let dateFormat                           = "yyyy-MM-dd"
         static let timeFormat                           = "HH:mm"
         static let timeFormat2                          = "hh:mm a"
+        static let timeFormat3                          = "HH:mm:ss"
         static let float                                = "%.1f"
     }
 

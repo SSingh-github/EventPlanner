@@ -50,6 +50,7 @@ struct MyEventsView: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                     }
+                    .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
                     .padding()
                     .background(.secondary.opacity(0.2))

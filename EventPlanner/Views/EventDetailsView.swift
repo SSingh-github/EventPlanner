@@ -61,7 +61,7 @@ struct EventDetailsView: View {
                         .padding(.bottom)
                         HStack {
                             Image(systemName: Constants.Images.clock)
-                            Text(viewModel.detailedEventForExplore?.start_time ?? "")
+                            Text(Formatter.shared.convertTo12HourFormat(timeString: viewModel.detailedEventForExplore?.start_time ?? "") ?? Constants.Labels.invalid)
                             Spacer()
                         }
                     }
@@ -84,7 +84,7 @@ struct EventDetailsView: View {
                         .padding(.bottom)
                         HStack {
                             Image(systemName: Constants.Images.clock)
-                            Text(viewModel.detailedEventForExplore?.end_time ?? "")
+                            Text(Formatter.shared.convertTo12HourFormat(timeString: viewModel.detailedEventForExplore?.end_time ?? "") ?? Constants.Labels.invalid)
                             Spacer()
                         }
                     }
@@ -146,6 +146,9 @@ struct EventDetailsView: View {
             if viewModel.showDetailedEventForExplore {
                 LoadingView()
             }
+        }
+        .onDisappear {
+            viewModel.detailedEventForExplore = nil
         }
         .onAppear {
             viewModel.getEventDetails(eventType: eventType, indexOfEvent: indexOfEvent)

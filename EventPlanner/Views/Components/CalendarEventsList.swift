@@ -17,6 +17,8 @@ struct CalendarEventsList: View {
                 
                 if viewModel.joinedEvents[index].start_date == Formatter.shared.formatSingleDate(date: dateSelected?.date ?? Date())  {
                     SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.joinedEvents[index], eventType: .joined)
+                        .listRowSeparator(.hidden)
+
                 }
             }
         }

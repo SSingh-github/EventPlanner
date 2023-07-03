@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Double {
     /// Rounds the double to decimal places value
@@ -25,3 +26,12 @@ extension Date {
         Calendar.current.startOfDay(for: self)
     }
 }
+
+extension View {
+    func dismissKeyboardOnTap() -> some View {
+        return self.onTapGesture {
+            UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
+        }
+    }
+}
+

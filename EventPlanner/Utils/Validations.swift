@@ -18,7 +18,7 @@ class Validations {
     static let shared = Validations()
     //MARK: METHODS
     
-    ///checks the email passed as parameter against the regex for email and returns the corresponding boolean value.
+    ///Checks the email passed as parameter against the regex for email and returns the corresponding boolean value.
     ///
     ///  - Parameters:
     ///     - email: email in the string format
@@ -31,7 +31,7 @@ class Validations {
         return emailPredicate.evaluate(with: email)
     }
     
-    ///checks the password passed as parameter against the regex for password and returns the corresponding boolean value.
+    ///Checks the password passed as parameter against the regex for password and returns the corresponding boolean value.
     ///
     ///   - Parameters:
     ///     - password: password to be validated in the string format
@@ -44,7 +44,7 @@ class Validations {
         return passwordPredicate.evaluate(with: password)
     }
     
-    ///checks the firstname passed as parameter against the regex for first name and returns the corresponding boolean value.
+    ///Checks the firstname passed as parameter against the regex for first name and returns the corresponding boolean value.
     ///
     ///   - Parameters:
     ///      - firstName: contains the first name of the user.
@@ -57,7 +57,7 @@ class Validations {
         return firstNamePredicate.evaluate(with: firstName)
     }
     
-    ///checks the lastname passed as parameter against the regex for the last name and returns the corresponding boolean value.
+    ///Checks the lastname passed as parameter against the regex for the last name and returns the corresponding boolean value.
     ///
     ///   - Parameters:
     ///     - lastName: represents the last name of the user in string format.
@@ -70,7 +70,7 @@ class Validations {
         return lastNamePredicate.evaluate(with: lastName)
     }
     
-    ///checks the dob passed as parameter against the regex for dob and returns the corresponding boolean value.
+    ///Checks the dob passed as parameter against the regex for dob and returns the corresponding boolean value.
     ///
     ///   - Parameters:
     ///     - dob: represents the date of birth of the user in the string format
@@ -83,7 +83,7 @@ class Validations {
         return dobPredicate.evaluate(with: dob)
     }
     
-    ///checks the phoneNumber passed as parameter against the regex for the phoneNumber and returns the corresponding boolean value.
+    ///Checks the phoneNumber passed as parameter against the regex for the phoneNumber and returns the corresponding boolean value.
     ///
     ///   - Parameters:
     ///      - phoneNumber: represents the phone number of the user in string format

@@ -88,6 +88,7 @@ struct ResetPasswordView: View {
                 LoadingView()
             }
         }
+        .dismissKeyboardOnTap()
     }
 }
 

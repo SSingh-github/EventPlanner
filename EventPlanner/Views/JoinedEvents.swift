@@ -22,6 +22,8 @@ struct JoinedEvents: View {
                                 SecondaryEventCard(viewModel: viewModel, eventIndex: index,event: $viewModel.joinedEvents[index], eventType: .joined)
                             }
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+
                         }
                     }
                     .listStyle(PlainListStyle())

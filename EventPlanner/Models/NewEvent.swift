@@ -26,7 +26,7 @@ struct NewEvent {
     var imagePicker2: ImagePicker
     
     init() {
-        selectedOption = ""
+        selectedOption = nil
         title = ""
         description = ""
         hashtags = []

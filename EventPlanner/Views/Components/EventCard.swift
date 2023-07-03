@@ -11,6 +11,7 @@ struct EventCard: View {
     
     @Binding var event: Event
     @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var viewModel: MainTabViewModel
     
     var body: some View {
         HStack {
@@ -40,7 +41,8 @@ struct EventCard: View {
                         Button {
                             withAnimation{
                                 event.is_favourite.toggle()
-                                NetworkManager.shared.markEventAsFavourite(eventId: event.id)
+                                viewModel.markEventFav(id: event.id)
+            
                             }
                         } label: {
                             if event.is_favourite {
@@ -60,25 +62,22 @@ struct EventCard: View {
                         //MARK: LIKE BUTTON
                         Button {
                             withAnimation{
-                                NetworkManager.shared.likeTheEvent(eventId: event.id)
+                                viewModel.likeEvent(id: event.id)
                                 event.is_liked.toggle()
                                 event.is_liked ? (event.like_count += 1) : (event.like_count -= 1)
                             }
                         } label: {
                             HStack{
-                                if event.is_liked {
-                                    Image(systemName: Constants.Images.heartFill)
-                                        .foregroundColor(Constants.Colors.pinkColor)
-                                }
-                                else {
-                                    Image(systemName:Constants.Images.heart)
-                                        .foregroundColor(.gray)
-                                        .bold()
-                                }
+                                
+                                Image(systemName: event.is_liked ? Constants.Images.heartFill : Constants.Images.heart)
+                                    .foregroundColor(event.is_liked ? .pink : .gray)
+                                
+                               
                                 Text("\(event.like_count)")
                                     .foregroundColor(.gray)
                                     .bold()
-                            }
+                                Spacer()
+                            }.frame(width: 50)
                         }
                         .buttonStyle(PlainButtonStyle())
                     }

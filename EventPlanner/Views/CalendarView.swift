@@ -17,15 +17,18 @@ struct CalendarView: View {
         Group {
             if viewModel.joinedEvents.isEmpty == false {
                 ScrollView{
-                    Text(Constants.Labels.eventCalendar)
-                        .font(.title)
-                        .bold()
-                        .padding(.top)
-                    CalendarStruct(interval: DateInterval(start: .distantPast, end: .distantFuture), viewModel: viewModel, dateSelected: $dateSelected, displayEvents: $displayEvents)
-                        .accentColor(Constants.Colors.blueThemeColor)
-                        .padding()
-                        .background(.secondary.opacity(0.2))
-                        .cornerRadius(20)
+                    VStack {
+                        Text(Constants.Labels.eventCalendar)
+                            .font(.title)
+                            .bold()
+                            .padding(.top)
+                        CalendarStruct(interval: DateInterval(start: .distantPast, end: .distantFuture), viewModel: viewModel, dateSelected: $dateSelected, displayEvents: $displayEvents)
+                            .accentColor(Constants.Colors.blueThemeColor)
+                            .padding()
+                            .background(.secondary.opacity(0.2))
+                            .cornerRadius(20)
+                    }
+                    .padding()
                 }
                 .sheet(isPresented: $displayEvents) {
                     CalendarEventsList(viewModel: viewModel, dateSelected: $dateSelected)

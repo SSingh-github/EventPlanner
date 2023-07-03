@@ -36,8 +36,7 @@ struct DateAndTimeView: View {
                                 .foregroundColor(.white)
                                 .fontWeight(.semibold)
                         }
-                        .padding()
-                    }
+                    }.padding(.horizontal)
                     .disabled(viewModel.dateButtonDisabled)
                     .actionSheet(isPresented: $viewModel.showActionSheet) {
                         ActionSheet(title: Text(Constants.Labels.Questions.location), message: nil, buttons: [
@@ -54,10 +53,10 @@ struct DateAndTimeView: View {
                         ]
                         )
                     }
-                    
                     NavigationLink("", destination: SearchLocationView(viewModel: viewModel), isActive: $viewModel.showLocationView)
                 }
             }
+            .padding()
         }
     }
 }

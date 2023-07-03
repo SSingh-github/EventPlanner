@@ -21,6 +21,8 @@ struct FavouriteEvents: View {
                                 SecondaryEventCard(viewModel: viewModel, eventIndex: index, event: $viewModel.favouriteEvents[index], eventType: .favourite)
                             }
                             .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+
                         }
                     }
                     .listStyle(.plain)

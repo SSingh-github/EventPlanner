@@ -106,10 +106,9 @@ struct EditUserProfileView: View {
                 LoadingView()
             }
         }
-        .onTapGesture {
-                    UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
-                }
+        .dismissKeyboardOnTap()
     }
+    
 }
 
 

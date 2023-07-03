@@ -28,7 +28,7 @@ struct EventBarView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(viewModel.detailedEventForExplore?.user_name ?? "")
                     .font(.title3)
-                Text("\(viewModel.detailedEventForExplore?.follower_count ?? 0) " + Constants.Labels.followers)
+                Text(Constants.Labels.followers + "\(viewModel.detailedEventForExplore?.follower_count ?? 0) ")
                     .foregroundColor(.gray)
             }
             
@@ -50,13 +50,15 @@ struct EventBarView: View {
             } label: {
                 if !(viewModel.detailedEventForExplore?.is_followed ?? true) {
                     ZStack {
-                        Rectangle()
-                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                            .frame(width: 80,height: 30)
-                            .cornerRadius(14)
+                        
                         Text(Constants.Labels.follow)
-                            .foregroundColor(colorScheme == .light ? .white: .black)
+                            .foregroundColor(colorScheme == .light ? .black: .white)
                             .padding()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(colorScheme == .dark ? Color.white.opacity(0.5) : Color.black.opacity(0.5), lineWidth: 2)
+                                    .frame(width: 80,height: 30)
+                            )
                     }
                 }
                 else {
@@ -73,6 +75,8 @@ struct EventBarView: View {
                     }
                 }
             }
+            
+            Spacer()
         }
         .padding(.top, 20)
     }

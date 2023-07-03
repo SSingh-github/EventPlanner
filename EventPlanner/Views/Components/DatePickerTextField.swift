@@ -31,8 +31,8 @@ struct DatePickerTextField: UIViewRepresentable {
     
     @Binding public var date: Date?
     var pickerType: PickerType
-    var minimumDate: Date?
-    var maximumDate: Date?
+    @Binding var minimumDate: Date
+    @Binding var maximumDate: Date
     
     //MARK: METHODS
     
@@ -41,9 +41,10 @@ struct DatePickerTextField: UIViewRepresentable {
         self.datePicker.datePickerMode = self.pickerType == .date ? .date : .time
         self.datePicker.preferredDatePickerStyle = .wheels
         
-        if self.minimumDate != nil {
-            self.datePicker.minimumDate = self.minimumDate
-        }
+        
+        self.datePicker.minimumDate = self.minimumDate + 3600
+        self.datePicker.maximumDate = self.maximumDate
+        
         self.datePicker.addTarget(self.helper, action: #selector(self.helper.dateValueChanged), for: .valueChanged)
         self.textField.placeholder = self.placeholder
         self.textField.inputView = self.datePicker

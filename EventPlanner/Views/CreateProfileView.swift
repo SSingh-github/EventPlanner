@@ -135,6 +135,7 @@ struct CreateProfileView: View {
                     .navigationBarBackButtonHidden(true)
             }
         }
+        .dismissKeyboardOnTap()
     }
 }
 

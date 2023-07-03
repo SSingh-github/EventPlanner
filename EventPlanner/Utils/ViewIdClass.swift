@@ -9,4 +9,5 @@ import Foundation
 
 class AppState : ObservableObject {
     @Published var rootViewId = UUID()
+    @Published var loggedIn :Bool = true
 }

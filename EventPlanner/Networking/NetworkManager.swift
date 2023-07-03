@@ -239,7 +239,7 @@ class NetworkManager {
             Constants.Keys.password : viewModel.newPassword
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.resetPassword, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.resetPassword, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: false, body: bodyData, isMultipart: false, image: nil)
         
         guard request != nil else {return}
         
@@ -274,9 +274,9 @@ class NetworkManager {
         }
     }
     
-    func signOutCall(viewModel: MainTabViewModel) {
+    func signOutCall(viewModel: MainTabViewModel, appState: AppState) {
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logOut, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.logOut, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
@@ -310,9 +310,10 @@ class NetworkManager {
                 viewModel.isLoggedOut = false
                 
                 if httpResponse.statusCode == 200 {
-                    viewModel.showWelcomeViewModel.toggle()
+                    //viewModel.showWelcomeViewModel.toggle()
                     UserDefaults.standard.set(false, forKey: Constants.Labels.userLoggedIn)
                     UserDefaults.standard.set(false, forKey: Constants.Labels.guestLoginKey)
+                   
                 }
                 else {
                     print("some error occured while logout")
@@ -325,7 +326,7 @@ class NetworkManager {
     
     func getUserProfileDetails(viewModel: MainTabViewModel) {
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.getProfile, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.getProfile, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
@@ -364,7 +365,6 @@ class NetworkManager {
     }
     
     func updateUserProfileDetails(viewModel: MainTabViewModel) {
-        
         viewModel.userProfile.dob = Formatter.shared.formatSingleDate(date: viewModel.dateOfBirth!)
         
         let fields: [String: Any] = [
@@ -375,7 +375,7 @@ class NetworkManager {
             Constants.Keys.address : viewModel.userProfile.address
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.updateProfile, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.updateProfile, httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
         
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
@@ -459,7 +459,7 @@ class NetworkManager {
     
     func getMyEvents(viewModel: MainTabViewModel) {
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.myEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.myEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
             DispatchQueue.main.async {
@@ -491,7 +491,7 @@ class NetworkManager {
     }
     
     func getJoinedEvents(viewModel: MainTabViewModel) {
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinedEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinedEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
@@ -524,7 +524,7 @@ class NetworkManager {
     }
     
     func getFavouriteEvents(viewModel: MainTabViewModel) {
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.favouriteEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.favouriteEvents, httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
             DispatchQueue.main.async {
@@ -556,7 +556,6 @@ class NetworkManager {
     }
     
     func eventDetails(viewModel: MainTabViewModel, eventId: Int) {
-        
         let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.get, authTokenNeeded: true, body: nil, isMultipart: false, image: nil)
         
         guard request != nil else { return }
@@ -588,7 +587,7 @@ class NetworkManager {
         // Add query parameters
         let queryItems: [(String, String)] = [
             ("event_category","\((Constants.Labels.eventTypes.firstIndex(of: viewModel.filter.eventCategory ?? Constants.Labels.eventTypes[0]) ?? 0) + 1)"),
-            ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate!)),
+            ("start_date"    ,Formatter.shared.formatSingleDate(date: viewModel.filter.startDate ?? Date())),
             ("title"         , viewModel.filter.title),
             ("hashtag"       ,viewModel.filter.hashtag),
             ("radius"        ,"\(viewModel.filter.radius)"),
@@ -652,7 +651,7 @@ class NetworkManager {
         fields[Constants.Keys.endTime]         = viewModel.newEventForEdit.formattedEndTime
         fields[Constants.Keys.hashtags]        = viewModel.newEventForEdit.hashtags
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/", httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEventForEdit.imagePicker2.image)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(viewModel.eventForEdit!.id)/", httpMethod: Constants.API.HttpMethods.put, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEventForEdit.imagePicker2.image)
         
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
@@ -689,7 +688,7 @@ class NetworkManager {
         fields[Constants.Keys.endTime]         = viewModel.newEvent.formattedEndTime
         fields[Constants.Keys.hashtags]        = viewModel.newEvent.hashtags
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEvent.imagePicker2.image)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.newEvent.imagePicker2.image)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!) {
             DispatchQueue.main.async {
@@ -737,7 +736,7 @@ class NetworkManager {
             Constants.Keys.eventId : eventId
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.delete, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.postEvent + "\(eventId)/", httpMethod: Constants.API.HttpMethods.delete, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
@@ -756,7 +755,7 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.markFavEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.markFavEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
@@ -776,7 +775,7 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             Constants.Keys.eventId : eventId
         ]
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.likeEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.likeEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
@@ -796,7 +795,7 @@ class NetworkManager {
         let bodyData: [String: Any] = [
             "event_id" : eventId
         ]
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.joinEvent, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
@@ -816,7 +815,7 @@ class NetworkManager {
             "user_id" : userId
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.followUser, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.followUser, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: bodyData, isMultipart: false, image: nil)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             do{
@@ -841,7 +840,7 @@ class NetworkManager {
             Constants.Keys.address : viewModel.address
         ]
         
-        var request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.setProfile, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
+        let request = NetworkHelper.shared.createURLRequest(urlString: Constants.API.URLs.setProfile, httpMethod: Constants.API.HttpMethods.post, authTokenNeeded: true, body: fields, isMultipart: true, image: viewModel.imagePicker.image)
         guard request != nil else {return}
         NetworkHelper.shared.performRequest(request: request!, dataCompletion: nil, successCompletion: nil, failureCompletion: nil) { data, response, error in
             guard let httpResponse = response as? HTTPURLResponse else {return}

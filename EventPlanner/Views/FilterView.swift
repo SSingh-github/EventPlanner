@@ -12,6 +12,8 @@ struct FilterView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: MainTabViewModel
+    @State var startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
+    @State var endDate = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
 
     var body: some View {
         NavigationView {
@@ -44,7 +46,7 @@ struct FilterView: View {
                         Spacer()
                         
                         // MARK: START DATE PICKER
-                        DatePickerTextField(placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.filter.startDate, pickerType: .date)
+                        DatePickerTextField(placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.filter.startDate, pickerType: .date, minimumDate: $startDate,maximumDate: $endDate)
                             .padding()
                             .background(Color.gray.opacity(0.3))
                             .cornerRadius(10)
@@ -133,9 +135,7 @@ struct FilterView: View {
             .onDisappear {
                 viewModel.resetFilter()
             }
-            .onTapGesture {
-                        UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
-                    }
+            .dismissKeyboardOnTap()
             .padding()
             .navigationTitle(Constants.Labels.filter)
             .navigationBarTitleDisplayMode(.inline)

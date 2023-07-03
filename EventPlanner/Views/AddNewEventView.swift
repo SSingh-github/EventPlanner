@@ -127,9 +127,7 @@ struct AddNewEventView: View {
             }
             .padding()
             .navigationTitle(viewModel.actionType == .createEvent ? Constants.Labels.createEvent : Constants.Labels.updateEvent)
-            .onTapGesture {
-                        UIApplication.shared.windows.first { $0.isKeyWindow }?.endEditing(true)
-                    }
+            .dismissKeyboardOnTap()
         }
        
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ProfileFieldsView: View {
     
@@ -23,6 +24,7 @@ struct ProfileFieldsView: View {
                 //MARK: FIRST NAME
                 TextFieldView(placeholder: Constants.Labels.Placeholders.firstName, text: $viewModel.userProfile.first_name)
                     .autocapitalization(.words)
+
                 if viewModel.showFirstNameWarning() {
                     Text(Constants.Labels.Warnings.name)
                         .fontWeight(.semibold)
@@ -59,7 +61,7 @@ struct ProfileFieldsView: View {
                 .padding(.top)
             
             //MARK: DOB PICKER
-            DatePickerTextFieldView(label: Constants.Labels.selectDOB, placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.dateOfBirth, minimumDate: viewModel.startDate2, pickerType: .date)
+            DatePickerTextFieldView(label: Constants.Labels.selectDOB, placeholder: Constants.Labels.Placeholders.selectDate, date: $viewModel.dateOfBirth, minimumDate: $viewModel.startDate2 ,maximumDate: $viewModel.endDate2, pickerType: .date)
                 .padding(.trailing)
             Text(Constants.Labels.Questions.address)
                 .font(.title2)
@@ -70,5 +72,11 @@ struct ProfileFieldsView: View {
             TextFieldView(placeholder: Constants.Labels.Placeholders.address, text: $viewModel.userProfile.address)
         }
         .padding(.vertical)
+    }
+    
+    func limitText(_ upper: Int, for string: inout String) {
+        if string.count > upper {
+            string = String(string.prefix(upper))
+        }
     }
 }

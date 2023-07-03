@@ -25,6 +25,8 @@ struct LoginSignupView: View {
                             
                             //MARK: EMAIL FIELD
                             TextField(Constants.Labels.Placeholders.email, text: $viewModel.email)
+                                .autocapitalization(.none)
+                                .keyboardType(.emailAddress)
                                 .disableAutocorrection(true)
                                 .padding()
                                 .frame(height: 60)
@@ -33,9 +35,9 @@ struct LoginSignupView: View {
                                 .accentColor(Constants.Colors.blueThemeColor)
                             
                             if viewModel.showEmailWarning() {
-                                Text(Constants.Labels.Warnings.email)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.red)
+                                    Text(Constants.Labels.Warnings.email)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.red)
                             }
                             
                             //MARK: PASSWORD FIELD
@@ -129,6 +131,7 @@ struct LoginSignupView: View {
                     LoadingView()
                 }
             }
+            .dismissKeyboardOnTap()
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(true)
         }

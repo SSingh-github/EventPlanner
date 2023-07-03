@@ -12,14 +12,15 @@ struct DatePickerTextFieldView: View {
     let label: String
     let placeholder: String
     @Binding var date: Date?
-    let minimumDate: Date?
+    @Binding var minimumDate: Date
+    @Binding var maximumDate: Date
     let pickerType: PickerType
     
     var body: some View {
         HStack {
             Text(label)
             Spacer()
-            DatePickerTextField(placeholder: placeholder, date: $date ,pickerType: pickerType, minimumDate: minimumDate)
+            DatePickerTextField(placeholder: placeholder, date: $date ,pickerType: pickerType, minimumDate: $minimumDate, maximumDate: $maximumDate)
                 .padding()
                 .background(Color.gray.opacity(0.3))
                 .cornerRadius(10)

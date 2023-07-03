@@ -15,7 +15,7 @@ class Formatter {
     static let shared = Formatter()
     //MARK: METHODS
     
-    ///formats the array of date objects to string formats and returns the array of strings.
+    ///Formats the array of date objects to string formats and returns the array of strings.
     ///
     /// - Parameters:
     ///    - dates: represents the array of date objects which is to be converted to string objects in the date format.
@@ -30,7 +30,7 @@ class Formatter {
         return [formattedStartDate, formattedEndDate]
     }
     
-    ///formats the single date object to string and returns the string.
+    ///Formats the single date object to string and returns the string.
     ///
     /// - Parameters:
     ///     - date: represents the date object which is to be converted to string
@@ -44,7 +44,7 @@ class Formatter {
         return formattedStartDate
     }
     
-    ///converts the date in the string format to date object and returns the date object.
+    ///Converts the date in the string format to date object and returns the date object.
     ///
     /// - Parameters:
     ///     - date: represents the date in the string format.
@@ -57,7 +57,7 @@ class Formatter {
         return dateFormatter.date(from: date)
     }
     
-    ///converts the array of date objects to strings which are of the format of time and returns the array of strings.
+    ///Converts the array of date objects to strings which are of the format of time and returns the array of strings.
     ///
     ///  - Parameters:
     ///    - times: represents the array of date objects which is used to extract time values.
@@ -72,7 +72,27 @@ class Formatter {
         return [formattedStartTime, formattedEndTime]
     }
     
-    ///takes the date string as the argument and returns a closed range object for the range of month.
+    
+    /// This function takes the time in 24-hour format as a string and returns the optional string of the same time in 12-hour format.
+    ///
+    ///    - Parameters:
+    ///     - timeString: The input string in the 24-hours format.
+    ///     
+    ///   - Returns: The optional string which is the time in 12-hour format.
+    ///
+    func convertTo12HourFormat(timeString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.StringFormats.timeFormat3
+        
+        if let date = dateFormatter.date(from: timeString) {
+            dateFormatter.dateFormat = Constants.StringFormats.timeFormat2
+            return dateFormatter.string(from: date)
+        }
+        return nil
+    }
+
+    
+    ///Takes the date string as the argument and returns a closed range object for the range of month.
     ///
     /// - Parameters:
     ///     - date: represents the date in the string format.

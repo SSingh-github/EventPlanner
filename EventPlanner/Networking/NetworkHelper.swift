@@ -15,7 +15,7 @@ class NetworkHelper {
     
     //MARK: METHODS
     
-    /// creates the URLRequest object from the given details and returns the request object
+    /// Creates the URLRequest object from the given details and returns the request object
     ///
     ///  - Parameters:
     ///     - urlsString:  the url in string format.
@@ -65,7 +65,7 @@ class NetworkHelper {
         return request
     }
     
-    /// performs the http request for the given request object
+    /// Performs the http request for the given request object
     ///
     ///  - Parameters:
     ///     - request: the URLRequest object needed to perform the http request.
@@ -104,7 +104,7 @@ class NetworkHelper {
         task.resume()
     }
     
-    /// a private method to create the body for the multipart request
+    /// A private method to create the body for the multipart request
     ///
     ///  - Parameters:
     ///     - fields: the dictionary containing the the fields for performing the request.

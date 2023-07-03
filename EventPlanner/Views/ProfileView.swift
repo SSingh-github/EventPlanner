@@ -11,6 +11,8 @@ struct ProfileView: View {
     
     @ObservedObject var viewModel: MainTabViewModel
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -18,12 +20,10 @@ struct ProfileView: View {
                     VStack {
                         HStack(alignment: .center) {
                             HStack {
-                                Text(viewModel.userProfile.first_name)
+                                Text(viewModel.userProfile.first_name + " " + viewModel.userProfile.last_name)
                                     .font(.title2)
                                     .bold()
-                                Text(viewModel.userProfile.last_name)
-                                    .font(.title2)
-                                    .bold()
+                                    .multilineTextAlignment(.leading)
                             }
                             
                             Spacer()
@@ -118,7 +118,8 @@ struct ProfileView: View {
                 }
                 .actionSheet(isPresented: $viewModel.showSignoutAlert) {
                     ActionSheet(title: Text(Constants.Labels.Questions.logout), message: nil, buttons: [                             .destructive(Text(Constants.Labels.logOut).foregroundColor(.red), action: {
-                        viewModel.signOutCall()
+                        viewModel.signOutCall(appState: appState)
+                        appState.loggedIn = false
                     }),
                         .cancel()
                     ]
@@ -144,9 +145,9 @@ struct ProfileView: View {
         }
     }
 }
-
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView(viewModel: MainTabViewModel())
-    }
-}
+//
+//struct ProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileView(viewModel: MainTabViewModel())
+//    }
+//}

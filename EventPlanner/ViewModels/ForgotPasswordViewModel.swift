@@ -31,7 +31,7 @@ class ForgotPasswordViewModel: ObservableObject {
     
     //MARK: METHODS
     
-    /// this method decides whether to show the email warning in the view or not by checking whether is email is empty or not and validating it using the validations singleton method.
+    /// This method decides whether to show the email warning in the view or not by checking whether is email is empty or not and validating it using the validations singleton method.
     ///
     /// - Returns: true if the warning is needed to be shown to the user, and false otherwise.
     ///
@@ -39,7 +39,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return !Validations.shared.isValidEmail(email) && !email.isEmpty
     }
     
-    /// this method decides whether to show the password warning in the view or not by checking whether is password is empty or not and validating it using the validations singleton method.
+    /// This method decides whether to show the password warning in the view or not by checking whether is password is empty or not and validating it using the validations singleton method.
     ///
     /// - Returns: true if the warning is needed to be shown to the user, and false otherwise.
     ///
@@ -47,7 +47,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return !Validations.shared.isValidPassword(newPassword) && !newPassword.isEmpty
     }
     
-    /// this method decides whether to show the confirm-password warning in the view or not by checking whether is confirm-password  is empty or not and validating it using the validations singleton method.
+    /// This method decides whether to show the confirm-password warning in the view or not by checking whether is confirm-password  is empty or not and validating it using the validations singleton method.
     ///
     /// - Returns: true if the warning is needed to be shown to the user, and false otherwise.
     ///
@@ -55,7 +55,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return self.newPassword != self.confirmPassword && !self.confirmPassword.isEmpty
     }
     
-    /// this method decides whether the button is disabled in the view or not depending upon the email vaildity.
+    /// This method decides whether the button is disabled in the view or not depending upon the email vaildity.
     ///
     /// - Returns: true if the button is needed to be disabled and false otherwise.
     ///
@@ -63,7 +63,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return showEmailWarning() || email.isEmpty
     }
     
-    /// this method decides whether the otp button is disabled in view or not depending upon the validity of the otp entered and the time remaining for entering the otp.
+    /// This method decides whether the otp button is disabled in view or not depending upon the validity of the otp entered and the time remaining for entering the otp.
     ///
     /// - Returns: true if the button is needed to be disabled and false otherwise.
     ///
@@ -71,7 +71,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return otp.count != 4 || secondsRemaining == 0
     }
     
-    /// this method decides whether the reset password button should be disabled or not.
+    /// This method decides whether the reset password button should be disabled or not.
     ///
     ///- Returns: true if the button is needed to be disabled and false otherwise.
     ///
@@ -79,7 +79,7 @@ class ForgotPasswordViewModel: ObservableObject {
         return showPasswordWarning() || newPassword.isEmpty || confirmPassword.isEmpty || newPassword != confirmPassword
     }
     
-    /// this method starts the timer for 180 seconds
+    /// This method starts the timer for 180 seconds
     ///
     func startTimer() {
         self.secondsRemaining = 180

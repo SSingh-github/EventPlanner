@@ -19,56 +19,46 @@ struct MainTabView: View {
     
     var body: some View {
         ZStack {
-            if viewModel.isActive {
-                TabView(selection: $viewModel.selection) {
-                    ExploreView(viewModel: viewModel)
-                        .tabItem {
-                            Label(Constants.Labels.explore, systemImage: Constants.Images.explore)
-                            
-                        }
-                        .tag(Tab.explore)
-                    
-                    NewEventView(viewModel: viewModel)
-                        .id(appState.rootViewId)
-                        .tabItem {
-                            Label(Constants.Labels.new, systemImage: Constants.Images.addEvent)
-                            
-                        }
-                        .tag(Tab.createEvent)
-                    
-                    MyEventsView(viewModel: viewModel)
-                        .tabItem {
-                            Label(Constants.Labels.list, systemImage: Constants.Images.list)
-                            
-                        }
-                        .tag(Tab.myEvents)
-                    
-                    ProfileView(viewModel: viewModel)
-                        .tabItem {
-                            Label(Constants.Labels.profile, systemImage: Constants.Images.profile)
-                            
-                        }
-                        .tag(Tab.profile)
-                }
-                .accentColor(Constants.Colors.blueThemeColor)
-                .tabViewStyle(DefaultTabViewStyle())
-                .fullScreenCover(isPresented: $viewModel.showWelcomeViewModel) {
-                    LoginSignupView()
-                }
-                .navigationBarBackButtonHidden(true)
+            
+            TabView(selection: $viewModel.selection) {
+                ExploreView(viewModel: viewModel)
+                    .tabItem {
+                        Label(Constants.Labels.explore, systemImage: Constants.Images.explore)
+                        
+                    }
+                    .tag(Tab.explore)
+                
+                NewEventView(viewModel: viewModel)
+                    .id(appState.rootViewId)
+                    .tabItem {
+                        Label(Constants.Labels.new, systemImage: Constants.Images.addEvent)
+                        
+                    }
+                    .tag(Tab.createEvent)
+                
+                MyEventsView(viewModel: viewModel)
+                    .tabItem {
+                        Label(Constants.Labels.list, systemImage: Constants.Images.list)
+                        
+                    }
+                    .tag(Tab.myEvents)
+                
+                ProfileView(viewModel: viewModel)
+                    .tabItem {
+                        Label(Constants.Labels.profile, systemImage: Constants.Images.profile)
+                        
+                    }
+                    .tag(Tab.profile)
             }
-            else {
-                SplashScreenView()
+            .accentColor(Constants.Colors.blueThemeColor)
+            .tabViewStyle(DefaultTabViewStyle())
+            .fullScreenCover(isPresented: $viewModel.showWelcomeViewModel) {
+                LoginSignupView()
             }
+            .navigationBarBackButtonHidden(true)
         }
-        
         .onAppear {
             viewModel.getEventList()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                withAnimation {
-                    viewModel.isActive = true
-                }
-            }
         }
     }
 }

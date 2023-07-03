@@ -38,7 +38,8 @@ struct ForgotPasswordView: View {
                     Text(Constants.Labels.enterEmail)
                     //MARK: EMAIL FIELD
                     TextFieldView(placeholder: Constants.Labels.Placeholders.email, text: $viewModel.email)
-                        .textCase(.lowercase)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                     
                     if viewModel.showEmailWarning() {
                         Text(Constants.Labels.Warnings.email)
@@ -84,6 +85,7 @@ struct ForgotPasswordView: View {
                     LoadingView()
                 }
             }
+            .dismissKeyboardOnTap()
         }
     }
 }

@@ -50,7 +50,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
     //MARK: METHODS
     
     
-    /// fetches the list of places whose names matches with the string in the parameter
+    /// Fetches the list of places whose names matches with the string in the parameter
     ///
     ///  - Parameters:
     ///     - value: The string which is used to match to different places and fetch the corresponding places.
@@ -79,7 +79,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         // handle the error
     }
     
-    /// this method handles the various cases of location authorization
+    /// This method handles the various cases of location authorization
     ///
     ///  - Parameters:
     ///     - manager: a CLLocationManager object which is used to perform various actions depending upon the permissions of the user.
@@ -102,7 +102,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         }
     }
     
-    /// this delegate method is used to perform action when the location is updated
+    /// This delegate method is used to perform action when the location is updated
     ///
     ///    - Parameters:
     ///       - manager: a CLLocationManager object which is used to perform various actions depending upon the permissions of the user.
@@ -117,7 +117,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         
     }
     
-    /// adds the draggale pin at the given coordinate which is used to highlight the location the user has selected
+    /// Adds the draggale pin at the given coordinate which is used to highlight the location the user has selected
     ///
     ///    - Parameters:
     ///       - coordinate: the coordinate object which represents the current location the user has selected.
@@ -129,7 +129,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         mapView.addAnnotation(annotation)
     }
     
-    /// this method is used to get the marker for the location
+    /// This method is used to get the marker for the location
     ///
     ///   - Parameters:
     ///     - mapView: contains the map view object
@@ -144,7 +144,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         return marker
     }
     
-    /// this delegate method handles the change in the annotation on the map.
+    /// This delegate method handles the change in the annotation on the map.
     ///
     ///   - Parameters:
     ///     - mapView: contains the map view object.
@@ -158,7 +158,7 @@ class LocationManager: NSObject, ObservableObject, MKMapViewDelegate, CLLocation
         self.updatePlacemark(location: .init(latitude: newLocation.latitude, longitude: newLocation.longitude))
     }
     
-    /// this helper method is used to update the placemark of the map view when the annotation is changed
+    /// This helper method is used to update the placemark of the map view when the annotation is changed
     ///
     ///    - Parameters:
     ///     - location: represents the location object for updating the placemark

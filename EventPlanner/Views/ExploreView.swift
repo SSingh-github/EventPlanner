@@ -19,10 +19,11 @@ struct ExploreView: View {
                     ForEach(viewModel.events.indices, id: \.self) {index in
                         NavigationLink(destination: EventDetailsView(viewModel: viewModel, indexOfEvent: index, eventType: .all)) {
                             //MARK: EVENT
-                           EventCard(event: $viewModel.events[index])
+                           EventCard(event: $viewModel.events[index], viewModel: viewModel)
                                 
                         }
                         .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
                     }
                 }
                 .listStyle(.plain)

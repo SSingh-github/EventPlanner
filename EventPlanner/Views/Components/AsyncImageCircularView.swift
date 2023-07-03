@@ -17,7 +17,8 @@ struct AsyncImageCircularView: View {
             case .empty:
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Constants.Colors.blueThemeColor))
-                    .scaleEffect(3)
+                    .scaleEffect(2)
+                    .frame(width: 100, height: 100)
             case .success(let image):
                 image
                     .resizable()
